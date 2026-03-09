@@ -1,0 +1,39 @@
+:root input,
+:root select,
+:root textarea {
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 14px;
+    background-color: #fff !important;
+    border: 1px solid #ccc;
+    color: #000;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s ease-in-out;
+}
+
+:root[data-theme="dark"] input,
+:root[data-theme="dark"] select,
+:root[data-theme="dark"] textarea {
+    background-color: #fff !important;
+    color: #000 !important;
+    border: 1px solid #999;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+}
+
+:root input:focus,
+:root select:focus,
+:root textarea:focus {
+    border-color: #000 !important;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.8) !important;
+    outline: none !important;
+}
+
+#searchbar {
+  background-color: unset !important;
+  border: unset !important;
+  box-shadow: unset !important;
+  color: inherit !important;
+  border-radius: inherit !important;
+  padding: 15px 0px!important;
+  font-size: inherit !important;
+}
