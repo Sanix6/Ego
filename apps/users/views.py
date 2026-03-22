@@ -1,9 +1,17 @@
-from rest_framework import status, permissions, generics
+from rest_framework import status, permissions, generics, views
 from rest_framework.response import Response
 from django.contrib.auth import login
 from .models import User
 from rest_framework.authtoken.models import Token
-from .serializers import SendCodeSerializer, VerifyCodeSerializer
+from .serializers import *
+from assets.utils import send_sms, send_verification_sms
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.exceptions import MethodNotAllowed
+from drf_spectacular.utils import extend_schema
+from django.db import transaction
+from services.geo import RedisGeoService
+from .models import WorkerLocation, WorkerStatus
 
 
 class SendCodeView(generics.GenericAPIView):
@@ -23,8 +31,6 @@ class SendCodeView(generics.GenericAPIView):
             status=status.HTTP_200_OK,
         )
     
-
-
 
 class VerifyCodeView(generics.GenericAPIView):
     serializer_class = VerifyCodeSerializer
@@ -65,3 +71,230 @@ class VerifyCodeView(generics.GenericAPIView):
             status=status.HTTP_200_OK,
         )
     
+
+class DriverRegisterView(generics.GenericAPIView):
+    serializer_class = DriverRegisterSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+
+        sms_sent = send_verification_sms(user)
+
+        if not sms_sent:
+            return Response(
+                {
+                    "message": "Пользователь создан, но SMS не отправлено",
+                    "phone": user.phone,
+                    "user_type": user.user_type,
+                },
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+        return Response(
+            {
+                "message": "Код подтверждения отправлен на телефон",
+                "phone": user.phone,
+                "user_type": user.user_type,
+            },
+            status=status.HTTP_200_OK
+        )
+
+
+class VerifyCodeDriverView(generics.GenericAPIView):
+    serializer_class = VerifyCodeDriverSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        phone = serializer.validated_data["phone"]
+        code = serializer.validated_data["code"]
+
+        try:
+            user = User.objects.get(phone=phone, user_type="driver")
+        except User.DoesNotExist:
+            return Response(
+                {"message": "Пользователь не найден"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        if user.verification_code != code:
+            return Response(
+                {"message": "Неверный код"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        user.verification_code = None
+        user.save(update_fields=["verification_code"])
+
+        token, created = Token.objects.get_or_create(user=user)
+
+        return Response(
+            {
+                "token": token.key,
+                "message": "Номер успешно подтвержден"
+            },
+            status=status.HTTP_200_OK
+        )
+
+class ResendCodeDriverView(generics.GenericAPIView):
+    serializer_class = ResendCodeDriverSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        phone = serializer.validated_data["phone"]
+
+        try:
+            user = User.objects.get(phone=phone, user_type="driver")
+        except User.DoesNotExist:
+            return Response(
+                {"message": "Пользователь не найден"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        send_sms(user)
+
+        return Response(
+            {
+                "message": "Код отправлен повторно",
+                "expires_in": 120
+            },
+            status=status.HTTP_200_OK
+        )
+
+
+
+@extend_schema(methods=['PUT'], exclude=True)
+class ScanPersonalDriverView(generics.UpdateAPIView):
+    serializer_class = ScanPersonalDriverSerializer
+    permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
+
+    def get_object(self):
+        return self.request.user.driver_profile
+
+@extend_schema(methods=['PUT'], exclude=True)
+class ScanDriversLicenseView(generics.UpdateAPIView):
+    serializer_class = ScanDriversLicenseSerializer
+    permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
+
+    def get_object(self):
+        return self.request.user.driver_profile
+
+@extend_schema(methods=['PUT'], exclude=True)
+class ScanDriversAutoView(generics.UpdateAPIView):
+    serializer_class = ScanDriversAutoSerializer
+    permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
+
+    def get_object(self):
+        return self.request.user.driver_profile
+
+
+
+class SaveHomeAddressView(generics.GenericAPIView):
+    serializer_class = SaveAddressSerializer
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        request.user.home_address = serializer.validated_data["address"]
+        request.user.save(update_fields=["home_address"])
+
+        return Response(
+            {
+                "message": "Домашний адрес сохранен",
+                "home_address": request.user.home_address
+            },
+            status=status.HTTP_200_OK
+        )
+
+
+class SaveWorkAddressView(generics.GenericAPIView):
+    serializer_class = SaveAddressSerializer
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        request.user.work_address = serializer.validated_data["address"]
+        request.user.save(update_fields=["work_address"])
+
+        return Response(
+            {
+                "message": "Рабочий адрес сохранен",
+                "work_address": request.user.work_address
+            },
+            status=status.HTTP_200_OK
+        )
+
+class PersonalInfoView(generics.RetrieveAPIView):
+    serializer_class = PersonalInfoSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
+
+
+
+class WorkerLocationUpdateView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = WorkerLocationUpdateSerializer
+
+    def post(self, request, *args, **kwargs):
+        user = request.user
+
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
+
+        with transaction.atomic():
+            location, _ = WorkerLocation.objects.update_or_create(
+                user=user,
+                defaults={
+                    "lat": data["lat"],
+                    "lon": data["lon"],
+                }
+            )
+
+            worker_status, _ = WorkerStatus.objects.get_or_create(user=user)
+
+            if "is_online" in data:
+                worker_status.is_online = data["is_online"]
+
+            worker_status.save()
+
+        if user.user_type in ["driver", "courier"]:
+            if worker_status.is_online:
+                RedisGeoService.add_worker(
+                    user_type=user.user_type,
+                    user_id=user.id,
+                    lat=location.lat,
+                    lon=location.lon,
+                )
+            else:
+                RedisGeoService.remove_worker(
+                    user_type=user.user_type,
+                    user_id=user.id,
+                )
+
+        return Response(
+            {
+                "success": True,
+                "message": "Локация обновлена",
+                "data": {
+                    "lat": location.lat,
+                    "lon": location.lon,
+                    "is_online": worker_status.is_online,
+                }
+            },
+            status=status.HTTP_200_OK
+        )

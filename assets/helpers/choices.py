@@ -5,13 +5,19 @@ ORDER_STATUSES = [
     ("shipped", "Курьер в пути"),
 ]
 
-DELIVERY_STATUSES = [
-    ("pending", "Ожидание курьера"),
-    ("assigned", "Назначен курьер"),
-    ("picked_up", "Заказ забран"),
+DELIVERY_STATUSES = (
+    ("searching_courier", "Поиск курьера"),
+    ("courier_assigned", "Курьер назначен"),
+    ("courier_arrived", "Курьер прибыл"),
+    ("picked_up", "Забрал посылку"),
+    ("in_delivery", "В пути"),
     ("delivered", "Доставлено"),
     ("canceled", "Отменено"),
-]
+    ("courier_arrived_b", "Курьер прибыл в точку назначения"),
+    ("waiting_pickup", "Бесплатное ожидание"),
+)
+
+
 DELIVERY_TYPES = [
     ("express", "Экспресс"),
     ("standard", "Стандарт"),
@@ -29,6 +35,14 @@ ORDER_TYPES = [
     ("express", "Экспресс"),
     ("standard", "Стандарт"),
 ]
+
+
+OFFER_STATUSES = (
+        ("pending", "Ожидает ответа"),
+        ("accepted", "Принят"),
+        ("rejected", "Отклонен"),
+        ("expired", "Истек"),
+    )
 
 
 
@@ -64,14 +78,26 @@ PAYMENT_STATUSES = (
 )
 
 
+STATUS_CHOICES = (
+        ('pending', 'На проверке'),
+        ('approved', 'Одобрен'),
+        ('rejected', 'Отклонён'),
+    )
+
 #Слоты
 
 SLOT_STATUSES = [
     ("in_work", "в работе"),
     ("offered", "предложен"),
     ("planned", "запланирован"),
-    ("closed_early", "закрыт досрочно"),
-    ("paid_break", "оплачиваемая пауза"),
-    ("unpaid_break", "неоплачиваемая пауза"),
     ("no_show", "невыход"),
+    ("completed", "завершён"),
 ]
+
+
+TRANSPORT_TYPES = (
+        ("foot", "Пеший"),
+        ("bike", "Велосипед"),
+        ("moped", "Мопед"),
+        ("car", "Машина"),
+    )

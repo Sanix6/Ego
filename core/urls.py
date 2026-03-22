@@ -9,6 +9,10 @@ from django.conf.urls.static import static
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/users/", include("apps.users.urls")),
+    path("api/maps/", include("apps.maps.urls")),
+    path("api/delivery/", include("apps.delivery.urls")),
+    path("api/taxi/", include("apps.taxi.urls")),
+    
 ] + spectacular_urls
 
 if settings.DEBUG:
