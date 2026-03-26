@@ -6,7 +6,9 @@ from django_celery_beat.models import (
     SolarSchedule,
     ClockedSchedule
 )
-from .models import Tariff
+from .models import Tariff, DarkStore
+
+
 
 admin.site.unregister(PeriodicTask)
 admin.site.unregister(IntervalSchedule)
@@ -20,5 +22,10 @@ class TariffAdmin(admin.ModelAdmin):
     list_filter = ("city", "car_class", "is_active")
     search_fields = ("city",)
     
+
+@admin.register(DarkStore)
+class DarkStoreAdmin(admin.ModelAdmin):
+    list_display = ("name", "address", "lat", "lon", "created_at")
+    search_fields = ("name", "address")
 
 

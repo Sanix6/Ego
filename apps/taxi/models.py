@@ -63,7 +63,7 @@ class TaxiRide(models.Model):
     started_at = models.DateTimeField("Начал поездку", null=True, blank=True)
     completed_at = models.DateTimeField("Завершил", null=True, blank=True)
     canceled_at = models.DateTimeField("Отменено", null=True, blank=True)
-    order_code = models.CharField(max_length=20, unique=True, db_index=True)
+    order_code = models.CharField(max_length=20, db_index=True)
     canceled_by = models.CharField(
         max_length=20,
         choices=(

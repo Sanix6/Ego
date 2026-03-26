@@ -1,5 +1,8 @@
 from rest_framework import serializers
 from .models import TaxiRide
+from apps.users.models import User, WorkerLocation
+from .pricing import *
+
 
 
 class DriverRegisterSerializer(serializers.Serializer):
@@ -53,6 +56,51 @@ class TaxiRideCreateSerializer(serializers.ModelSerializer):
             "dropoff_lon",
         ]
 
+    def create(self, validated_data):
+
+        try:
+            route = RoutingService.get_route(
+                pickup_lat=validated_data["pickup_lat"],
+                pickup_lon=validated_data["pickup_lon"],
+                dropoff_lat=validated_data["dropoff_lat"],
+                dropoff_lon=validated_data["dropoff_lon"],
+            )
+
+            pricing = PricingService.get_price_details_for_tariff(
+                car_class=validated_data["car_class"],
+                distance_km=route["distance_km"],
+                duration_min=route["duration_min"],
+            )
+
+        except RoutingServiceError as exc:
+            raise serializers.ValidationError({"message": str(exc)})
+        except PricingError as exc:
+            raise serializers.ValidationError({"message": str(exc)})
+
+        tariff = pricing["tariff"]
+
+        ride = TaxiRide.objects.create(
+            **validated_data,
+            client=self.context["request"].user,
+            status="searching_driver",
+
+            distance_km=pricing["distance_km"],
+            duration_min=pricing["duration_min"],
+            price=pricing["price"],
+            estimated_price=pricing["estimated_price"],
+            total_price=pricing["total_price"],
+
+            base_fare=tariff.base_fare,
+            per_km_rate=tariff.per_km_rate,
+            per_min_rate=tariff.per_min_rate,
+            included_km=tariff.included_km,
+            included_min=tariff.included_min,
+            commission_percent=tariff.commission_percent,
+            commission_amount=pricing["commission_amount"],
+            driver_payout=pricing["driver_payout"],
+        )
+        return ride
+
 
 class TaxiRideDetailSerializer(serializers.ModelSerializer):
     class Meta:
@@ -66,3 +114,109 @@ class TaxiPricesPreviewSerializer(serializers.Serializer):
     dropoff_lat = serializers.FloatField()
     dropoff_lon = serializers.FloatField()
     city = serializers.CharField(required=False, allow_blank=True, max_length=100)
+
+
+class DriverInfoSerializer(serializers.ModelSerializer):
+    car_brand = serializers.SerializerMethodField()
+    car_model = serializers.SerializerMethodField()
+    car_color = serializers.SerializerMethodField()
+    car_number = serializers.SerializerMethodField()
+    car_type = serializers.SerializerMethodField()
+
+    class Meta:
+        model = User
+        fields = [
+            "id",
+            "first_name",
+            "last_name",
+            "phone",
+            "car_brand",
+            "car_model",
+            "car_color",
+            "car_number",
+            "car_type",
+        ]
+
+    def get_car_brand(self, obj):
+        profile = getattr(obj, "driver_profile", None)
+        return profile.car_brand if profile else None
+
+    def get_car_model(self, obj):
+        profile = getattr(obj, "driver_profile", None)
+        return profile.car_model if profile else None
+
+    def get_car_color(self, obj):
+        profile = getattr(obj, "driver_profile", None)
+        return profile.car_color if profile else None
+
+    def get_car_number(self, obj):
+        profile = getattr(obj, "driver_profile", None)
+        return profile.car_number if profile else None
+
+    def get_car_type(self, obj):
+        profile = getattr(obj, "driver_profile", None)
+        return profile.car_type if profile else None
+
+
+class DriverLocationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = WorkerLocation
+        fields = [
+            "lat",
+            "lon",
+            "updated_at",
+        ]
+
+
+class TaxiTrackingSerializer(serializers.ModelSerializer):
+    driver = DriverInfoSerializer(read_only=True)
+    driver_location = serializers.SerializerMethodField()
+    driver_assigned = serializers.SerializerMethodField()
+
+    class Meta:
+        model = TaxiRide
+        fields = [
+            "id",
+            "order_code",
+            "status",
+            "point_a",
+            "point_b",
+            "pickup_lat",
+            "pickup_lon",
+            "dropoff_lat",
+            "dropoff_lon",
+            "car_class",
+            "passengers",
+            "client_comment",
+            "distance_km",
+            "duration_min",
+            "price",
+            "estimated_price",
+            "total_price",
+            "payment_method",
+            "payment_status",
+            "requested_at",
+            "assigned_at",
+            "accepted_at",
+            "arrived_at",
+            "started_at",
+            "completed_at",
+            "canceled_at",
+            "driver_assigned",
+            "driver",
+            "driver_location",
+        ]
+
+    def get_driver_assigned(self, obj):
+        return obj.driver_id is not None
+
+    def get_driver_location(self, obj):
+        driver = obj.driver
+        if not driver:
+            return None
+
+        location = getattr(driver, "worker_location", None)
+        if not location:
+            return None
+
+        return DriverLocationSerializer(location).data

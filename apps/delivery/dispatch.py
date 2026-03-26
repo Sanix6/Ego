@@ -8,8 +8,9 @@ from django.db import transaction
 from apps.users.models import WorkerStatus
 from apps.delivery.services import find_nearest_couriers
 from apps.delivery.models import Delivery
+from .helpers import courier_has_active_in_work_slot
 
-OFFER_TIMEOUT_SECONDS = 15
+OFFER_TIMEOUT_SECONDS = 20
 
 def dispatch_wave(delivery, limit):
     write_log(f"DISPATCH START delivery={delivery.id} limit={limit}")
@@ -27,6 +28,10 @@ def dispatch_wave(delivery, limit):
     for distance, courier in nearest:
         write_log(f"CHECK COURIER id={courier.id} distance={distance}")
 
+        if courier_has_active_in_work_slot(courier):
+            write_log(f"SKIP courier={courier.id} (active in_work slot)")
+            continue
+
         if has_offer_been_sent(delivery, courier):
             write_log(f"SKIP courier={courier.id} (already has offer)")
             continue
@@ -40,7 +45,6 @@ def dispatch_wave(delivery, limit):
             break
 
     write_log(f"TOTAL SENT: {len(sent_offers)}")
-
     return sent_offers
 
 
@@ -53,8 +57,8 @@ def create_delivery_offer(delivery, courier):
     )
 
 
-
 def send_delivery_offer_event(courier, delivery, offer):
+
     channel_layer = get_channel_layer()
 
     write_log(
@@ -73,12 +77,20 @@ def send_delivery_offer_event(courier, delivery, offer):
     )
 
 def send_offer_to_courier(delivery, courier):
+    from .tasks import check_delivery_offer_timeout
     offer = create_delivery_offer(delivery, courier)
-    send_delivery_offer_event(courier, delivery, offer)
-    check_delivery_offer_timeout.apply_async(
-        args=[offer.id],
-        countdown=OFFER_TIMEOUT_SECONDS
+
+    transaction.on_commit(
+        lambda: send_delivery_offer_event(courier, delivery, offer)
     )
+
+    transaction.on_commit(
+        lambda: check_delivery_offer_timeout.apply_async(
+            args=[offer.id],
+            countdown=OFFER_TIMEOUT_SECONDS
+        )
+    )
+
     return offer
 
 def has_offer_been_sent(delivery, courier):
@@ -101,6 +113,9 @@ def dispatch_next_courier(delivery):
     )
 
     for _, courier in nearest:
+        if courier_has_active_in_work_slot(courier):
+            continue
+
         if has_offer_been_sent(delivery, courier):
             continue
 
@@ -109,6 +124,7 @@ def dispatch_next_courier(delivery):
 
     return None
 
+
 def get_active_offer_for_courier(delivery, courier):
     return DeliveryOffer.objects.filter(
         delivery=delivery,
@@ -116,6 +132,7 @@ def get_active_offer_for_courier(delivery, courier):
         status="pending",
         expires_at__gt=timezone.now(),
     ).first()
+
 
 def accept_delivery_offer(offer, courier):
     with transaction.atomic():
@@ -186,6 +203,7 @@ def reject_delivery_offer(offer, courier):
             return False, "Оффер уже недоступен."
 
         offer.status = "rejected"
+        offer.is_busy = False
         offer.responded_at = timezone.now()
         offer.save(update_fields=["status", "responded_at"])
 

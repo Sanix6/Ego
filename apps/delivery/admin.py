@@ -267,6 +267,7 @@ class CourierSlotAdmin(admin.ModelAdmin):
 
     list_display = (
         "id",
+        "darkstore",
         "transport_with_icon",
         "courier_display",
         "status_colored",
@@ -311,6 +312,9 @@ class CourierSlotAdmin(admin.ModelAdmin):
     fieldsets = (
         ("Время", {
             "fields": ("start_at", "end_at")
+        }),
+        ("Даркстор", {
+            "fields": ("darkstore", )
         }),
         ("Слот", {
             "fields": ("type_slot", "status", "courier")
@@ -366,17 +370,19 @@ class CourierSlotAdmin(admin.ModelAdmin):
     @admin.display(description="Статус")
     def status_colored(self, obj):
         colors = {
-            "planned": "#9CA3AF",
-            "in_work": "#2563EB",
-            "closed_early": "#F59E0B",
-            "paid_break": "#6366F1",
-            "unpaid_break": "#A855F7",
-            "no_show": "#EF4444",
-            "done": "#16A34A",
+            "planned": "#9CA3AF",        
+            "offered": "#F59E0B",   
+            "in_work": "#2563EB",        
+            "closed_early": "#F97316",  
+            "paid_break": "#6366F1",    
+            "unpaid_break": "#A855F7",  
+            "no_show": "#EF4444",       
+            "done": "#16A34A",           
         }
-        color = colors.get(obj.status, "#111827")
+
+        color = colors.get(obj.status, "#E5E7EB")  
         return format_html(
-            '<b style="color:{};">{}</b>',
+            '<span style="color:{}; font-weight:600;">{}</span>',
             color,
             obj.get_status_display()
         )
@@ -412,5 +418,5 @@ class CourierSlotAdmin(admin.ModelAdmin):
 
     def get_readonly_fields(self, request, obj=None):
         if obj and obj.status in ("in_work", "done", "closed_early"):
-            return self.readonly_fields + ("start_at", "end_at", "courier", "type_slot")
+            return self.readonly_fields + ("start_at", "end_at", "type_slot")
         return self.readonly_fields

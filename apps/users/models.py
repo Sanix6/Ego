@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from .managers import CustomUserManager
 from random import randint
 from assets.helpers.choices import *
+from apps.main.models import DarkStore
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -58,12 +59,21 @@ class Admin(User):
         verbose_name = "Администратор"
         verbose_name_plural = "Администраторы"
 
+
 class CourierProfile(models.Model):
     user = models.OneToOneField(
         User,
         on_delete=models.CASCADE,
         related_name="courier_profile",
         limit_choices_to={"user_type": "courier"}
+    )
+    darkstore = models.ForeignKey(
+        DarkStore,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="couriers",
+        verbose_name="Даркстор"
     )
 
     transport_type = models.CharField(
@@ -198,3 +208,17 @@ class WorkerLocation(models.Model):
         verbose_name_plural  = "Местоположение водителей/курьеров"
         
 
+
+
+class CourierDispatch(User):
+    class Meta:
+        proxy = True
+        verbose_name = "Диспетчерская курьеров"
+        verbose_name_plural = "Диспетчерская курьеров"
+
+
+class DriverDispatch(User):
+    class Meta:
+        proxy = True
+        verbose_name = "Диспетчерская таксистов"
+        verbose_name_plural = "Диспетчерская таксистов"

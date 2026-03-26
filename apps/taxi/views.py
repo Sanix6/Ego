@@ -1,4 +1,4 @@
-from rest_framework import generics, status
+from rest_framework import generics, status, views
 from .models import TaxiRide
 from .serializers import *
 from rest_framework.permissions import IsAuthenticated
@@ -7,7 +7,9 @@ from .tasks import *
 from django.db.transaction import on_commit
 from .dispatch import *
 from .services import *
-
+from django.conf import settings
+from services.matrix import RoutingService, RoutingServiceError
+from apps.taxi.pricing import PricingService, PricingError
 
 
 class TaxiRideCreateView(generics.CreateAPIView):
@@ -37,21 +39,6 @@ class TaxiRideCreateView(generics.CreateAPIView):
             },
             status=status.HTTP_201_CREATED,
         )
-
-
-# class MyActiveTaxiOffersView(generics.ListAPIView):
-#     serializer_class = TaxiOfferSerializer
-#     permission_classes = [IsAuthenticated]
-
-#     def get_queryset(self):
-#         user = self.request.user
-#         if user.user_type != "driver":
-#             return TaxiOffer.objects.none()
-
-#         return TaxiOffer.objects.filter(
-#             driver=user,
-#             status="pending",
-#         ).select_related("ride").order_by("-sent_at")
 
 
 class AcceptTaxiOfferView(generics.GenericAPIView):
@@ -126,7 +113,7 @@ class RejectTaxiOfferView(generics.GenericAPIView):
         )
 
 
-class TaxiPricesPreviewView(APIView):
+class TaxiPricesPreviewView(views.APIView):
     def post(self, request):
         serializer = TaxiPricesPreviewSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -135,7 +122,7 @@ class TaxiPricesPreviewView(APIView):
         city = data.get("city") or getattr(settings, "DEFAULT_TAXI_CITY", "Бишкек")
 
         try:
-            route = YandexRoutingService.get_route(
+            route = RoutingService.get_route(
                 pickup_lat=data["pickup_lat"],
                 pickup_lon=data["pickup_lon"],
                 dropoff_lat=data["dropoff_lat"],
@@ -170,6 +157,46 @@ class TaxiPricesPreviewView(APIView):
             status=status.HTTP_200_OK,
         )
 
+class TaxiTrackingView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = TaxiTrackingSerializer
+
+    def get(self, request, *args, **kwargs):
+        ride_id = kwargs.get("ride_id")
+
+        ride = (
+            TaxiRide.objects
+            .select_related(
+                "driver",
+                "driver__driver_profile",
+                "driver__worker_location",
+            )
+            .filter(
+                id=ride_id,
+                client=request.user,
+            )
+            .first()
+        )
+
+        if not ride:
+            return Response(
+                {
+                    "success": False,
+                    "message": "Поездка не найдена."
+                },
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        serializer = self.get_serializer(ride)
+
+        return Response(
+            {
+                "success": True,
+                "data": serializer.data
+            },
+            status=status.HTTP_200_OK
+        )
+
 class TaxiArriveView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
 
@@ -199,3 +226,4 @@ class TaxiCompleteView(generics.GenericAPIView):
             kwargs.get("taxi_id"),
             complete_taxi_trip
         )
+

@@ -94,6 +94,43 @@ class AcceptOfferView(generics.GenericAPIView):
             status=status.HTTP_200_OK
         )
 
+class DeliveryCancelByClientView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        delivery_id = kwargs.get("delivery_id")
+
+        if user.user_type != "client":
+            return Response(
+                {"success": False, "message": "Только клиент может отменить заказ"},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        delivery = Delivery.objects.filter(id=delivery_id, client=user).first()
+        if not delivery:
+            return Response(
+                {"success": False, "message": "Заказ не найден"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        success, message = cancel_delivery_by_client(delivery, user)
+
+        if not success:
+            return Response(
+                {"success": False, "message": message},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        delivery.refresh_from_db()
+        serializer = DeliveryTrackingSerializer(delivery)
+
+        return Response(
+            {"success": True, "message": message, "data": serializer.data},
+            status=status.HTTP_200_OK
+        )
+        
+
 class RejectOfferView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
 
@@ -305,10 +342,25 @@ class DeliveryCompleteView(generics.GenericAPIView):
             {"success": True, "message": message, "data": serializer.data}
         )
 
-class SlotListView(generics.ListAPIView):
-    queryset = CourierSlot.objects.all()
+class SlotListView(generics.GenericAPIView):
     serializer_class = SlotSerializer
     permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        courier_profile = getattr(request.user, "courier_profile", None)
+
+        if courier_profile and courier_profile.darkstore:
+            slots = CourierSlot.objects.filter(
+                Q(darkstore=courier_profile.darkstore) | Q(darkstore__isnull=True)
+            ).order_by("start_at")
+        else:
+            slots = CourierSlot.objects.filter(
+                darkstore__isnull=True
+            ).order_by("start_at")
+
+        serializer = self.get_serializer(slots, many=True)
+        return Response(serializer.data)
+
 
 class CourierSlotBookView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
@@ -344,17 +396,9 @@ class CourierSlotBookView(generics.GenericAPIView):
                     status=status.HTTP_404_NOT_FOUND
                 )
 
-            if not slot.can_be_booked_by(user):
-                return Response(
-                    {
-                        "success": False,
-                        "message": "Этот слот недоступен для бронирования."
-                    },
-                    status=status.HTTP_400_BAD_REQUEST
-                )
 
             has_conflict = CourierSlot.objects.filter(
-                booked_by=user,
+                courier=user,
                 start_at__lt=slot.end_at,
                 end_at__gt=slot.start_at,
             ).exclude(id=slot.id).exists()
@@ -368,7 +412,7 @@ class CourierSlotBookView(generics.GenericAPIView):
                     status=status.HTTP_400_BAD_REQUEST
                 )
 
-            slot.booked_by = user
+            slot.courier = user
 
             if slot.status == "planned":
                 slot.status = "offered"
@@ -395,10 +439,9 @@ class MyCourierSlotsView(generics.ListAPIView):
             return CourierSlot.objects.none()
 
         queryset = CourierSlot.objects.filter(
-            Q(booked_by=user) | Q(reserved_for=user)
+            Q(courier=user)
         ).select_related(
-            "reserved_for",
-            "booked_by",
+            "courier",
         ).order_by("start_at")
 
         status_param = self.request.query_params.get("status")

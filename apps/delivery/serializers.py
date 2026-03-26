@@ -58,8 +58,7 @@ class SlotSerializer(serializers.ModelSerializer):
             "weekday",
             "duration_hours",
             "status",
-            "reserved_for",
-            "booked_by",
+            "courier",
             "created_at",
         ]
 

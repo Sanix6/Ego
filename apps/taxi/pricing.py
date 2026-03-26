@@ -1,6 +1,6 @@
 from decimal import Decimal, ROUND_HALF_UP
 
-from apps.taxi.models import Tariff
+from apps.main.models import Tariff
 
 
 class PricingError(Exception):
@@ -47,7 +47,37 @@ class PricingService:
         try:
             return Tariff.objects.get(city=city, car_class=car_class, is_active=True)
         except Tariff.DoesNotExist as exc:
-            raise PricingError(f"Активный тариф для city={city}, class={car_class} не найден.") from exc
+            raise PricingError(
+                f"Активный тариф для city={city}, class={car_class} не найден."
+            ) from exc
+
+    @classmethod
+    def get_price_details_for_tariff(
+        cls, *, city: str, car_class: str, distance_km: Decimal, duration_min: int
+    ) -> dict:
+        tariff = cls.get_active_tariff(car_class=car_class)
+
+        price = cls.calculate_tariff_price(
+            tariff=tariff,
+            distance_km=distance_km,
+            duration_min=duration_min,
+        )
+
+        commission_amount, driver_payout = cls.calculate_commission(
+            price=price,
+            commission_percent=tariff.commission_percent,
+        )
+
+        return {
+            "tariff": tariff,
+            "distance_km": Decimal(str(distance_km)).quantize(Decimal("0.01")),
+            "duration_min": int(duration_min),
+            "price": price,
+            "estimated_price": price,
+            "total_price": price,
+            "commission_amount": commission_amount,
+            "driver_payout": driver_payout,
+        }
 
     @classmethod
     def get_prices_for_city(cls, *, city: str, distance_km: Decimal, duration_min: int) -> list[dict]:

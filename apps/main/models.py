@@ -1,4 +1,22 @@
 from django.db import models
+from django.utils import timezone
+from datetime import timedelta
+from apps.users.models import *
+
+class DarkStore(models.Model):
+    name = models.CharField("Название", max_length=100)
+    address = models.CharField("Адрес", max_length=255)
+    lat = models.DecimalField("Широта", max_digits=9, decimal_places=6)
+    lon = models.DecimalField("Долгота", max_digits=9, decimal_places=6)
+    created_at = models.DateTimeField("Дата создания", auto_now_add=True)
+
+    def __str__(self):
+        return f"Даркстор: {self.name}"
+
+    class Meta:
+        verbose_name = "Даркстор"
+        verbose_name_plural = "Дарксторы"
+
 
 class Tariff(models.Model):
     CAR_CLASSES = (
@@ -27,3 +45,4 @@ class Tariff(models.Model):
         verbose_name = "Тариф"
         verbose_name_plural = "Тарифы"
         unique_together = ("city", "car_class")
+

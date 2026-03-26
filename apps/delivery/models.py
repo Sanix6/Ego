@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 from assets.helpers.choices import *
+from apps.main.models import *
 
 class CourierSlot(models.Model):
     start_at = models.DateTimeField("Начало слота")
@@ -11,6 +12,14 @@ class CourierSlot(models.Model):
         max_length=20,
         choices=TRANSPORT_TYPES,
         default="standard",
+    )
+
+    darkstore = models.ForeignKey(
+        DarkStore,
+        on_delete=models.PROTECT,
+        null=True,
+        blank=True,
+        verbose_name="Даркстор",
     )
 
     status = models.CharField(

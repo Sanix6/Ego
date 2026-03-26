@@ -137,3 +137,15 @@ def complete_delivery(delivery, courier):
 
     return True, "Заказ доставлен"
 
+def cancel_delivery_by_client(delivery, user):
+    if delivery.client != user:
+        return False, "Нельзя отменить чужой заказ"
+
+    if delivery.status != "courier_assigned":
+        return False, "Этот заказ нельзя отменить"
+
+    delivery.status = "canceled_by_client"
+    delivery.save(update_fields=["status"])
+    return True, "Заказ успешно отменён"
+
+

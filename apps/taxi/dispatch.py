@@ -38,6 +38,7 @@ def send_taxi_offer_event(driver, ride, offer):
             "offer_kind": "taxi",
             "offer_id": offer.id,
             "ride_id": ride.id,
+            
         }
     )
 

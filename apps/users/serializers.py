@@ -125,3 +125,13 @@ class WorkerLocationUpdateSerializer(serializers.Serializer):
     lat = serializers.FloatField()
     lon = serializers.FloatField()
     is_online = serializers.BooleanField(required=False)
+
+class CourierProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CourierProfile
+        fields = "__all__"
+
+class DriverProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DriverProfile
+        fields = "__all__"

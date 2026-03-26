@@ -71,7 +71,7 @@ class TaxiRideAdmin(admin.ModelAdmin):
             "fields": ("client", "driver")
         }),
         ("Маршрут", {
-            "fields": ("point_a", "point_b")
+            "fields": ("point_a", "point_b", "pickup_lat", "pickup_lon", "dropoff_lat", "dropoff_lon")
         }),
         ("Расчет", {
             "fields": ("distance_km", "duration_min", "price")

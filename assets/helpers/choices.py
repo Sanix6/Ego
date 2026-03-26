@@ -15,6 +15,7 @@ DELIVERY_STATUSES = (
     ("canceled", "Отменено"),
     ("courier_arrived_b", "Курьер прибыл в точку назначения"),
     ("waiting_pickup", "Бесплатное ожидание"),
+    ("canceled_by_client", "Отменено клиентом")
 )
 
 
@@ -46,7 +47,6 @@ OFFER_STATUSES = (
 
 
 
-
 #######Такси choices.py#######
 TAXI_STATUSES = (
     ("pending", "В ожидании"),
@@ -57,6 +57,7 @@ TAXI_STATUSES = (
     ("completed", "Завершено"),
     ("canceled", "Отменено"),
     ("failed", "Не удалось"),
+    # ('')
 )
 
 CAR_CLASSES = (
@@ -82,7 +83,7 @@ STATUS_CHOICES = (
         ('pending', 'На проверке'),
         ('approved', 'Одобрен'),
         ('rejected', 'Отклонён'),
-    )
+)
 
 #Слоты
 
