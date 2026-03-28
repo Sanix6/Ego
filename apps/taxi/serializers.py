@@ -2,6 +2,8 @@ from rest_framework import serializers
 from .models import TaxiRide
 from apps.users.models import User, WorkerLocation
 from .pricing import *
+from services.matrix import RoutingService, RoutingServiceError
+
 
 
 

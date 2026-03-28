@@ -14,6 +14,6 @@ urlpatterns = [
     path("addresses/work/", SaveWorkAddressView.as_view(), name="save-work-address"),
     path("personal/info/", PersonalInfoView.as_view(), name="personal-info"),
     path("workers/location/", WorkerLocationUpdateView.as_view(), name="worker-location-update"),
-    path("prorifle-all/", ProfileAll.as_view(), name="profile-all"),
+    path("workers/profile/", WorkerProfile.as_view(), name="profile-all"),
     path("profile-update/", UpdateProfileView.as_view(), name="profile-update"),
 ]

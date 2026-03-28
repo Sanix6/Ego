@@ -305,7 +305,7 @@ class WorkerLocationUpdateView(generics.GenericAPIView):
             status=status.HTTP_200_OK
         )
 
-class UpdateProfileView(generics.GenericAPIView):
+class UpdateProfileView(generics.UpdateAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_object(self):
@@ -318,51 +318,6 @@ class UpdateProfileView(generics.GenericAPIView):
 
         return None, None
 
-    def get_serializer_class(self, role):
-        if role == "courier":
-            return CourierProfileSerializer
-        elif role == "driver":
-            return DriverProfileSerializer
-        return None
-
-    def get(self, request, *args, **kwargs):
-        obj, role = self.get_object()
-
-        if not obj:
-            return Response({"detail": "Профиль не найден"}, status=404)
-
-        serializer = self.get_serializer_class(role)(obj)
-
-        return Response({
-            "type": role,
-            "data": serializer.data
-        })
-
-    def patch(self, request, *args, **kwargs):
-        obj, role = self.get_object()
-
-        if not obj:
-            return Response({"detail": "Профиль не найден"}, status=404)
-
-        serializer = self.get_serializer_class(role)(
-            obj,
-            data=request.data,
-            partial=True
-        )
-
-        if not serializer.is_valid():
-            return Response(serializer.errors, status=400)
-
-        serializer.save()
-
-        return Response({
-            "type": role,
-            "data": serializer.data
-        })
-
-class ProfileAll(generics.GenericAPIView):
-    permission_classes = [IsAuthenticated]
-
     def get_serializer_class(self):
         user = self.request.user
 
@@ -373,38 +328,48 @@ class ProfileAll(generics.GenericAPIView):
 
         return None
 
-    def get_object(self):
-        user = self.request.user
-
-        if hasattr(user, "courier_profile"):
-            return user.courier_profile
-        elif hasattr(user, "driver_profile"):
-            return user.driver_profile
-
-        return None
-
-    def get(self, request, *args, **kwargs):
-        obj = self.get_object()
-        serializer_class = self.get_serializer_class()
-
-        if not obj or not serializer_class:
-            return Response({"detail": "Профиль не найден"}, status=404)
-
-        serializer = serializer_class(obj)
-        return Response({
-            "type": "courier" if hasattr(request.user, "courier_profile") else "driver",
-            "data": serializer.data
-        })
-
     def patch(self, request, *args, **kwargs):
-        obj = self.get_object()
-        serializer_class = self.get_serializer_class()
+        obj, role = self.get_object()
 
-        if not obj or not serializer_class:
+        if not obj:
             return Response({"detail": "Профиль не найден"}, status=404)
 
-        serializer = serializer_class(obj, data=request.data, partial=True)
+        serializer = self.get_serializer(
+            obj,
+            data=request.data,
+            partial=True
+        )
+
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
-        return Response(serializer.data)
+        return Response({
+            "type": role,
+            "data": serializer.data
+        })
+
+class WorkerProfile(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def get_profile(self, user):
+        if hasattr(user, "courier_profile"):
+            return user.courier_profile, "courier", CourierProfileSerializer
+        elif hasattr(user, "driver_profile"):
+            return user.driver_profile, "driver", DriverProfileSerializer
+        return None, None, None
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        profile, role, serializer_class = self.get_profile(user)
+
+        if not profile:
+            return Response({"detail": "Профиль не найден"}, status=404)
+
+        profile_data = serializer_class(profile).data
+        user_data = UserSerializer(user).data
+
+        return Response({
+            "type": role,
+            "user": user_data,
+            "profile": profile_data
+        })

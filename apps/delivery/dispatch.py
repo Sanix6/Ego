@@ -9,6 +9,7 @@ from apps.users.models import WorkerStatus
 from apps.delivery.services import find_nearest_couriers
 from apps.delivery.models import Delivery
 from .helpers import courier_has_active_in_work_slot
+from .serializers import *
 
 OFFER_TIMEOUT_SECONDS = 20
 
@@ -58,12 +59,10 @@ def create_delivery_offer(delivery, courier):
 
 
 def send_delivery_offer_event(courier, delivery, offer):
-
     channel_layer = get_channel_layer()
+    delivery_data = DeliverySerializer(delivery).data
 
-    write_log(
-        f"SEND OFFER -> courier={courier.id}, delivery={delivery.id}, offer={offer.id}"
-    )
+    write_log(f"SEND WS EVENT: group=user_{courier.id}, offer={offer.id}")
 
     async_to_sync(channel_layer.group_send)(
         f"user_{courier.id}",
@@ -71,10 +70,12 @@ def send_delivery_offer_event(courier, delivery, offer):
             "type": "new_offer",
             "offer_kind": "courier",
             "offer_id": offer.id,
-            "delivery_id": delivery.id,
             "expires_at": offer.expires_at.isoformat(),
+            "delivery": delivery_data,
         }
     )
+
+    write_log(f"WS EVENT SENT: group=user_{courier.id}, offer={offer.id}")
 
 def send_offer_to_courier(delivery, courier):
     from .tasks import check_delivery_offer_timeout

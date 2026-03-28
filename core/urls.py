@@ -12,6 +12,7 @@ urlpatterns = [
     path("api/maps/", include("apps.maps.urls")),
     path("api/delivery/", include("apps.delivery.urls")),
     path("api/taxi/", include("apps.taxi.urls")),
+    path("api/base/", include("apps.main.urls")),
     
 ] + spectacular_urls
 

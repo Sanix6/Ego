@@ -271,3 +271,10 @@ class DeliveryOfferAcceptResponseSerializer(serializers.ModelSerializer):
             "phone": getattr(user, "phone", ""),
             "user_type": getattr(user, "user_type", ""),
         }
+
+
+class DeliveryPricesPreviewSerializer(serializers.Serializer):
+    pickup_lat = serializers.FloatField()
+    pickup_lon = serializers.FloatField()
+    dropoff_lat = serializers.FloatField()
+    dropoff_lon = serializers.FloatField()

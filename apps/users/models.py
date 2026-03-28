@@ -20,6 +20,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     verification_code = models.CharField(
         "Код подтверждения", max_length=4, blank=True, null=True
     )
+    rating_avg = models.DecimalField("Средний рейтинг", max_digits=3, decimal_places=2, default=0)
+    rating_count = models.PositiveIntegerField("Количество отзывов", default=0)
+    orders_count = models.PositiveIntegerField("Количество заказов", default=0)
 
     objects = CustomUserManager()
 
@@ -84,6 +87,19 @@ class CourierProfile(models.Model):
     selfie = models.ImageField(upload_to="couriers/selfie/", blank=True, null=True)
     passport_front = models.ImageField(upload_to="couriers/passport/front/", blank=True, null=True)
     passport_back = models.ImageField(upload_to="couriers/passport/back/", blank=True, null=True)
+    driver_license_front = models.ImageField(
+        "Права лицевая сторона",
+        upload_to='couriers/license/front/',
+        blank=True,
+        null=True
+    )
+
+    driver_license_back = models.ImageField(
+        "Права обратная сторона",
+        upload_to='couriers/license/back/',
+        blank=True,
+        null=True
+    )
 
     car_brand = models.CharField(max_length=100, blank=True)
     car_model = models.CharField(max_length=100, blank=True)

@@ -3,6 +3,7 @@ from .views import *
 
 urlpatterns = [
     path("orders", DeliveryCreateView.as_view(), name="delivery-create"),
+    path("prices/", DeliveryPricesPreviewView.as_view(), name="delivery-prices-preview"),
     path("slots", SlotListView.as_view(), name="slot-list"),
     path("courier-slots/<int:slot_id>/book/", CourierSlotBookView.as_view(), name="courier-slot-book"),
     path("courier-slots/own/", MyCourierSlotsView.as_view(), name="my-courier-slots"),

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework import generics, status
+from rest_framework import generics, status, views
 from .models import *
 from .serializers import *
 from rest_framework.permissions import IsAuthenticated
@@ -9,6 +9,10 @@ from django.db.models import Q
 from .tasks import *
 from .dispatch import *
 from .services import *
+from apps.users.models import WorkerLocation
+from .pricing import *
+from services.matrix import RoutingService, RoutingServiceError
+
 
 
 class DeliveryCreateView(generics.GenericAPIView):
@@ -83,16 +87,39 @@ class AcceptOfferView(generics.GenericAPIView):
             )
 
         offer.refresh_from_db()
+        delivery = offer.delivery
+
         serializer = DeliveryOfferAcceptResponseSerializer(offer)
+
+        eta_data = None
+        worker_location = WorkerLocation.objects.filter(user=user).first()
+
+        if (
+            worker_location
+            and delivery.pickup_lat is not None
+            and delivery.pickup_lon is not None
+        ):
+            eta_data = build_eta_data(
+                from_lat=worker_location.lat,
+                from_lon=worker_location.lon,
+                to_lat=float(delivery.pickup_lat),
+                to_lon=float(delivery.pickup_lon),
+                speed_kmh=25.0,
+            )
 
         return Response(
             {
                 "success": True,
                 "message": message,
                 "data": serializer.data,
+                "tracking": {
+                    "target": "point_a",
+                    "eta": eta_data,
+                }
             },
             status=status.HTTP_200_OK
         )
+    
 
 class DeliveryCancelByClientView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
@@ -268,9 +295,34 @@ class DeliveryPickupView(generics.GenericAPIView):
         delivery.refresh_from_db()
         serializer = DeliveryTrackingSerializer(delivery)
 
+        eta_data = None
+        worker_location = WorkerLocation.objects.filter(user=user).first()
+
+        if (
+            worker_location
+            and delivery.dropoff_lat is not None
+            and delivery.dropoff_lon is not None
+        ):
+            eta_data = build_eta_data(
+                from_lat=worker_location.lat,
+                from_lon=worker_location.lon,
+                to_lat=float(delivery.dropoff_lat),
+                to_lon=float(delivery.dropoff_lon),
+                speed_kmh=25.0,
+            )
+
         return Response(
-            {"success": True, "message": message, "data": serializer.data}
+            {
+                "success": True,
+                "message": message,
+                "data": serializer.data,
+                "tracking": {
+                    "target": "point_b",
+                    "eta": eta_data,
+                }
+            }
         )
+
 
 class DeliveryArrivePointBView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
@@ -362,6 +414,29 @@ class SlotListView(generics.GenericAPIView):
         return Response(serializer.data)
 
 
+class MyCourierSlotsView(generics.ListAPIView):
+    serializer_class = SlotSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+
+        if user.user_type != "courier":
+            return CourierSlot.objects.none()
+
+        queryset = CourierSlot.objects.filter(
+            courier=user
+        ).select_related(
+            "courier"
+        ).order_by("start_at")
+
+        status_param = self.request.query_params.get("status")
+        if status_param:
+            queryset = queryset.filter(status=status_param)
+
+        return queryset
+    
+
 class CourierSlotBookView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = SlotSerializer
@@ -428,35 +503,45 @@ class CourierSlotBookView(generics.GenericAPIView):
             status=status.HTTP_200_OK
         )
 
-class MyCourierSlotsView(generics.ListAPIView):
-    serializer_class = SlotSerializer
-    permission_classes = [IsAuthenticated]
 
-    def get_queryset(self):
-        user = self.request.user
+class DeliveryPricesPreviewView(views.APIView):
+    def post(self, request):
+        serializer = DeliveryPricesPreviewSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.validated_data
 
-        if user.user_type != "courier":
-            return CourierSlot.objects.none()
+        try:
+            route = RoutingService.get_route(
+                pickup_lat=data["pickup_lat"],
+                pickup_lon=data["pickup_lon"],
+                dropoff_lat=data["dropoff_lat"],
+                dropoff_lon=data["dropoff_lon"],
+            )
 
-        queryset = CourierSlot.objects.filter(
-            Q(courier=user)
-        ).select_related(
-            "courier",
-        ).order_by("start_at")
+            tariffs = DeliveryPricingService.get_prices_for_all_types(
+                distance_km=route["distance_km"],
+                duration_min=route["duration_min"],
+            )
 
-        status_param = self.request.query_params.get("status")
-        if status_param:
-            queryset = queryset.filter(status=status_param)
-
-        return queryset
-        queryset = self.get_queryset()
-        serializer = self.get_serializer(queryset, many=True)
+        except RoutingServiceError as exc:
+            return Response(
+                {"success": False, "message": str(exc)},
+                status=status.HTTP_502_BAD_GATEWAY,
+            )
+        except DeliveryPricingError as exc:
+            return Response(
+                {"success": False, "message": str(exc)},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
         return Response(
             {
                 "success": True,
-                "count": queryset.count(),
-                "data": serializer.data
+                "route": {
+                    "distance_km": str(route["distance_km"]),
+                    "duration_min": route["duration_min"],
+                },
+                "tariffs": tariffs,
             },
-            status=status.HTTP_200_OK
+            status=status.HTTP_200_OK,
         )

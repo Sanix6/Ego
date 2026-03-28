@@ -6,7 +6,7 @@ from django_celery_beat.models import (
     SolarSchedule,
     ClockedSchedule
 )
-from .models import Tariff, DarkStore
+from .models import Tariff, DarkStore, DeliveryTariff
 
 
 
@@ -21,6 +21,12 @@ class TariffAdmin(admin.ModelAdmin):
     list_display = ("city", "car_class", "base_fare", "per_km_rate", "per_min_rate", "is_active")
     list_filter = ("city", "car_class", "is_active")
     search_fields = ("city",)
+    
+
+@admin.register(DeliveryTariff)
+class DeliveryTariffAdmin(admin.ModelAdmin):
+    list_display = ("type_delivery", "base_fare", "per_km_rate", "per_min_rate", "is_active")
+    list_filter = ("type_delivery", "is_active")
     
 
 @admin.register(DarkStore)

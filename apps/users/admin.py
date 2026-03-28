@@ -42,6 +42,10 @@ class BaseUserAdmin(admin.ModelAdmin):
         ("Даты", {
             "fields": ("date_joined",)
         }),
+        ("Рейтинг", {
+            "fields": ("rating_avg", "rating_count")
+        }),
+
     )
 
 
@@ -120,6 +124,7 @@ class CourierProfileAdmin(admin.ModelAdmin):
                 "selfie",
                 "passport_front",
                 "passport_back",
+                
             )
         }),
         ("Машина", {

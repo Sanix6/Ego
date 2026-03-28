@@ -1,11 +1,13 @@
 from datetime import timedelta
 from django.utils import timezone
 from apps.users.models import User
+from django.db.models import F
 from services.geo import RedisGeoService
 from assets.helpers.loggers import write_log
 from django.db import transaction
 from apps.delivery.models import Delivery
 from apps.users.models import *
+from math import radians, sin, cos, sqrt, atan2
 
 def find_nearest_couriers(lat, lon, limit=10, radius=5):
     write_log(f"FIND NEAREST COURIERS: lat={lat}, lon={lon}, limit={limit}, radius={radius}km")
@@ -134,6 +136,10 @@ def complete_delivery(delivery, courier):
         worker_status, _ = WorkerStatus.objects.get_or_create(user=courier)
         worker_status.is_busy = False
         worker_status.save(update_fields=["is_busy", "last_seen"])
+        
+        User.objects.filter(id=courier.id).update(
+            orders_count=F("orders_count") + 1
+        )
 
     return True, "Заказ доставлен"
 
@@ -149,3 +155,32 @@ def cancel_delivery_by_client(delivery, user):
     return True, "Заказ успешно отменён"
 
 
+def haversine_km(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
+    r = 6371.0
+
+    dlat = radians(lat2 - lat1)
+    dlon = radians(lon2 - lon1)
+
+    a = (
+        sin(dlat / 2) ** 2
+        + cos(radians(lat1)) * cos(radians(lat2)) * sin(dlon / 2) ** 2
+    )
+    c = 2 * atan2(sqrt(a), sqrt(1 - a))
+
+    return r * c
+
+
+def estimate_eta_seconds(distance_km: float, speed_kmh: float = 25.0) -> int:
+    if distance_km <= 0:
+        return 0
+    return max(60, int((distance_km / speed_kmh) * 3600))
+
+
+def build_eta_data(from_lat: float, from_lon: float, to_lat: float, to_lon: float, speed_kmh: float = 25.0) -> dict:
+    distance_km = haversine_km(from_lat, from_lon, to_lat, to_lon)
+    eta_sec = estimate_eta_seconds(distance_km, speed_kmh=speed_kmh)
+
+    return {
+        "distance_km": round(distance_km, 2),
+        "eta_sec": eta_sec,
+    }

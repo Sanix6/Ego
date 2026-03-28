@@ -127,11 +127,44 @@ class WorkerLocationUpdateSerializer(serializers.Serializer):
     is_online = serializers.BooleanField(required=False)
 
 class CourierProfileSerializer(serializers.ModelSerializer):
+    rating_avg = serializers.DecimalField(
+        source="user.rating_avg",
+        max_digits=3,
+        decimal_places=2,
+        read_only=True
+    )
+    rating_count = serializers.IntegerField(
+        source="user.rating_count",
+        read_only=True
+    )
+    orders_count = serializers.IntegerField(
+        source="user.orders_count",
+        read_only=True
+    )
     class Meta:
         model = CourierProfile
         fields = "__all__"
 
 class DriverProfileSerializer(serializers.ModelSerializer):
+    rating_avg = serializers.DecimalField(
+        source="user.rating_avg",
+        max_digits=3,
+        decimal_places=2,
+        read_only=True
+    )
+    rating_count = serializers.IntegerField(
+        source="user.rating_count",
+        read_only=True
+    )
+    orders_count = serializers.IntegerField(
+        source="user.orders_count",
+        read_only=True
+    )
     class Meta:
         model = DriverProfile
         fields = "__all__"
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["id", "phone", "first_name", "last_name"]

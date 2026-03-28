@@ -164,6 +164,25 @@ class Delivery(models.Model):
 
     client_comment = models.TextField("Комментарий клиента", blank=True, default="")
     created_at = models.DateTimeField(auto_now_add=True)
+    tariff = models.ForeignKey(
+        "main.DeliveryTariff",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="deliveries"
+    )
+
+    planned_distance_km = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
+    planned_duration_min = models.PositiveIntegerField(null=True, blank=True)
+
+    fact_distance_km = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
+    fact_duration_min = models.PositiveIntegerField(null=True, blank=True)
+
+    extra_km = models.DecimalField(max_digits=8, decimal_places=2, default=0)
+    extra_min = models.PositiveIntegerField(default=0)
+
+    commission_amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    courier_earnings = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
 
     def clean(self):
         if self.courier and getattr(self.courier, "user_type", None) != "courier":
