@@ -6,7 +6,8 @@ from django_celery_beat.models import (
     SolarSchedule,
     ClockedSchedule
 )
-from .models import Tariff, DarkStore, DeliveryTariff
+from .models import Tariff, DarkStore, DeliveryTariff, DeliveryZone
+from .forms import DeliveryZoneAdminForm
 
 
 
@@ -35,3 +36,24 @@ class DarkStoreAdmin(admin.ModelAdmin):
     search_fields = ("name", "address")
 
 
+
+@admin.register(DeliveryZone)
+class DeliveryZoneAdmin(admin.ModelAdmin):
+    form = DeliveryZoneAdminForm
+    change_form_template = "admin/delivery/deliveryzone/change_form.html"
+    list_display = ("id", "name", "darkstore", "is_active", 'polygon',"created_at")
+    list_filter = ("darkstore", "is_active")
+    search_fields = ("name", "darkstore__name")
+
+    class Media:
+        css = {
+            "all": (
+                "https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.css",
+                "https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.4.3/mapbox-gl-draw.css",
+            )
+        }
+        js = (
+            "https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.js",
+            "https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.4.3/mapbox-gl-draw.js",
+            "admin/js/delivery_zone_map.js",
+        )

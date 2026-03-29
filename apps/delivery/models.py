@@ -183,6 +183,23 @@ class Delivery(models.Model):
 
     commission_amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     courier_earnings = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    zone = models.ForeignKey(
+        "main.DeliveryZone",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="deliveries",
+        verbose_name="Зона"
+    )
+
+    darkstore = models.ForeignKey(
+        "main.DarkStore",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="deliveries",
+        verbose_name="Даркстор"
+    )
 
     def clean(self):
         if self.courier and getattr(self.courier, "user_type", None) != "courier":

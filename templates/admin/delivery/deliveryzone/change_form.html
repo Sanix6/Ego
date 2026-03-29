@@ -1,0 +1,16 @@
+{% extends "admin/change_form.html" %}
+
+{% block after_field_sets %}
+  {{ block.super }}
+
+  <div class="module aligned">
+    <h2>Карта зоны</h2>
+    <div id="zone-map" style="height: 600px; border-radius: 12px; overflow: hidden;"></div>
+  </div>
+
+  <script>
+    window.MAPBOX_TOKEN = "pk.eyJ1IjoiZ2lnc28iLCJhIjoiY21seXkxdm5hMDFjczNmcXcwd3kyc3J5YyJ9.wzve6Os_NgExsm5HxBlaHQ";
+    window.DARKSTORE_LAT = 42.873462;
+    window.DARKSTORE_LON = 74.576753;
+  </script>
+{% endblock %}

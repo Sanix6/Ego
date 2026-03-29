@@ -136,3 +136,33 @@ class Review(models.Model):
     def __str__(self):
         target = f"delivery={self.delivery_id}" if self.delivery_id else f"ride={self.ride_id}"
         return f"{self.from_user_id} -> {self.to_user_id} | {self.rating} | {target}"
+
+class DeliveryZone(models.Model):
+    darkstore = models.ForeignKey(
+        "main.DarkStore",
+        on_delete=models.CASCADE,
+        related_name="zones",
+        verbose_name="Даркстор"
+    )
+    name = models.CharField("Название зоны", max_length=100)
+
+    polygon = models.JSONField("Координаты полигона", default=list, blank=True)
+
+    is_active = models.BooleanField("Активна", default=True)
+    created_at = models.DateTimeField("Дата создания", auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Зона доставки"
+        verbose_name_plural = "Зоны доставки"
+
+    def __str__(self):
+        return f"{self.darkstore.name} - {self.name}"
+
+    def contains_point(self, lat, lon):
+        if not self.polygon:
+            return False
+
+        ring = self.polygon[0]
+        polygon = Polygon(ring)
+        point = Point(lon, lat)
+        return polygon.contains(point) or polygon.touches(point)

@@ -225,7 +225,6 @@ class WorkerLocation(models.Model):
         
 
 
-
 class CourierDispatch(User):
     class Meta:
         proxy = True
