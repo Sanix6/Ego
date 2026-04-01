@@ -1,0 +1,63 @@
+2026-03-31 12:34:34.330505 | CREATE PAYMENT REQUEST: {'payment_amount': {'value': 5000.0, 'currency': 'KGS'}, 'products': [{'name': 'Оплата доставки #57', 'quantity': 1, 'price': 5000.0}]}
+2026-03-31 13:26:47.870691 | CREATE PAYMENT REQUEST: {'payment_amount': {'value': 5000.0, 'currency': 'KGS'}, 'products': [{'name': 'Оплата доставки #57', 'quantity': 1, 'price': 5000.0}]}
+2026-03-31 13:26:47.877316 | LOGIN REQUEST: {'login': '956622', 'password': 'cashback091205', 'device_uuid': 'PI'}
+2026-03-31 13:26:48.551201 | LOGIN RESPONSE: {"token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxMDU1OTksInVzZXJuYW1lIjoiOTU2NjIyIiwiZXhwIjoxODA2NDc4MDA4LCJlbWFpbCI6IiIsImxvZ2luIjoiOTU2NjIyIiwib3JpZ19pYXQiOjE3NzQ5NDIwMDh9.k9fY2EI1L8Y5sdF05Up9wImov0Y4KhLh-0lEbV-v76U","user":{"id":105599,"company_id":42834,"branch_id":170957,"company_name":"ОсОО \"КэшБэк КГ\"","branch_names":["ОсОО \"КэшБэк КГ\""],"current_branch":null,"last_login":"2026-03-31T12:30:42.847308+06:00","is_superuser":false,"login":"956622","ad_login":null,"user_type":"SHOP_OWNER","user_source_type":1,"user_job_title":null,"status":"REGISTERED","phone_number":"+996500279279","first_name":"КГ\"","last_name":"\"КЭШБЭК","middle_name":"","email":"","gender":null,"created_date":"2025-04-23T15:05:50.746250+06:00","date_of_birth":null,"updated_date":"2026-03-31T12:30:42.851501+06:00","is_verified":true,"is_active":true,"is_staff":false,"is_notification":true,"is_whitelist_otp":null,"is_my_service":false,"is_service":false,"is_need_withdraw":true,"hide_kkm":true,"passport_data":null,"inn":"00906202310129","bic":null,"account":null,"rko_bic":null,"rko_account":null,"card_rko_account":null,"by_bank":true,"rbs_id":875859012,"app_version":"3.0.0","is_qr_print_active":true,"is_print_check_kkm":false,"is_employee":false,"telegram_chat_id":null,"is_telegram_active":false,"current_language":"ru"},"serial_number":null,"tms_address":"https://tms.mkassa.kg","tid":null}
+2026-03-31 13:26:48.552124 | TOKEN SAVED
+2026-03-31 13:29:29.582020 | CREATE PAYMENT REQUEST: {'payment_amount': {'value': 5000.0, 'currency': 'KGS'}, 'products': [{'name': 'Оплата доставки #57', 'quantity': 1, 'price': {'value': 5000.0, 'currency': 'KGS'}}]}
+2026-03-31 13:54:19.265734 | CREATE PAYMENT REQUEST: {'payment_amount': {'value': 5000, 'currency': 'KGS'}, 'products': [{'name': 'Оплата доставки #57', 'quantity': 1, 'price': {'value': 5000, 'currency': 'KGS'}}]}
+2026-03-31 13:54:19.364853 | TOKEN LOADED FROM REDIS
+2026-03-31 13:54:19.365162 | REQUEST POST https://api.mkassa.kg/api/v1/qr_payments/init_payment/
+2026-03-31 13:54:19.365225 | REQUEST HEADERS: {'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxMDU1OTksInVzZXJuYW1lIjoiOTU2NjIyIiwiZXhwIjoxODA2NDc4MDA4LCJlbWFpbCI6IiIsImxvZ2luIjoiOTU2NjIyIiwib3JpZ19pYXQiOjE3NzQ5NDIwMDh9.k9fY2EI1L8Y5sdF05Up9wImov0Y4KhLh-0lEbV-v76U', 'Content-Type': 'application/json'}
+2026-03-31 13:54:19.365281 | REQUEST JSON: {'payment_amount': {'value': 5000, 'currency': 'KGS'}, 'products': [{'name': 'Оплата доставки #57', 'quantity': 1, 'price': {'value': 5000, 'currency': 'KGS'}}]}
+2026-03-31 13:54:19.722071 | RESPONSE STATUS: 500
+2026-03-31 13:54:19.722212 | RESPONSE BODY: 
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Server Error (500)</title>
+</head>
+<body>
+  <h1>Server Error (500)</h1><p></p>
+</body>
+</html>
+
+2026-03-31 13:55:19.675406 | CREATE PAYMENT REQUEST: {'payment_amount': {'value': 5000, 'currency': 'KGS'}, 'products': [{'name': 'Оплата доставки #57', 'quantity': 1, 'price': {'value': 5000, 'currency': 'KGS'}}]}
+2026-03-31 13:55:19.685190 | TOKEN LOADED FROM REDIS
+2026-03-31 13:55:19.685409 | REQUEST POST https://api.mkassa.kg/api/v1/qr_payments/init_payment/
+2026-03-31 13:55:19.685516 | REQUEST HEADERS: {'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxMDU1OTksInVzZXJuYW1lIjoiOTU2NjIyIiwiZXhwIjoxODA2NDc4MDA4LCJlbWFpbCI6IiIsImxvZ2luIjoiOTU2NjIyIiwib3JpZ19pYXQiOjE3NzQ5NDIwMDh9.k9fY2EI1L8Y5sdF05Up9wImov0Y4KhLh-0lEbV-v76U', 'Content-Type': 'application/json'}
+2026-03-31 13:55:19.685635 | REQUEST JSON: {'payment_amount': {'value': 5000, 'currency': 'KGS'}, 'products': [{'name': 'Оплата доставки #57', 'quantity': 1, 'price': {'value': 5000, 'currency': 'KGS'}}]}
+2026-03-31 13:55:29.959004 | RESPONSE STATUS: 500
+2026-03-31 13:55:29.959268 | RESPONSE BODY: 
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Server Error (500)</title>
+</head>
+<body>
+  <h1>Server Error (500)</h1><p></p>
+</body>
+</html>
+
+2026-03-31 13:59:11.572656 | CREATE PAYMENT REQUEST: {'payment_amount': {'value': 5000, 'currency': 'KGS'}, 'products': [{'name': 'Оплата доставки #57', 'quantity': 1, 'price': {'value': 5000, 'currency': 'KGS'}}]}
+2026-03-31 13:59:11.580543 | TOKEN LOADED FROM REDIS
+2026-03-31 13:59:11.580662 | REQUEST POST https://api.mkassa.kg/api/v1/qr_payments/init_payment/
+2026-03-31 13:59:11.580721 | REQUEST HEADERS: {'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxMDU1OTksInVzZXJuYW1lIjoiOTU2NjIyIiwiZXhwIjoxODA2NDc4MDA4LCJlbWFpbCI6IiIsImxvZ2luIjoiOTU2NjIyIiwib3JpZ19pYXQiOjE3NzQ5NDIwMDh9.k9fY2EI1L8Y5sdF05Up9wImov0Y4KhLh-0lEbV-v76U', 'Content-Type': 'application/json'}
+2026-03-31 13:59:11.580772 | REQUEST JSON: {'payment_amount': {'value': 5000, 'currency': 'KGS'}, 'products': [{'name': 'Оплата доставки #57', 'quantity': 1, 'price': {'value': 5000, 'currency': 'KGS'}}]}
+2026-03-31 13:59:11.922245 | RESPONSE STATUS: 500
+2026-03-31 13:59:11.922387 | RESPONSE BODY: 
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Server Error (500)</title>
+</head>
+<body>
+  <h1>Server Error (500)</h1><p></p>
+</body>
+</html>
+
+2026-03-31 14:05:20.794712 | TOKEN LOADED FROM REDIS
+2026-03-31 14:05:20.794796 | REQUEST POST https://api.mkassa.kg/api/v1/qr_payments/init_payment/
+2026-03-31 14:05:20.794831 | REQUEST HEADERS: {'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxMDU1OTksInVzZXJuYW1lIjoiOTU2NjIyIiwiZXhwIjoxODA2NDc4MDA4LCJlbWFpbCI6IiIsImxvZ2luIjoiOTU2NjIyIiwib3JpZ19pYXQiOjE3NzQ5NDIwMDh9.k9fY2EI1L8Y5sdF05Up9wImov0Y4KhLh-0lEbV-v76U', 'Content-Type': 'application/json'}
+2026-03-31 14:05:20.794868 | REQUEST JSON: {'payment_amount': {'value': 5000, 'currency': 'KGS'}}
+2026-03-31 14:05:21.201993 | RESPONSE STATUS: 200
+2026-03-31 14:05:21.202134 | RESPONSE BODY: {"id":"MKSA-9ef54f8457bf4b85ac345d7b8db2c1bb","qr_bank_transaction_id":"MK_1FE50532FCCF4634857FE9A2D61C9AD5","status":"inited","transaction_type":"qr","created_at":"2026-03-31T14:05:21","shift":null,"sum":5000.0,"currency":"KGS","shift_number":null,"cashier_name":"\"КЭШБЭК КГ\"","cheque_date":null,"comment":null,"receipt":null,"receipt_id":null,"products":[],"operation_type":"income","origin_transaction":null,"operation_data_json":null,"reason":"","manual_discount":0,"payment_type":"Полный расчет","is_latest":false,"display_qr":false,"is_return_allowed":false,"allow_card_pay":true,"branch_name":"ОсОО \"КэшБэк КГ\"","company_name":"ОсОО \"КэшБэк КГ\"","payment_token":"https://app.mbank.kg/qr/#00020101021232900012c2b.mbank.kg010201101610301200014346221132Zvv26fRdKQAF6wgXTBsHFjmUlWR1TkRF12021213021252049999530341754065000005917OsOO%20%5CKeshBek%20KG%5C630477f5","card_transaction_id":null,"mplus_account":false,"adal_account":false,"is_ble_enabled":true,"account_number":"1030120001434622","account_bic":"103001","is_ble_design_enabled":true,"pin_top_amount":3000,"title_for_client":"ОсОО \"КэшБэк КГ\""}

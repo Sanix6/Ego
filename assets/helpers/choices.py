@@ -102,3 +102,17 @@ TRANSPORT_TYPES = (
         ("moped", "Мопед"),
         ("car", "Машина"),
     )
+
+PAYMENT_METHODS = (
+    ("cash", "Наличка"),
+    ("mbank", "MBank"),
+)
+
+
+PAYMENT_STATUSES = (
+    ("unpaid", "Не оплачено"),
+    ("pending", "Ожидает оплаты"),
+    ("paid", "Оплачено"),
+    ("failed", "Ошибка оплаты"),
+    ("canceled", "Отменено"),
+)

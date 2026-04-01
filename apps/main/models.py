@@ -10,8 +10,6 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 class DarkStore(models.Model):
     name = models.CharField("Название", max_length=100)
     address = models.CharField("Адрес", max_length=255)
-    lat = models.DecimalField("Широта", max_digits=9, decimal_places=6)
-    lon = models.DecimalField("Долгота", max_digits=9, decimal_places=6)
     created_at = models.DateTimeField("Дата создания", auto_now_add=True)
 
     def __str__(self):
@@ -30,7 +28,6 @@ class Tariff(models.Model):
         ("business", "Бизнес"),
     )
 
-    city = models.CharField("Город", max_length=100)
     car_class = models.CharField("Класс автомобиля", max_length=20, choices=CAR_CLASSES)
 
     base_fare = models.DecimalField("Базовая плата", max_digits=10, decimal_places=2)
@@ -48,8 +45,6 @@ class Tariff(models.Model):
     class Meta:
         verbose_name = "Тариф"
         verbose_name_plural = "Тарифы"
-        unique_together = ("city", "car_class")
-
 
 
 
@@ -64,6 +59,8 @@ class DeliveryTariff(models.Model):
     per_min_rate = models.DecimalField("Тариф за минуту", max_digits=10, decimal_places=2)
 
     commission_percent = models.DecimalField("Процент комиссии", max_digits=5, decimal_places=2, default=5.00)
+    door_to_door_price = models.DecimalField("Цена до двери", max_digits=10, decimal_places=2)
+    entrance_price = models.DecimalField("Цена до подьезда", max_digits=10, decimal_places=2)
 
     is_active = models.BooleanField("Активен", default=True)
     created_at = models.DateTimeField("Дата создания", auto_now_add=True)
@@ -136,6 +133,7 @@ class Review(models.Model):
     def __str__(self):
         target = f"delivery={self.delivery_id}" if self.delivery_id else f"ride={self.ride_id}"
         return f"{self.from_user_id} -> {self.to_user_id} | {self.rating} | {target}"
+
 
 class DeliveryZone(models.Model):
     darkstore = models.ForeignKey(

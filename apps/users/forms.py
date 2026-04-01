@@ -1,10 +1,6 @@
 from django import forms
-from django.contrib import admin
-from django.utils.html import format_html
-from django.utils.timezone import now
 
 from apps.users.models import (
-    User,
     WorkerStatus,
     WorkerLocation,
     CourierProfile,
@@ -12,6 +8,7 @@ from apps.users.models import (
     CourierDispatch,
     DriverDispatch,
 )
+from apps.users.services import save_courier_dispatch, save_driver_dispatch
 
 
 class CourierDispatchForm(forms.ModelForm):
@@ -83,45 +80,38 @@ class CourierDispatchForm(forms.ModelForm):
             self.fields["car_color"].initial = profile.car_color
             self.fields["car_number"].initial = profile.car_number
 
+    def clean(self):
+        cleaned_data = super().clean()
+
+        transport_type = cleaned_data.get("transport_type")
+        car_brand = (cleaned_data.get("car_brand") or "").strip()
+        car_model = (cleaned_data.get("car_model") or "").strip()
+        car_color = (cleaned_data.get("car_color") or "").strip()
+        car_number = (cleaned_data.get("car_number") or "").strip()
+
+        lat = cleaned_data.get("lat")
+        lon = cleaned_data.get("lon")
+
+        if (lat is None) ^ (lon is None):
+            raise forms.ValidationError("Для геолокации нужно указать и широту, и долготу.")
+
+        if transport_type in ("car", ):
+            if not car_number:
+                self.add_error("car_number", "Для авто обязателен номер машины.")
+        else:
+            cleaned_data["car_brand"] = ""
+            cleaned_data["car_model"] = ""
+            cleaned_data["car_color"] = ""
+            cleaned_data["car_number"] = ""
+
+        return cleaned_data
+
     def save(self, commit=True):
         user = super().save(commit=False)
         user.user_type = "courier"
 
         if commit:
-            user.save()
-
-            worker_status, _ = WorkerStatus.objects.get_or_create(user=user)
-            worker_status.is_online = self.cleaned_data.get("is_online", False)
-            worker_status.is_busy = self.cleaned_data.get("is_busy", False)
-            worker_status.save()
-
-            lat = self.cleaned_data.get("lat")
-            lon = self.cleaned_data.get("lon")
-
-            if lat is not None and lon is not None:
-                worker_location, _ = WorkerLocation.objects.get_or_create(
-                    user=user,
-                    defaults={"lat": lat, "lon": lon}
-                )
-                worker_location.lat = lat
-                worker_location.lon = lon
-                worker_location.save()
-
-            courier_profile, _ = CourierProfile.objects.get_or_create(
-                user=user,
-                defaults={
-                    "transport_type": self.cleaned_data.get("transport_type") or "bike",
-                    "status": self.cleaned_data.get("courier_profile_status") or "pending",
-                }
-            )
-            courier_profile.status = self.cleaned_data.get("courier_profile_status") or courier_profile.status
-            courier_profile.transport_type = self.cleaned_data.get("transport_type") or courier_profile.transport_type
-            courier_profile.darkstore = self.cleaned_data.get("darkstore")
-            courier_profile.car_brand = self.cleaned_data.get("car_brand", "")
-            courier_profile.car_model = self.cleaned_data.get("car_model", "")
-            courier_profile.car_color = self.cleaned_data.get("car_color", "")
-            courier_profile.car_number = self.cleaned_data.get("car_number", "")
-            courier_profile.save()
+            save_courier_dispatch(user, self.cleaned_data)
 
         return user
 
@@ -190,46 +180,22 @@ class DriverDispatchForm(forms.ModelForm):
             self.fields["seria_and_number"].initial = profile.seria_and_number
             self.fields["issuing_authority"].initial = profile.issuing_authority
 
+    def clean(self):
+        cleaned_data = super().clean()
+
+        lat = cleaned_data.get("lat")
+        lon = cleaned_data.get("lon")
+
+        if (lat is None) ^ (lon is None):
+            raise forms.ValidationError("Для геолокации нужно указать и широту, и долготу.")
+
+        return cleaned_data
+
     def save(self, commit=True):
         user = super().save(commit=False)
         user.user_type = "driver"
 
         if commit:
-            user.save()
-
-            worker_status, _ = WorkerStatus.objects.get_or_create(user=user)
-            worker_status.is_online = self.cleaned_data.get("is_online", False)
-            worker_status.is_busy = self.cleaned_data.get("is_busy", False)
-            worker_status.save()
-
-            lat = self.cleaned_data.get("lat")
-            lon = self.cleaned_data.get("lon")
-
-            if lat is not None and lon is not None:
-                worker_location, _ = WorkerLocation.objects.get_or_create(
-                    user=user,
-                    defaults={"lat": lat, "lon": lon}
-                )
-                worker_location.lat = lat
-                worker_location.lon = lon
-                worker_location.save()
-
-            driver_profile, _ = DriverProfile.objects.get_or_create(
-                user=user,
-                defaults={
-                    "status": self.cleaned_data.get("driver_profile_status") or "pending",
-                }
-            )
-            driver_profile.status = self.cleaned_data.get("driver_profile_status") or driver_profile.status
-            driver_profile.car_brand = self.cleaned_data.get("car_brand", "")
-            driver_profile.car_model = self.cleaned_data.get("car_model", "")
-            driver_profile.car_color = self.cleaned_data.get("car_color", "")
-            driver_profile.car_number = self.cleaned_data.get("car_number", "")
-            driver_profile.car_type = self.cleaned_data.get("car_type", "")
-            driver_profile.passport_number = self.cleaned_data.get("passport_number", "")
-            driver_profile.seria_and_number = self.cleaned_data.get("seria_and_number", "")
-            driver_profile.issuing_authority = self.cleaned_data.get("issuing_authority", "")
-            driver_profile.save()
+            save_driver_dispatch(user, self.cleaned_data)
 
         return user
-

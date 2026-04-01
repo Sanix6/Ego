@@ -6,7 +6,7 @@ from asgiref.sync import async_to_sync
 from assets.helpers.loggers import write_log
 from django.db import transaction
 from apps.users.models import WorkerStatus
-from apps.delivery.services import find_nearest_couriers
+from apps.delivery.services import *
 from apps.delivery.models import Delivery
 from .helpers import courier_has_active_in_work_slot
 from .serializers import *
@@ -28,6 +28,13 @@ def dispatch_wave(delivery, limit):
 
     for distance, courier in nearest:
         write_log(f"CHECK COURIER id={courier.id} distance={distance}")
+
+        if not courier_matches_delivery(delivery, courier):
+            write_log(
+                f"SKIP courier={courier.id} "
+                f"(darkstore/zone mismatch delivery={delivery.id})"
+            )
+            continue
 
         if courier_has_active_in_work_slot(courier):
             write_log(f"SKIP courier={courier.id} (active in_work slot)")
@@ -107,6 +114,9 @@ def dispatch_next_courier(delivery):
     if not delivery.pickup_lat or not delivery.pickup_lon:
         return None
 
+    if not delivery.darkstore_id or not delivery.zone_id:
+        return None
+
     nearest = find_nearest_couriers(
         lat=float(delivery.pickup_lat),
         lon=float(delivery.pickup_lon),
@@ -114,6 +124,9 @@ def dispatch_next_courier(delivery):
     )
 
     for _, courier in nearest:
+        if not courier_matches_delivery(delivery, courier):
+            continue
+
         if courier_has_active_in_work_slot(courier):
             continue
 
@@ -124,7 +137,6 @@ def dispatch_next_courier(delivery):
         return offer
 
     return None
-
 
 def get_active_offer_for_courier(delivery, courier):
     return DeliveryOffer.objects.filter(

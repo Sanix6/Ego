@@ -32,7 +32,8 @@ INSTALLED_APPS = [
     "apps.orders",
     "apps.delivery",
     "apps.taxi",
-    "apps.maps"
+    "apps.maps",
+    "apps.balance"
 ]
 
 MIDDLEWARE = [
@@ -128,6 +129,22 @@ CHANNEL_LAYERS = {
     },
 }
 
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://ego.kg",
+]
+
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+USE_X_FORWARDED_HOST = True
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 STATIC_URL = "/static/"
@@ -171,3 +188,4 @@ UNFOLD = {
         lambda request: static("css/admin-fix.css"),
     ],
 }
+

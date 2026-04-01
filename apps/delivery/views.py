@@ -12,6 +12,8 @@ from .services import *
 from apps.users.models import WorkerLocation
 from .pricing import *
 from services.matrix import RoutingService, RoutingServiceError
+from datetime import timedelta
+from django.utils import timezone
 
 
 
@@ -436,7 +438,6 @@ class MyCourierSlotsView(generics.ListAPIView):
 
         return queryset
     
-
 class CourierSlotBookView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = SlotSerializer
@@ -471,6 +472,14 @@ class CourierSlotBookView(generics.GenericAPIView):
                     status=status.HTTP_404_NOT_FOUND
                 )
 
+            if slot.courier_id and slot.courier_id != user.id:
+                return Response(
+                    {
+                        "success": False,
+                        "message": "Слот уже занят другим курьером."
+                    },
+                    status=status.HTTP_400_BAD_REQUEST
+                )
 
             has_conflict = CourierSlot.objects.filter(
                 courier=user,
@@ -492,7 +501,7 @@ class CourierSlotBookView(generics.GenericAPIView):
             if slot.status == "planned":
                 slot.status = "offered"
 
-            slot.save()
+            slot.save(update_fields=["courier", "status"])
 
         return Response(
             {
@@ -503,6 +512,74 @@ class CourierSlotBookView(generics.GenericAPIView):
             status=status.HTTP_200_OK
         )
 
+
+class CourierSlotCancelView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = SlotSerializer
+
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        slot_id = kwargs.get("slot_id")
+
+        if user.user_type != "courier":
+            return Response(
+                {
+                    "success": False,
+                    "message": "Только курьер может отменить слот."
+                },
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        with transaction.atomic():
+            slot = (
+                CourierSlot.objects
+                .select_for_update()
+                .filter(id=slot_id)
+                .first()
+            )
+
+            if not slot:
+                return Response(
+                    {
+                        "success": False,
+                        "message": "Слот не найден."
+                    },
+                    status=status.HTTP_404_NOT_FOUND
+                )
+
+            if slot.courier_id != user.id:
+                return Response(
+                    {
+                        "success": False,
+                        "message": "Этот слот не принадлежит вам."
+                    },
+                    status=status.HTTP_403_FORBIDDEN
+                )
+
+            now = timezone.now()
+            cancel_deadline = slot.start_at - timedelta(hours=1)
+
+            if now >= cancel_deadline:
+                return Response(
+                    {
+                        "success": False,
+                        "message": "Отменить слот можно не позже чем за 1 час до начала."
+                    },
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+
+            slot.courier = None
+            slot.status = "planned"
+            slot.save(update_fields=["courier", "status"])
+
+        return Response(
+            {
+                "success": True,
+                "message": "Бронь слота успешно отменена.",
+                "data": self.get_serializer(slot).data
+            },
+            status=status.HTTP_200_OK
+        )
 
 class DeliveryPricesPreviewView(views.APIView):
     def post(self, request):

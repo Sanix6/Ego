@@ -19,9 +19,8 @@ admin.site.unregister(ClockedSchedule)
 
 @admin.register(Tariff)
 class TariffAdmin(admin.ModelAdmin):
-    list_display = ("city", "car_class", "base_fare", "per_km_rate", "per_min_rate", "is_active")
-    list_filter = ("city", "car_class", "is_active")
-    search_fields = ("city",)
+    list_display = ("car_class", "base_fare", "per_km_rate", "per_min_rate", "is_active")
+    list_filter = ("car_class", "is_active")
     
 
 @admin.register(DeliveryTariff)
@@ -32,7 +31,7 @@ class DeliveryTariffAdmin(admin.ModelAdmin):
 
 @admin.register(DarkStore)
 class DarkStoreAdmin(admin.ModelAdmin):
-    list_display = ("name", "address", "lat", "lon", "created_at")
+    list_display = ("name", "address", "created_at")
     search_fields = ("name", "address")
 
 
@@ -41,7 +40,7 @@ class DarkStoreAdmin(admin.ModelAdmin):
 class DeliveryZoneAdmin(admin.ModelAdmin):
     form = DeliveryZoneAdminForm
     change_form_template = "admin/delivery/deliveryzone/change_form.html"
-    list_display = ("id", "name", "darkstore", "is_active", 'polygon',"created_at")
+    list_display = ("id", "name", "darkstore", "is_active", "created_at")
     list_filter = ("darkstore", "is_active")
     search_fields = ("name", "darkstore__name")
 

@@ -3,7 +3,17 @@ from django.contrib.auth.models import Group
 from django.utils.html import format_html
 from django.utils.timezone import now
 
-from .models import *
+from .models import (
+    Client,
+    Operator,
+    Admin,
+    CourierProfile,
+    DriverProfile,
+    WorkerStatus,
+    WorkerLocation,
+    CourierDispatch,
+    DriverDispatch,
+)
 from .forms import CourierDispatchForm, DriverDispatchForm
 
 admin.site.unregister(Group)
@@ -43,19 +53,20 @@ class BaseUserAdmin(admin.ModelAdmin):
             "fields": ("date_joined",)
         }),
         ("Рейтинг", {
-            "fields": ("rating_avg", "rating_count")
+            "fields": ("rating_avg", "rating_count", "orders_count")
         }),
-
     )
 
 
 @admin.register(Client)
 class ClientAdmin(BaseUserAdmin):
     def get_queryset(self, request):
-        return super().get_queryset(request)
+        return super().get_queryset(request).filter(user_type="client")
 
     def save_model(self, request, obj, form, change):
+        obj.user_type = "client"
         obj.is_staff = False
+        obj.is_superuser = False
         super().save_model(request, obj, form, change)
 
 
@@ -67,6 +78,7 @@ class OperatorAdmin(BaseUserAdmin):
     def save_model(self, request, obj, form, change):
         obj.user_type = "operator"
         obj.is_staff = True
+        obj.is_superuser = False
         super().save_model(request, obj, form, change)
 
 
@@ -92,6 +104,7 @@ class CourierProfileAdmin(admin.ModelAdmin):
         "car_number",
         "status",
         "created_at",
+        "delivery_zones"
     )
 
     list_filter = (
@@ -107,14 +120,15 @@ class CourierProfileAdmin(admin.ModelAdmin):
 
     readonly_fields = (
         "created_at",
+        "user_verification_code"
     )
 
     fieldsets = (
         ("Пользователь", {
-            "fields": ("user",)
+            "fields": ("user",  "user_verification_code")
         }),
         ("Даркстор", {
-            "fields": ("darkstore",)
+            "fields": ("darkstore", "delivery_zones")
         }),
         ("Тип транспорта", {
             "fields": ("transport_type",)
@@ -124,7 +138,8 @@ class CourierProfileAdmin(admin.ModelAdmin):
                 "selfie",
                 "passport_front",
                 "passport_back",
-                
+                "driver_license_front",
+                "driver_license_back",
             )
         }),
         ("Машина", {
@@ -142,6 +157,24 @@ class CourierProfileAdmin(admin.ModelAdmin):
             "fields": ("created_at",)
         }),
     )
+    @admin.display(description="Код подтверждения")
+    def user_verification_code(self, obj):
+        return obj.user.verification_code if obj.user else "-"
+
+    def has_module_permission(self, request):
+        return request.user.is_superuser
+
+    def has_view_permission(self, request, obj=None):
+        return request.user.is_superuser
+
+    def has_add_permission(self, request):
+        return request.user.is_superuser
+
+    def has_change_permission(self, request, obj=None):
+        return request.user.is_superuser
+
+    def has_delete_permission(self, request, obj=None):
+        return request.user.is_superuser
 
 
 @admin.register(DriverProfile)
@@ -168,11 +201,12 @@ class DriverProfileAdmin(admin.ModelAdmin):
 
     readonly_fields = (
         "created_at",
+        "user_verification_code"
     )
 
     fieldsets = (
         ("Пользователь", {
-            "fields": ("user",)
+            "fields": ("user", "user_verification_code")
         }),
         ("Документы", {
             "fields": (
@@ -208,6 +242,69 @@ class DriverProfileAdmin(admin.ModelAdmin):
             "fields": ("created_at",)
         }),
     )
+    @admin.display(description="Код подтверждения")
+    def user_verification_code(self, obj):
+        return obj.user.verification_code if obj.user else "-"
+
+    def has_module_permission(self, request):
+        return request.user.is_superuser
+
+    def has_view_permission(self, request, obj=None):
+        return request.user.is_superuser
+
+    def has_add_permission(self, request):
+        return request.user.is_superuser
+
+    def has_change_permission(self, request, obj=None):
+        return request.user.is_superuser
+
+    def has_delete_permission(self, request, obj=None):
+        return request.user.is_superuser
+
+
+# @admin.register(WorkerStatus)
+# class WorkerStatusAdmin(admin.ModelAdmin):
+#     list_display = ("id", "user", "is_online", "is_busy", "last_seen")
+#     list_filter = ("is_online", "is_busy", "last_seen")
+#     search_fields = ("user__phone", "user__first_name", "user__last_name")
+#     readonly_fields = ("last_seen",)
+
+#     def has_module_permission(self, request):
+#         return request.user.is_superuser
+
+#     def has_view_permission(self, request, obj=None):
+#         return request.user.is_superuser
+
+#     def has_add_permission(self, request):
+#         return request.user.is_superuser
+
+#     def has_change_permission(self, request, obj=None):
+#         return request.user.is_superuser
+
+#     def has_delete_permission(self, request, obj=None):
+#         return request.user.is_superuser
+
+
+# @admin.register(WorkerLocation)
+# class WorkerLocationAdmin(admin.ModelAdmin):
+#     list_display = ("id", "user", "lat", "lon", "updated_at")
+#     search_fields = ("user__phone", "user__first_name", "user__last_name")
+#     readonly_fields = ("updated_at",)
+
+#     def has_module_permission(self, request):
+#         return request.user.is_superuser
+
+#     def has_view_permission(self, request, obj=None):
+#         return request.user.is_superuser
+
+#     def has_add_permission(self, request):
+#         return request.user.is_superuser
+
+#     def has_change_permission(self, request, obj=None):
+#         return request.user.is_superuser
+
+#     def has_delete_permission(self, request, obj=None):
+#         return request.user.is_superuser
 
 
 class DispatchAdminMixin(admin.ModelAdmin):
@@ -328,6 +425,7 @@ class CourierDispatchAdmin(DispatchAdminMixin, admin.ModelAdmin):
         "courier_profile_status_badge",
         "transport_type_view",
         "darkstore_view",
+        "car_info",
     )
 
     list_filter = (
@@ -336,6 +434,7 @@ class CourierDispatchAdmin(DispatchAdminMixin, admin.ModelAdmin):
         "worker_status__is_busy",
         "courier_profile__status",
         "courier_profile__transport_type",
+        "courier_profile__darkstore",
     )
 
     search_fields = (
@@ -385,13 +484,16 @@ class CourierDispatchAdmin(DispatchAdminMixin, admin.ModelAdmin):
     )
 
     def get_queryset(self, request):
-        return super().get_queryset(request).filter(
-            user_type="courier"
-        ).select_related(
-            "worker_status",
-            "worker_location",
-            "courier_profile",
-            "courier_profile__darkstore",
+        return (
+            super()
+            .get_queryset(request)
+            .filter(user_type="courier")
+            .select_related(
+                "worker_status",
+                "worker_location",
+                "courier_profile",
+                "courier_profile__darkstore",
+            )
         )
 
     def courier_profile_status_badge(self, obj):
@@ -426,43 +528,22 @@ class CourierDispatchAdmin(DispatchAdminMixin, admin.ModelAdmin):
         return str(profile.darkstore)
     darkstore_view.short_description = "Даркстор"
 
+    def car_info(self, obj):
+        profile = getattr(obj, "courier_profile", None)
+        if not profile:
+            return "-"
+        parts = [
+            profile.car_brand,
+            profile.car_model,
+            profile.car_color,
+            profile.car_number,
+        ]
+        parts = [p for p in parts if p]
+        return " / ".join(parts) if parts else "-"
+    car_info.short_description = "Авто"
+
     def save_model(self, request, obj, form, change):
-        obj.user_type = "courier"
-        super().save_model(request, obj, form, change)
-
-        worker_status, _ = WorkerStatus.objects.get_or_create(user=obj)
-        worker_status.is_online = form.cleaned_data.get("is_online", False)
-        worker_status.is_busy = form.cleaned_data.get("is_busy", False)
-        worker_status.save()
-
-        lat = form.cleaned_data.get("lat")
-        lon = form.cleaned_data.get("lon")
-
-        if lat is not None and lon is not None:
-            worker_location, _ = WorkerLocation.objects.get_or_create(
-                user=obj,
-                defaults={"lat": lat, "lon": lon},
-            )
-            worker_location.lat = lat
-            worker_location.lon = lon
-            worker_location.save()
-
-        courier_profile, _ = CourierProfile.objects.get_or_create(
-            user=obj,
-            defaults={
-                "transport_type": form.cleaned_data.get("transport_type") or "bike",
-                "status": form.cleaned_data.get("courier_profile_status") or "pending",
-            }
-        )
-
-        courier_profile.status = form.cleaned_data.get("courier_profile_status") or courier_profile.status
-        courier_profile.transport_type = form.cleaned_data.get("transport_type") or courier_profile.transport_type
-        courier_profile.darkstore = form.cleaned_data.get("darkstore")
-        courier_profile.car_brand = form.cleaned_data.get("car_brand", "")
-        courier_profile.car_model = form.cleaned_data.get("car_model", "")
-        courier_profile.car_color = form.cleaned_data.get("car_color", "")
-        courier_profile.car_number = form.cleaned_data.get("car_number", "")
-        courier_profile.save()
+        form.save()
 
 
 @admin.register(DriverDispatch)
@@ -541,12 +622,15 @@ class DriverDispatchAdmin(DispatchAdminMixin, admin.ModelAdmin):
     )
 
     def get_queryset(self, request):
-        return super().get_queryset(request).filter(
-            user_type="driver"
-        ).select_related(
-            "worker_status",
-            "worker_location",
-            "driver_profile",
+        return (
+            super()
+            .get_queryset(request)
+            .filter(user_type="driver")
+            .select_related(
+                "worker_status",
+                "worker_location",
+                "driver_profile",
+            )
         )
 
     def driver_profile_status_badge(self, obj):
@@ -571,46 +655,15 @@ class DriverDispatchAdmin(DispatchAdminMixin, admin.ModelAdmin):
         profile = getattr(obj, "driver_profile", None)
         if not profile:
             return "-"
-        parts = [profile.car_brand, profile.car_model, profile.car_color, profile.car_number]
+        parts = [
+            profile.car_brand,
+            profile.car_model,
+            profile.car_color,
+            profile.car_number,
+        ]
         parts = [p for p in parts if p]
         return " / ".join(parts) if parts else "-"
     car_info.short_description = "Авто"
 
     def save_model(self, request, obj, form, change):
-        obj.user_type = "driver"
-        super().save_model(request, obj, form, change)
-
-        worker_status, _ = WorkerStatus.objects.get_or_create(user=obj)
-        worker_status.is_online = form.cleaned_data.get("is_online", False)
-        worker_status.is_busy = form.cleaned_data.get("is_busy", False)
-        worker_status.save()
-
-        lat = form.cleaned_data.get("lat")
-        lon = form.cleaned_data.get("lon")
-
-        if lat is not None and lon is not None:
-            worker_location, _ = WorkerLocation.objects.get_or_create(
-                user=obj,
-                defaults={"lat": lat, "lon": lon},
-            )
-            worker_location.lat = lat
-            worker_location.lon = lon
-            worker_location.save()
-
-        driver_profile, _ = DriverProfile.objects.get_or_create(
-            user=obj,
-            defaults={
-                "status": form.cleaned_data.get("driver_profile_status") or "pending",
-            }
-        )
-
-        driver_profile.status = form.cleaned_data.get("driver_profile_status") or driver_profile.status
-        driver_profile.car_brand = form.cleaned_data.get("car_brand", "")
-        driver_profile.car_model = form.cleaned_data.get("car_model", "")
-        driver_profile.car_color = form.cleaned_data.get("car_color", "")
-        driver_profile.car_number = form.cleaned_data.get("car_number", "")
-        driver_profile.car_type = form.cleaned_data.get("car_type", "")
-        driver_profile.passport_number = form.cleaned_data.get("passport_number", "")
-        driver_profile.seria_and_number = form.cleaned_data.get("seria_and_number", "")
-        driver_profile.issuing_authority = form.cleaned_data.get("issuing_authority", "")
-        driver_profile.save()
+        form.save()

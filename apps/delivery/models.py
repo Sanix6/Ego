@@ -132,6 +132,13 @@ class Delivery(models.Model):
         choices=DELIVERY_TYPES,
         default="standard"
     )
+    type_transport = models.CharField(
+        "Тип транспорта",
+        max_length=20,
+        choices=TRANSPORT_TYPES,
+        default="standard",
+    )
+
 
     price = models.DecimalField("Цена", max_digits=10, decimal_places=2, null=True, blank=True)
     arrived_at = models.DateTimeField(null=True, blank=True)
@@ -199,6 +206,20 @@ class Delivery(models.Model):
         blank=True,
         related_name="deliveries",
         verbose_name="Даркстор"
+    )
+
+    payment_method = models.CharField(
+        "Оплата",
+        max_length=20,
+        choices=PAYMENT_METHODS,
+        default="cash"
+    )
+
+    payment_status = models.CharField(
+        "Статус оплаты",
+        max_length=20,
+        choices=PAYMENT_STATUSES,
+        default="unpaid"
     )
 
     def clean(self):

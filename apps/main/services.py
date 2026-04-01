@@ -1,6 +1,22 @@
 from django.db.models import Avg, Count
 from apps.users.models import User
-from .models import Review
+from .models import Review, DeliveryZone
+
+
+def detect_delivery_zone_by_dropoff(darkstore, dropoff_lat, dropoff_lon):
+    if not darkstore or dropoff_lat is None or dropoff_lon is None:
+        return None
+
+    zones = DeliveryZone.objects.filter(
+        darkstore=darkstore,
+        is_active=True,
+    )
+
+    for zone in zones:
+        if zone.contains_point(dropoff_lat, dropoff_lon):
+            return zone
+
+    return None
 
 
 def update_user_rating(user: User) -> None:

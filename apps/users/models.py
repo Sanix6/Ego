@@ -78,6 +78,14 @@ class CourierProfile(models.Model):
         related_name="couriers",
         verbose_name="Даркстор"
     )
+    delivery_zones = models.ForeignKey(
+        "main.DeliveryZone",
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        related_name="courier_profiles",
+        verbose_name="Разрешенные зоны доставки"
+    )
 
     transport_type = models.CharField(
         max_length=20,
@@ -117,6 +125,9 @@ class CourierProfile(models.Model):
     class Meta:
         verbose_name = "Курьер"
         verbose_name_plural = "Курьеры"
+
+    def __str__(self):
+        return f'{self.delivery_zones}'
 
 
 class DriverProfile(models.Model):

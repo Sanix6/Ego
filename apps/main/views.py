@@ -7,6 +7,83 @@ from apps.taxi.models import TaxiRide
 from .models import Review
 from .serializers import ReviewCreateSerializer, ReviewSerializer
 from .services import update_user_rating
+from rest_framework.views import APIView
+from .models import DeliveryZone
+from apps.users.models import CourierProfile
+from .serializers import (
+    DeliveryZoneListSerializer,
+    CourierOwnZoneSerializer,
+    AssignDeliveryZoneSerializer,
+)
+from .permissions import IsCourier
+
+
+class AvailableDeliveryZonesView(generics.ListAPIView):
+    serializer_class = DeliveryZoneListSerializer
+    permission_classes = [IsAuthenticated, IsCourier]
+
+    def get_queryset(self):
+        user = self.request.user
+        courier_profile = getattr(user, "courier_profile", None)
+
+        queryset = DeliveryZone.objects.filter(is_active=True)
+
+        if courier_profile and courier_profile.darkstore_id:
+            queryset = queryset.filter(darkstore_id=courier_profile.darkstore_id)
+
+        return queryset.order_by("name")
+
+
+class AssignDeliveryZoneView(APIView):
+    permission_classes = [IsAuthenticated, IsCourier]
+
+    def post(self, request, *args, **kwargs):
+        try:
+            courier_profile = request.user.courier_profile
+        except CourierProfile.DoesNotExist:
+            return Response(
+                {"detail": "Профиль курьера не найден."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        serializer = AssignDeliveryZoneSerializer(
+            data=request.data,
+            context={"courier_profile": courier_profile}
+        )
+        serializer.is_valid(raise_exception=True)
+        courier_profile = serializer.save()
+
+        return Response(
+            {
+                "detail": "Зона успешно назначена.",
+                "zone": DeliveryZoneListSerializer(courier_profile.delivery_zones).data
+            },
+            status=status.HTTP_200_OK
+        )
+
+
+class MyDeliveryZoneView(APIView):
+    permission_classes = [IsAuthenticated, IsCourier]
+
+    def get(self, request, *args, **kwargs):
+        try:
+            courier_profile = request.user.courier_profile
+        except CourierProfile.DoesNotExist:
+            return Response(
+                {"detail": "Профиль курьера не найден."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        if not courier_profile.delivery_zones:
+            return Response(
+                {"detail": "У курьера пока нет выбранной зоны.", "zone": None},
+                status=status.HTTP_200_OK
+            )
+
+        return Response(
+            CourierOwnZoneSerializer(courier_profile).data,
+            status=status.HTTP_200_OK
+        )
 
 
 class DeliveryReviewView(generics.GenericAPIView):

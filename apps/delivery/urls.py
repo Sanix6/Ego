@@ -6,6 +6,7 @@ urlpatterns = [
     path("prices/", DeliveryPricesPreviewView.as_view(), name="delivery-prices-preview"),
     path("slots", SlotListView.as_view(), name="slot-list"),
     path("courier-slots/<int:slot_id>/book/", CourierSlotBookView.as_view(), name="courier-slot-book"),
+    path("courier/slots/<int:slot_id>/cancel/", CourierSlotCancelView.as_view(), name="courier-slot-cancel"),
     path("courier-slots/own/", MyCourierSlotsView.as_view(), name="my-courier-slots"),
     path("offers/<int:offer_id>/accept/", AcceptOfferView.as_view()),
     path("offers/<int:offer_id>/reject/", RejectOfferView.as_view()),

@@ -13,6 +13,7 @@ urlpatterns = [
     path("api/delivery/", include("apps.delivery.urls")),
     path("api/taxi/", include("apps.taxi.urls")),
     path("api/base/", include("apps.main.urls")),
+    path('api/payment/', include("apps.balance.urls"))
     
 ] + spectacular_urls
 

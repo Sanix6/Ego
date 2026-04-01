@@ -184,3 +184,26 @@ def build_eta_data(from_lat: float, from_lon: float, to_lat: float, to_lon: floa
         "distance_km": round(distance_km, 2),
         "eta_sec": eta_sec,
     }
+
+def courier_matches_delivery(delivery, courier):
+    courier_profile = getattr(courier, "courier_profile", None)
+    if not courier_profile:
+        write_log(f"MATCH FAIL courier={courier.id}: no profile")
+        return False
+
+    zone = courier_profile.delivery_zones
+
+    if not zone:
+        write_log(f"MATCH OK courier={courier.id}: no zone")
+        return True
+
+    if delivery.dropoff_lat is None or delivery.dropoff_lon is None:
+        write_log(f"MATCH FAIL courier={courier.id}: no dropoff coords")
+        return False
+
+    result = zone.contains_point(delivery.dropoff_lat, delivery.dropoff_lon)
+    write_log(
+        f"MATCH courier={courier.id} zone={zone.id} "
+        f"dropoff=({delivery.dropoff_lat}, {delivery.dropoff_lon}) result={result}"
+    )
+    return result

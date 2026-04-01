@@ -86,7 +86,7 @@ class DriverRegisterView(generics.GenericAPIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
 
-                
+        sms_sent = send_verification_sms(user)    
 
         if not sms_sent:
             return Response(

@@ -15,6 +15,7 @@ class DeliveryCreateSerializer(serializers.ModelSerializer):
             "dropoff_lat",
             "dropoff_lon",
             "type_delivery",
+            "type_transport",
             "price",
             "deadline_at",
             "client_comment",
