@@ -41,6 +41,7 @@ class CourierSlot(models.Model):
     )
 
     created_at = models.DateTimeField("Создан", auto_now_add=True)
+    slot_reminder_sent_at = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         verbose_name = "Таблица слотов"
@@ -220,6 +221,11 @@ class Delivery(models.Model):
         max_length=20,
         choices=PAYMENT_STATUSES,
         default="unpaid"
+    )
+    cancel_reason = models.TextField(
+        blank=True,
+        default="",
+        verbose_name="Причина отмены"
     )
 
     def clean(self):

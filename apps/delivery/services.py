@@ -8,6 +8,8 @@ from django.db import transaction
 from apps.delivery.models import Delivery
 from apps.users.models import *
 from math import radians, sin, cos, sqrt, atan2
+from decimal import Decimal
+from apps.balance.models import WorkerWallet, WalletTransaction, TransactionType, TransactionStatus
 
 def find_nearest_couriers(lat, lon, limit=10, radius=5):
     write_log(f"FIND NEAREST COURIERS: lat={lat}, lon={lon}, limit={limit}, radius={radius}km")
@@ -126,33 +128,69 @@ def complete_delivery(delivery, courier):
         if delivery.delivery_status not in ["courier_arrived_b"]:
             return False, "Нельзя завершить заказ сейчас."
 
+        # if delivery.payment_status != "paid":
+        #     return False, "Заказ не оплачен."
+
         now = timezone.now()
 
         delivery.delivery_status = "delivered"
         delivery.delivered_at = now
-
         delivery.save(update_fields=["delivery_status", "delivered_at"])
 
         worker_status, _ = WorkerStatus.objects.get_or_create(user=courier)
         worker_status.is_busy = False
         worker_status.save(update_fields=["is_busy", "last_seen"])
-        
+
         User.objects.filter(id=courier.id).update(
             orders_count=F("orders_count") + 1
         )
 
+        wallet, _ = WorkerWallet.objects.get_or_create(worker=courier)
+
+        earning_amount = getattr(delivery, "courier_fee", None)
+
+        if earning_amount is None:
+            earning_amount = Decimal("0.00")
+
+        if earning_amount > 0:
+            already_exists = WalletTransaction.objects.filter(
+                wallet=wallet,
+                transaction_type=TransactionType.ORDER_EARNING,
+                delivery=delivery,
+            ).exists()
+
+            if not already_exists:
+                WalletTransaction.objects.create(
+                    wallet=wallet,
+                    transaction_type=TransactionType.ORDER_EARNING,
+                    status=TransactionStatus.COMPLETED,
+                    channel=None,
+                    amount=earning_amount,
+                    sign=1,
+                    delivery=delivery,
+                    comment=f"Доход за доставку #{delivery.id}",
+                )
+
     return True, "Заказ доставлен"
+    
 
-def cancel_delivery_by_client(delivery, user):
-    if delivery.client != user:
-        return False, "Нельзя отменить чужой заказ"
 
-    if delivery.status != "courier_assigned":
-        return False, "Этот заказ нельзя отменить"
+def cancel_delivery_by_client(delivery, user, cancel_reason=""):
+    with transaction.atomic():
+        delivery = Delivery.objects.select_for_update().get(id=delivery.id)
 
-    delivery.status = "canceled_by_client"
-    delivery.save(update_fields=["status"])
-    return True, "Заказ успешно отменён"
+        if delivery.client_id != user.id:
+            return False, "Вы не можете отменить этот заказ."
+
+        if delivery.delivery_status in ["delivered", "canceled"]:
+            return False, "Этот заказ уже нельзя отменить."
+
+        delivery.delivery_status = "canceled"
+        delivery.canceled_by = "client"
+        delivery.cancel_reason = cancel_reason
+        delivery.save(update_fields=["delivery_status", "canceled_by", "cancel_reason"])
+
+    return True, "Заказ успешно отменен"
 
 
 def haversine_km(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
@@ -202,8 +240,14 @@ def courier_matches_delivery(delivery, courier):
         return False
 
     result = zone.contains_point(delivery.dropoff_lat, delivery.dropoff_lon)
+
     write_log(
-        f"MATCH courier={courier.id} zone={zone.id} "
-        f"dropoff=({delivery.dropoff_lat}, {delivery.dropoff_lon}) result={result}"
+        f"MATCH courier={courier.id} "
+        f"zone_id={zone.id} "
+        f"polygon={zone.polygon} "
+        f"dropoff_lat={delivery.dropoff_lat} "
+        f"dropoff_lon={delivery.dropoff_lon} "
+        f"result={result}"
     )
+
     return result

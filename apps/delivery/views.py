@@ -14,7 +14,7 @@ from .pricing import *
 from services.matrix import RoutingService, RoutingServiceError
 from datetime import timedelta
 from django.utils import timezone
-
+from .paginations import *
 
 
 class DeliveryCreateView(generics.GenericAPIView):
@@ -121,10 +121,10 @@ class AcceptOfferView(generics.GenericAPIView):
             },
             status=status.HTTP_200_OK
         )
-    
 
 class DeliveryCancelByClientView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
+    serializer_class = DeliveryCancelByClientSerializer
 
     def post(self, request, *args, **kwargs):
         user = request.user
@@ -136,6 +136,9 @@ class DeliveryCancelByClientView(generics.GenericAPIView):
                 status=status.HTTP_403_FORBIDDEN
             )
 
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
         delivery = Delivery.objects.filter(id=delivery_id, client=user).first()
         if not delivery:
             return Response(
@@ -143,7 +146,13 @@ class DeliveryCancelByClientView(generics.GenericAPIView):
                 status=status.HTTP_404_NOT_FOUND
             )
 
-        success, message = cancel_delivery_by_client(delivery, user)
+        cancel_reason = serializer.validated_data.get("cancel_reason", "")
+
+        success, message = cancel_delivery_by_client(
+            delivery=delivery,
+            user=user,
+            cancel_reason=cancel_reason,
+        )
 
         if not success:
             return Response(
@@ -152,10 +161,14 @@ class DeliveryCancelByClientView(generics.GenericAPIView):
             )
 
         delivery.refresh_from_db()
-        serializer = DeliveryTrackingSerializer(delivery)
+        tracking_serializer = DeliveryTrackingSerializer(delivery)
 
         return Response(
-            {"success": True, "message": message, "data": serializer.data},
+            {
+                "success": True,
+                "message": message,
+                "data": tracking_serializer.data,
+            },
             status=status.HTTP_200_OK
         )
         
@@ -360,6 +373,7 @@ class DeliveryArrivePointBView(generics.GenericAPIView):
         return Response(
             {"success": True, "message": message, "data": serializer.data}
         )
+
 
 class DeliveryCompleteView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
@@ -622,3 +636,44 @@ class DeliveryPricesPreviewView(views.APIView):
             },
             status=status.HTTP_200_OK,
         )
+
+
+
+class CourierOrderHistoryView(generics.ListAPIView):
+    serializer_class = CourierOrderHistorySerializer
+    permission_classes = [IsAuthenticated]
+    # pagination_class = CourierOrderHistoryPagination
+
+    def get_queryset(self):
+        user = self.request.user
+
+        queryset = Delivery.objects.filter(
+            courier=user
+        ).order_by("-created_at")
+
+        status_param = self.request.query_params.get("status")
+        date_from = self.request.query_params.get("date_from")
+        date_to = self.request.query_params.get("date_to")
+
+        if status_param:
+            queryset = queryset.filter(delivery_status=status_param)
+
+        if date_from:
+            dt_from = timezone.make_aware(
+                datetime.combine(
+                    datetime.strptime(date_from, "%Y-%m-%d").date(),
+                    time.min
+                )
+            )
+            queryset = queryset.filter(created_at__gte=dt_from)
+
+        if date_to:
+            dt_to = timezone.make_aware(
+                datetime.combine(
+                    datetime.strptime(date_to, "%Y-%m-%d").date(),
+                    time.max
+                )
+            )
+            queryset = queryset.filter(created_at__lte=dt_to)
+
+        return queryset

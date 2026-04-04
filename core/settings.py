@@ -33,7 +33,8 @@ INSTALLED_APPS = [
     "apps.delivery",
     "apps.taxi",
     "apps.maps",
-    "apps.balance"
+    "apps.balance",
+    "apps.notify"
 ]
 
 MIDDLEWARE = [
@@ -116,8 +117,6 @@ USE_I18N = True
 USE_TZ = True
 
 
-
-
 ASGI_APPLICATION = "core.asgi.application"
 
 CHANNEL_LAYERS = {
@@ -166,7 +165,8 @@ CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
 CELERY_TIMEZONE = "Asia/Bishkek"
-
+ONESIGNAL_APP_ID = os.getenv("ONESIGNAL_APP_ID", "")
+ONESIGNAL_API_KEY = os.getenv("ONESIGNAL_API_KEY", "")
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 
 NIKITA_LOGIN = os.getenv("NIKITA_LOGIN")

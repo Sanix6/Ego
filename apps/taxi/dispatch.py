@@ -9,6 +9,7 @@ from apps.taxi.models import TaxiOffer, TaxiRide
 from apps.taxi.services import find_nearest_drivers
 from apps.users.models import WorkerStatus
 from assets.helpers.loggers import write_log
+from .serializers import TaxiRideDetailSerializer
 
 
 OFFER_TIMEOUT_SECONDS = 15
@@ -30,6 +31,7 @@ def create_taxi_offer(ride, driver):
 
 def send_taxi_offer_event(driver, ride, offer):
     channel_layer = get_channel_layer()
+    ride_data = TaxiRideDetailSerializer(ride).data
 
     async_to_sync(channel_layer.group_send)(
         f"user_{driver.id}",
@@ -37,17 +39,20 @@ def send_taxi_offer_event(driver, ride, offer):
             "type": "new_offer",
             "offer_kind": "taxi",
             "offer_id": offer.id,
-            "ride_id": ride.id,
-            
+            "expires_at": offer.expires_at.isoformat(),
+            "ride": ride_data,
         }
     )
 
 
 def send_offer_to_driver(ride, driver):
     offer = create_taxi_offer(ride, driver)
-    send_taxi_offer_event(driver, ride, offer)
-    return offer
 
+    transaction.on_commit(
+        lambda: send_taxi_offer_event(driver, ride, offer)
+    )
+
+    return offer
 
 def has_offer_been_sent(ride, driver):
     return TaxiOffer.objects.filter(

@@ -1,9 +1,8 @@
 from rest_framework import serializers
 from .models import TaxiRide
 from apps.users.models import User, WorkerLocation
-from .pricing import *
+from .pricing import PricingService, PricingError
 from services.matrix import RoutingService, RoutingServiceError
-
 
 
 
@@ -15,29 +14,29 @@ class DriverRegisterSerializer(serializers.Serializer):
 
     def validate_phone(self, value):
         phone = value.strip()
-        if not phone.startswith('+'):
+        if not phone.startswith("+"):
             raise serializers.ValidationError("Телефон должен начинаться с '+'")
         return phone
 
     def create(self, validated_data):
-        phone = validated_data['phone']
+        phone = validated_data["phone"]
 
         user, created = User.objects.get_or_create(
             phone=phone,
             defaults={
-                'first_name': validated_data.get('first_name', ''),
-                'last_name': validated_data.get('last_name', ''),
-                'email': validated_data.get('email', ''),
-                'user_type': 'driver',
-                'is_active': True,
+                "first_name": validated_data.get("first_name", ""),
+                "last_name": validated_data.get("last_name", ""),
+                "email": validated_data.get("email", ""),
+                "user_type": "driver",
+                "is_active": True,
             }
         )
 
         if not created:
-            user.first_name = validated_data.get('first_name', user.first_name)
-            user.last_name = validated_data.get('last_name', user.last_name)
-            user.email = validated_data.get('email', user.email)
-            user.user_type = 'driver'
+            user.first_name = validated_data.get("first_name", user.first_name)
+            user.last_name = validated_data.get("last_name", user.last_name)
+            user.email = validated_data.get("email", user.email)
+            user.user_type = "driver"
             user.save()
 
         return user
@@ -48,18 +47,18 @@ class TaxiRideCreateSerializer(serializers.ModelSerializer):
         model = TaxiRide
         fields = [
             "id",
-            'point_a',
-            'point_b',
-            'car_class',
-            'payment_method',
+            "point_a",
+            "point_b",
+            "car_class",
+            "payment_method",
             "pickup_lat",
             "pickup_lon",
             "dropoff_lat",
             "dropoff_lon",
         ]
+        read_only_fields = ["id"]
 
     def create(self, validated_data):
-
         try:
             route = RoutingService.get_route(
                 pickup_lat=validated_data["pickup_lat"],
@@ -83,15 +82,12 @@ class TaxiRideCreateSerializer(serializers.ModelSerializer):
 
         ride = TaxiRide.objects.create(
             **validated_data,
-            client=self.context["request"].user,
             status="searching_driver",
-
             distance_km=pricing["distance_km"],
             duration_min=pricing["duration_min"],
             price=pricing["price"],
             estimated_price=pricing["estimated_price"],
             total_price=pricing["total_price"],
-
             base_fare=tariff.base_fare,
             per_km_rate=tariff.per_km_rate,
             per_min_rate=tariff.per_min_rate,
@@ -115,7 +111,6 @@ class TaxiPricesPreviewSerializer(serializers.Serializer):
     pickup_lon = serializers.FloatField()
     dropoff_lat = serializers.FloatField()
     dropoff_lon = serializers.FloatField()
-    city = serializers.CharField(required=False, allow_blank=True, max_length=100)
 
 
 class DriverInfoSerializer(serializers.ModelSerializer):
@@ -222,3 +217,33 @@ class TaxiTrackingSerializer(serializers.ModelSerializer):
             return None
 
         return DriverLocationSerializer(location).data
+
+
+class DriverRideHistorySerializer(serializers.ModelSerializer):
+    order_date = serializers.DateTimeField(source="requested_at")
+    from_address = serializers.CharField(source="point_a")
+    to_address = serializers.CharField(source="point_b")
+    amount = serializers.SerializerMethodField()
+    earnings = serializers.SerializerMethodField()
+
+    class Meta:
+        model = TaxiRide
+        fields = [
+            "id",
+            "order_date",
+            "status",
+            "from_address",
+            "to_address",
+            "distance_km",
+            "duration_min",
+            "amount",
+            "earnings",
+            "payment_method",
+            "payment_status",
+        ]
+
+    def get_amount(self, obj):
+        return obj.total_price or obj.price or "0.00"
+
+    def get_earnings(self, obj):
+        return obj.driver_payout or "0.00"

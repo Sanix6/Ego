@@ -23,6 +23,13 @@ class WorkerWallet(models.Model):
     def __str__(self):
         return f"Кошелек: {self.worker.phone}"
 
+    class Meta:
+        verbose_name = "Кошелек работника"
+        verbose_name_plural = "Кошельки работников"
+        indexes = [
+            models.Index(fields=["worker"]),
+        ]
+
 
 class WalletTransaction(models.Model):
     wallet = models.ForeignKey(WorkerWallet,on_delete=models.CASCADE,related_name="transactions")
@@ -65,6 +72,10 @@ class WalletTransaction(models.Model):
 
     def __str__(self):
         return f"{self.wallet.worker.phone} | {self.transaction_type} | {self.signed_amount}"
+
+    class Meta:
+        verbose_name = "Транзакция кошелька"
+        verbose_name_plural = "Транзакции кошельков"
 
 
 class MerchantPaymentAccount(models.Model):

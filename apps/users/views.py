@@ -12,6 +12,8 @@ from drf_spectacular.utils import extend_schema
 from django.db import transaction
 from services.geo import RedisGeoService
 from .models import WorkerLocation, WorkerStatus
+from apps.balance.models import WorkerWallet
+
 
 
 class SendCodeView(generics.GenericAPIView):
@@ -86,7 +88,9 @@ class DriverRegisterView(generics.GenericAPIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
 
-        sms_sent = send_verification_sms(user)    
+        WorkerWallet.objects.get_or_create(worker=user)
+
+        sms_sent = send_verification_sms(user)
 
         if not sms_sent:
             return Response(
@@ -162,7 +166,7 @@ class ResendCodeDriverView(generics.GenericAPIView):
                 status=status.HTTP_404_NOT_FOUND
             )
 
-        send_sms(user)
+        send_verification_sms(user)
 
         return Response(
             {

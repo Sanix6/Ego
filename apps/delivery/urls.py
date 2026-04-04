@@ -16,4 +16,6 @@ urlpatterns = [
     path("deliveries/<int:delivery_id>/arrive-b/",DeliveryArrivePointBView.as_view(), name="delivery-arrive-b",),
     path("deliveries/<int:delivery_id>/complete/", DeliveryCompleteView.as_view(), name="delivery-complete"),
     path("deliveries/<int:delivery_id>/cancel/client/",DeliveryCancelByClientView.as_view(),name="delivery-cancel-by-client",),
+    path("courier/orders/history/", CourierOrderHistoryView.as_view(), name="courier-order-history"),
+
 ]

@@ -7,16 +7,15 @@ from .models import (
     Client,
     Operator,
     Admin,
-    CourierProfile,
-    DriverProfile,
-    WorkerStatus,
-    WorkerLocation,
     CourierDispatch,
     DriverDispatch,
 )
 from .forms import CourierDispatchForm, DriverDispatchForm
 
-admin.site.unregister(Group)
+try:
+    admin.site.unregister(Group)
+except admin.sites.NotRegistered:
+    pass
 
 
 class BaseUserAdmin(admin.ModelAdmin):
@@ -30,8 +29,8 @@ class BaseUserAdmin(admin.ModelAdmin):
         "is_staff",
         "date_joined",
     )
-    list_filter = ("is_active", "is_staff")
-    search_fields = ("phone", "first_name", "last_name")
+    list_filter = ("is_active", "is_staff", "user_type")
+    search_fields = ("phone", "first_name", "last_name", "email")
     ordering = ("-date_joined",)
 
     readonly_fields = ("date_joined",)
@@ -56,6 +55,21 @@ class BaseUserAdmin(admin.ModelAdmin):
             "fields": ("rating_avg", "rating_count", "orders_count")
         }),
     )
+
+    def has_module_permission(self, request):
+        return request.user.is_superuser
+
+    def has_view_permission(self, request, obj=None):
+        return request.user.is_superuser
+
+    def has_add_permission(self, request):
+        return request.user.is_superuser
+
+    def has_change_permission(self, request, obj=None):
+        return request.user.is_superuser
+
+    def has_delete_permission(self, request, obj=None):
+        return request.user.is_superuser
 
 
 @admin.register(Client)
@@ -94,224 +108,13 @@ class AdminUserAdmin(BaseUserAdmin):
         super().save_model(request, obj, form, change)
 
 
-@admin.register(CourierProfile)
-class CourierProfileAdmin(admin.ModelAdmin):
-    list_display = (
-        "id",
-        "user",
-        "darkstore",
-        "transport_type",
-        "car_number",
-        "status",
-        "created_at",
-        "delivery_zones"
-    )
-
-    list_filter = (
-        "transport_type",
-        "status",
-        "created_at",
-    )
-
-    search_fields = (
-        "user__phone",
-        "car_number",
-    )
-
-    readonly_fields = (
-        "created_at",
-        "user_verification_code"
-    )
-
-    fieldsets = (
-        ("Пользователь", {
-            "fields": ("user",  "user_verification_code")
-        }),
-        ("Даркстор", {
-            "fields": ("darkstore", "delivery_zones")
-        }),
-        ("Тип транспорта", {
-            "fields": ("transport_type",)
-        }),
-        ("Документы", {
-            "fields": (
-                "selfie",
-                "passport_front",
-                "passport_back",
-                "driver_license_front",
-                "driver_license_back",
-            )
-        }),
-        ("Машина", {
-            "fields": (
-                "car_brand",
-                "car_model",
-                "car_color",
-                "car_number",
-            )
-        }),
-        ("Статус", {
-            "fields": ("status",)
-        }),
-        ("Системные данные", {
-            "fields": ("created_at",)
-        }),
-    )
-    @admin.display(description="Код подтверждения")
-    def user_verification_code(self, obj):
-        return obj.user.verification_code if obj.user else "-"
-
-    def has_module_permission(self, request):
-        return request.user.is_superuser
-
-    def has_view_permission(self, request, obj=None):
-        return request.user.is_superuser
-
-    def has_add_permission(self, request):
-        return request.user.is_superuser
-
-    def has_change_permission(self, request, obj=None):
-        return request.user.is_superuser
-
-    def has_delete_permission(self, request, obj=None):
-        return request.user.is_superuser
-
-
-@admin.register(DriverProfile)
-class DriverProfileAdmin(admin.ModelAdmin):
-    list_display = (
-        "id",
-        "user",
-        "car_number",
-        "car_brand",
-        "status",
-        "created_at",
-    )
-
-    list_filter = (
-        "status",
-        "created_at",
-    )
-
-    search_fields = (
-        "user__phone",
-        "car_number",
-        "car_brand",
-    )
-
-    readonly_fields = (
-        "created_at",
-        "user_verification_code"
-    )
-
-    fieldsets = (
-        ("Пользователь", {
-            "fields": ("user", "user_verification_code")
-        }),
-        ("Документы", {
-            "fields": (
-                "selfie",
-                "passport_front",
-                "passport_back",
-                "passport_number",
-            )
-        }),
-        ("Водительские права", {
-            "fields": (
-                "seria_and_number",
-                "date_of_issue",
-                "issuing_authority",
-                "driver_license_front",
-                "driver_license_back",
-            )
-        }),
-        ("Машина", {
-            "fields": (
-                "car_brand",
-                "car_model",
-                "car_color",
-                "car_number",
-                "car_type",
-                "car_photo",
-            )
-        }),
-        ("Статус", {
-            "fields": ("status",)
-        }),
-        ("Системные данные", {
-            "fields": ("created_at",)
-        }),
-    )
-    @admin.display(description="Код подтверждения")
-    def user_verification_code(self, obj):
-        return obj.user.verification_code if obj.user else "-"
-
-    def has_module_permission(self, request):
-        return request.user.is_superuser
-
-    def has_view_permission(self, request, obj=None):
-        return request.user.is_superuser
-
-    def has_add_permission(self, request):
-        return request.user.is_superuser
-
-    def has_change_permission(self, request, obj=None):
-        return request.user.is_superuser
-
-    def has_delete_permission(self, request, obj=None):
-        return request.user.is_superuser
-
-
-# @admin.register(WorkerStatus)
-# class WorkerStatusAdmin(admin.ModelAdmin):
-#     list_display = ("id", "user", "is_online", "is_busy", "last_seen")
-#     list_filter = ("is_online", "is_busy", "last_seen")
-#     search_fields = ("user__phone", "user__first_name", "user__last_name")
-#     readonly_fields = ("last_seen",)
-
-#     def has_module_permission(self, request):
-#         return request.user.is_superuser
-
-#     def has_view_permission(self, request, obj=None):
-#         return request.user.is_superuser
-
-#     def has_add_permission(self, request):
-#         return request.user.is_superuser
-
-#     def has_change_permission(self, request, obj=None):
-#         return request.user.is_superuser
-
-#     def has_delete_permission(self, request, obj=None):
-#         return request.user.is_superuser
-
-
-# @admin.register(WorkerLocation)
-# class WorkerLocationAdmin(admin.ModelAdmin):
-#     list_display = ("id", "user", "lat", "lon", "updated_at")
-#     search_fields = ("user__phone", "user__first_name", "user__last_name")
-#     readonly_fields = ("updated_at",)
-
-#     def has_module_permission(self, request):
-#         return request.user.is_superuser
-
-#     def has_view_permission(self, request, obj=None):
-#         return request.user.is_superuser
-
-#     def has_add_permission(self, request):
-#         return request.user.is_superuser
-
-#     def has_change_permission(self, request, obj=None):
-#         return request.user.is_superuser
-
-#     def has_delete_permission(self, request, obj=None):
-#         return request.user.is_superuser
-
-
 class DispatchAdminMixin(admin.ModelAdmin):
     readonly_fields = (
+        "date_joined",
         "last_seen_view",
         "map_preview",
         "location_updated_view",
+        "profile_created_at_view",
     )
     list_per_page = 25
 
@@ -406,6 +209,21 @@ class DispatchAdminMixin(admin.ModelAdmin):
         return self.location_updated_at_colored(obj)
     location_updated_view.short_description = "Гео обновлено"
 
+    def has_module_permission(self, request):
+        return request.user.is_superuser
+
+    def has_view_permission(self, request, obj=None):
+        return request.user.is_superuser
+
+    def has_add_permission(self, request):
+        return request.user.is_superuser
+
+    def has_change_permission(self, request, obj=None):
+        return request.user.is_superuser
+
+    def has_delete_permission(self, request, obj=None):
+        return request.user.is_superuser
+
 
 @admin.register(CourierDispatch)
 class CourierDispatchAdmin(DispatchAdminMixin, admin.ModelAdmin):
@@ -415,6 +233,7 @@ class CourierDispatchAdmin(DispatchAdminMixin, admin.ModelAdmin):
         "id",
         "phone",
         "full_name",
+        "verification_code_view",
         "colored_online",
         "colored_busy",
         "last_seen_colored",
@@ -425,6 +244,7 @@ class CourierDispatchAdmin(DispatchAdminMixin, admin.ModelAdmin):
         "courier_profile_status_badge",
         "transport_type_view",
         "darkstore_view",
+        "delivery_zone_view",
         "car_info",
     )
 
@@ -435,12 +255,17 @@ class CourierDispatchAdmin(DispatchAdminMixin, admin.ModelAdmin):
         "courier_profile__status",
         "courier_profile__transport_type",
         "courier_profile__darkstore",
+        "courier_profile__delivery_zones",
     )
 
     search_fields = (
         "phone",
+        "email",
         "first_name",
         "last_name",
+        "verification_code",
+        "home_address",
+        "work_address",
         "courier_profile__car_number",
         "courier_profile__car_brand",
         "courier_profile__car_model",
@@ -455,7 +280,22 @@ class CourierDispatchAdmin(DispatchAdminMixin, admin.ModelAdmin):
                 "email",
                 "first_name",
                 "last_name",
+                "verification_code",
                 "is_active",
+                "date_joined",
+            )
+        }),
+        ("Адреса", {
+            "fields": (
+                "home_address",
+                "work_address",
+            )
+        }),
+        ("Рейтинг и статистика", {
+            "fields": (
+                "rating_avg",
+                "rating_count",
+                "orders_count",
             )
         }),
         ("Онлайн-статусы", {
@@ -472,13 +312,24 @@ class CourierDispatchAdmin(DispatchAdminMixin, admin.ModelAdmin):
                 "location_updated_view",
             )
         }),
+        ("Документы", {
+            "fields": (
+                "selfie",
+                "passport_front",
+                "passport_back",
+                "driver_license_front",
+                "driver_license_back",
+            )
+        }),
         ("Профиль курьера", {
             "fields": (
                 "courier_profile_status",
                 "transport_type",
                 "darkstore",
+                "delivery_zones",
                 ("car_brand", "car_model"),
                 ("car_color", "car_number"),
+                "profile_created_at_view",
             )
         }),
     )
@@ -493,8 +344,13 @@ class CourierDispatchAdmin(DispatchAdminMixin, admin.ModelAdmin):
                 "worker_location",
                 "courier_profile",
                 "courier_profile__darkstore",
+                "courier_profile__delivery_zones",
             )
         )
+
+    def verification_code_view(self, obj):
+        return obj.verification_code or "-"
+    verification_code_view.short_description = "Код"
 
     def courier_profile_status_badge(self, obj):
         profile = getattr(obj, "courier_profile", None)
@@ -507,16 +363,12 @@ class CourierDispatchAdmin(DispatchAdminMixin, admin.ModelAdmin):
             "rejected": "red",
         }
         color = color_map.get(profile.status, "gray")
-        return format_html(
-            '<b style="color:{}">{}</b>',
-            color,
-            profile.get_status_display()
-        )
+        return format_html('<b style="color:{}">{}</b>', color, profile.get_status_display())
     courier_profile_status_badge.short_description = "Статус профиля"
 
     def transport_type_view(self, obj):
         profile = getattr(obj, "courier_profile", None)
-        if not profile:
+        if not profile or not profile.transport_type:
             return "-"
         return profile.get_transport_type_display()
     transport_type_view.short_description = "Транспорт"
@@ -528,16 +380,25 @@ class CourierDispatchAdmin(DispatchAdminMixin, admin.ModelAdmin):
         return str(profile.darkstore)
     darkstore_view.short_description = "Даркстор"
 
+    def delivery_zone_view(self, obj):
+        profile = getattr(obj, "courier_profile", None)
+        if not profile or not profile.delivery_zones:
+            return "-"
+        return str(profile.delivery_zones)
+    delivery_zone_view.short_description = "Зона"
+
+    def profile_created_at_view(self, obj):
+        profile = getattr(obj, "courier_profile", None)
+        if not profile or not profile.created_at:
+            return "-"
+        return profile.created_at.strftime("%Y-%m-%d %H:%M:%S")
+    profile_created_at_view.short_description = "Создан профиль"
+
     def car_info(self, obj):
         profile = getattr(obj, "courier_profile", None)
         if not profile:
             return "-"
-        parts = [
-            profile.car_brand,
-            profile.car_model,
-            profile.car_color,
-            profile.car_number,
-        ]
+        parts = [profile.car_brand, profile.car_model, profile.car_color, profile.car_number]
         parts = [p for p in parts if p]
         return " / ".join(parts) if parts else "-"
     car_info.short_description = "Авто"
@@ -554,6 +415,7 @@ class DriverDispatchAdmin(DispatchAdminMixin, admin.ModelAdmin):
         "id",
         "phone",
         "full_name",
+        "verification_code_view",
         "colored_online",
         "colored_busy",
         "last_seen_colored",
@@ -562,6 +424,7 @@ class DriverDispatchAdmin(DispatchAdminMixin, admin.ModelAdmin):
         "map_link",
         "location_updated_at_colored",
         "driver_profile_status_badge",
+        "passport_number_view",
         "car_info",
     )
 
@@ -570,16 +433,22 @@ class DriverDispatchAdmin(DispatchAdminMixin, admin.ModelAdmin):
         "worker_status__is_online",
         "worker_status__is_busy",
         "driver_profile__status",
+        "driver_profile__car_type",
     )
 
     search_fields = (
         "phone",
+        "email",
         "first_name",
         "last_name",
+        "verification_code",
+        "home_address",
+        "work_address",
         "driver_profile__car_number",
         "driver_profile__car_brand",
         "driver_profile__car_model",
         "driver_profile__passport_number",
+        "driver_profile__seria_and_number",
     )
 
     ordering = ("-worker_status__last_seen",)
@@ -591,7 +460,22 @@ class DriverDispatchAdmin(DispatchAdminMixin, admin.ModelAdmin):
                 "email",
                 "first_name",
                 "last_name",
+                "verification_code",
                 "is_active",
+                "date_joined",
+            )
+        }),
+        ("Адреса", {
+            "fields": (
+                "home_address",
+                "work_address",
+            )
+        }),
+        ("Рейтинг и статистика", {
+            "fields": (
+                "rating_avg",
+                "rating_count",
+                "orders_count",
             )
         }),
         ("Онлайн-статусы", {
@@ -608,15 +492,35 @@ class DriverDispatchAdmin(DispatchAdminMixin, admin.ModelAdmin):
                 "location_updated_view",
             )
         }),
-        ("Профиль таксиста", {
+        ("Документы", {
             "fields": (
-                "driver_profile_status",
+                "selfie",
+                "passport_front",
+                "passport_back",
+                "passport_number",
+            )
+        }),
+        ("Водительские права", {
+            "fields": (
+                "seria_and_number",
+                "date_of_issue",
+                "issuing_authority",
+                "driver_license_front",
+                "driver_license_back",
+            )
+        }),
+        ("Машина", {
+            "fields": (
                 ("car_brand", "car_model"),
                 ("car_color", "car_number"),
                 "car_type",
-                "passport_number",
-                "seria_and_number",
-                "issuing_authority",
+                "car_photo",
+            )
+        }),
+        ("Профиль таксиста", {
+            "fields": (
+                "driver_profile_status",
+                "profile_created_at_view",
             )
         }),
     )
@@ -633,6 +537,15 @@ class DriverDispatchAdmin(DispatchAdminMixin, admin.ModelAdmin):
             )
         )
 
+    def verification_code_view(self, obj):
+        return obj.verification_code or "-"
+    verification_code_view.short_description = "Код"
+
+    def passport_number_view(self, obj):
+        profile = getattr(obj, "driver_profile", None)
+        return profile.passport_number if profile and profile.passport_number else "-"
+    passport_number_view.short_description = "Паспорт"
+
     def driver_profile_status_badge(self, obj):
         profile = getattr(obj, "driver_profile", None)
         if not profile:
@@ -644,23 +557,21 @@ class DriverDispatchAdmin(DispatchAdminMixin, admin.ModelAdmin):
             "rejected": "red",
         }
         color = color_map.get(profile.status, "gray")
-        return format_html(
-            '<b style="color:{}">{}</b>',
-            color,
-            profile.get_status_display()
-        )
+        return format_html('<b style="color:{}">{}</b>', color, profile.get_status_display())
     driver_profile_status_badge.short_description = "Статус профиля"
+
+    def profile_created_at_view(self, obj):
+        profile = getattr(obj, "driver_profile", None)
+        if not profile or not profile.created_at:
+            return "-"
+        return profile.created_at.strftime("%Y-%m-%d %H:%M:%S")
+    profile_created_at_view.short_description = "Создан профиль"
 
     def car_info(self, obj):
         profile = getattr(obj, "driver_profile", None)
         if not profile:
             return "-"
-        parts = [
-            profile.car_brand,
-            profile.car_model,
-            profile.car_color,
-            profile.car_number,
-        ]
+        parts = [profile.car_brand, profile.car_model, profile.car_color, profile.car_number]
         parts = [p for p in parts if p]
         return " / ".join(parts) if parts else "-"
     car_info.short_description = "Авто"

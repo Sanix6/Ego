@@ -43,17 +43,17 @@ class PricingService:
         return commission_amount, driver_payout
 
     @staticmethod
-    def get_active_tariff(*, city: str, car_class: str) -> Tariff:
+    def get_active_tariff(*, car_class: str) -> Tariff:
         try:
-            return Tariff.objects.get(city=city, car_class=car_class, is_active=True)
+            return Tariff.objects.get(car_class=car_class, is_active=True)
         except Tariff.DoesNotExist as exc:
             raise PricingError(
-                f"Активный тариф для city={city}, class={car_class} не найден."
+                f"Активный тариф для class={car_class} не найден."
             ) from exc
 
     @classmethod
     def get_price_details_for_tariff(
-        cls, *, city: str, car_class: str, distance_km: Decimal, duration_min: int
+        cls, *, car_class: str, distance_km: Decimal, duration_min: int
     ) -> dict:
         tariff = cls.get_active_tariff(car_class=car_class)
 
@@ -70,7 +70,7 @@ class PricingService:
 
         return {
             "tariff": tariff,
-            "distance_km": Decimal(str(distance_km)).quantize(Decimal("0.01")),
+            "distance_km": Decimal(str(distance_km)).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP),
             "duration_min": int(duration_min),
             "price": price,
             "estimated_price": price,
@@ -80,10 +80,10 @@ class PricingService:
         }
 
     @classmethod
-    def get_prices_for_city(cls, *, city: str, distance_km: Decimal, duration_min: int) -> list[dict]:
-        tariffs = Tariff.objects.filter(city=city, is_active=True).order_by("id")
+    def get_prices_for_city(cls, *, distance_km: Decimal, duration_min: int) -> list[dict]:
+        tariffs = Tariff.objects.filter(is_active=True).order_by("id")
         if not tariffs.exists():
-            raise PricingError(f"Активные тарифы для города {city} не найдены.")
+            raise PricingError("Активные тарифы не найдены.")
 
         results = []
         for tariff in tariffs:

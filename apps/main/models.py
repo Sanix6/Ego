@@ -5,6 +5,8 @@ from apps.users.models import *
 from assets.helpers.choices import *
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
+from shapely.geometry import Point, Polygon
+
 
 
 class DarkStore(models.Model):
@@ -160,7 +162,29 @@ class DeliveryZone(models.Model):
         if not self.polygon:
             return False
 
-        ring = self.polygon[0]
-        polygon = Polygon(ring)
-        point = Point(lon, lat)
-        return polygon.contains(point) or polygon.touches(point)
+        coords = self.polygon
+
+        if (
+            isinstance(coords, list)
+            and len(coords) > 0
+            and isinstance(coords[0], list)
+            and len(coords[0]) > 0
+            and isinstance(coords[0][0], list)
+        ):
+            ring = coords[0]
+        else:
+            ring = coords
+
+        try:
+            ring = [(float(x), float(y)) for x, y in ring]
+            polygon = Polygon(ring)
+
+            if not polygon.is_valid or polygon.is_empty:
+                return False
+
+            point = Point(float(lon), float(lat))
+
+            return polygon.covers(point)
+
+        except Exception:
+            return False

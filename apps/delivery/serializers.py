@@ -279,3 +279,48 @@ class DeliveryPricesPreviewSerializer(serializers.Serializer):
     pickup_lon = serializers.FloatField()
     dropoff_lat = serializers.FloatField()
     dropoff_lon = serializers.FloatField()
+
+
+
+
+class CourierOrderHistorySerializer(serializers.ModelSerializer):
+    order_date = serializers.DateTimeField(source="created_at")
+    status = serializers.CharField(source="delivery_status")
+    from_address = serializers.CharField(source="point_a")
+    to_address = serializers.CharField(source="point_b")
+    distance_km = serializers.SerializerMethodField()
+    duration_min = serializers.SerializerMethodField()
+    amount = serializers.SerializerMethodField()
+    earnings = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Delivery
+        fields = [
+            "id",
+            "order_date",
+            "status",
+            "from_address",
+            "to_address",
+            "distance_km",
+            "duration_min",
+            "amount",
+            "earnings",
+            "payment_method",
+            "payment_status",
+        ]
+
+    def get_distance_km(self, obj):
+        return obj.fact_distance_km or obj.planned_distance_km or "0.00"
+
+    def get_duration_min(self, obj):
+        return obj.fact_duration_min or obj.planned_duration_min or 0
+
+    def get_amount(self, obj):
+        return obj.price or "0.00"
+
+    def get_earnings(self, obj):
+        return obj.courier_earnings or "0.00"
+
+
+class DeliveryCancelByClientSerializer(serializers.Serializer):
+    cancel_reason = serializers.CharField(required=False, allow_blank=True, default="")

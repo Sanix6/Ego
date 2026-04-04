@@ -1,27 +1,27 @@
+from django.db.transaction import on_commit
 from rest_framework import generics, status, views
-from .models import TaxiRide
-from .serializers import *
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+
+from .models import *
+from .serializers import *
 from .tasks import *
-from django.db.transaction import on_commit
 from .dispatch import *
 from .services import *
-from django.conf import settings
-from services.matrix import RoutingService, RoutingServiceError
-from apps.taxi.pricing import PricingService, PricingError
+from services.matrix import *
+from apps.taxi.pricing import *
+from .paginations import *
 
 
 class TaxiRideCreateView(generics.CreateAPIView):
-    queryset = TaxiRide.objects.all()
     serializer_class = TaxiRideCreateSerializer
     permission_classes = [IsAuthenticated]
 
+    def get_queryset(self):
+        return TaxiRide.objects.select_related("client", "driver")
+
     def perform_create(self, serializer):
-        ride = serializer.save(
-            client=self.request.user,
-            status="searching_driver",
-        )
+        ride = serializer.save(client=self.request.user)
         on_commit(lambda: dispatch_taxi.delay(ride.id))
 
     def create(self, request, *args, **kwargs):
@@ -29,7 +29,7 @@ class TaxiRideCreateView(generics.CreateAPIView):
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
 
-        ride = serializer.instance  
+        ride = serializer.instance
 
         return Response(
             {
@@ -54,7 +54,7 @@ class AcceptTaxiOfferView(generics.GenericAPIView):
                 status=status.HTTP_403_FORBIDDEN,
             )
 
-        offer = TaxiOffer.objects.filter(id=offer_id).first()
+        offer = TaxiOffer.objects.select_related("ride").filter(id=offer_id).first()
         if not offer:
             return Response(
                 {"success": False, "message": "Оффер не найден."},
@@ -64,14 +64,13 @@ class AcceptTaxiOfferView(generics.GenericAPIView):
         success, message = accept_taxi_offer(offer, user)
 
         if success:
-            ride = offer.ride  
+            ride = offer.ride
             serializer = TaxiRideDetailSerializer(ride)
-
             return Response(
                 {
                     "success": True,
                     "message": message,
-                    "data": serializer.data
+                    "data": serializer.data,
                 },
                 status=status.HTTP_200_OK,
             )
@@ -95,7 +94,7 @@ class RejectTaxiOfferView(generics.GenericAPIView):
                 status=status.HTTP_403_FORBIDDEN,
             )
 
-        offer = TaxiOffer.objects.filter(id=offer_id).first()
+        offer = TaxiOffer.objects.select_related("ride").filter(id=offer_id).first()
         if not offer:
             return Response(
                 {"success": False, "message": "Оффер не найден."},
@@ -105,7 +104,7 @@ class RejectTaxiOfferView(generics.GenericAPIView):
         success, ride_id = reject_taxi_offer(offer, user)
 
         if success:
-            dispatch_taxi.delay(ride_id)
+            on_commit(lambda: dispatch_taxi.delay(ride_id))
 
         return Response(
             {"success": success},
@@ -114,12 +113,12 @@ class RejectTaxiOfferView(generics.GenericAPIView):
 
 
 class TaxiPricesPreviewView(views.APIView):
+    permission_classes = [IsAuthenticated]
+
     def post(self, request):
         serializer = TaxiPricesPreviewSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
-
-        city = data.get("city") or getattr(settings, "DEFAULT_TAXI_CITY", "Бишкек")
 
         try:
             route = RoutingService.get_route(
@@ -130,7 +129,6 @@ class TaxiPricesPreviewView(views.APIView):
             )
 
             tariffs = PricingService.get_prices_for_city(
-                city=city,
                 distance_km=route["distance_km"],
                 duration_min=route["duration_min"],
             )
@@ -157,6 +155,7 @@ class TaxiPricesPreviewView(views.APIView):
             status=status.HTTP_200_OK,
         )
 
+
 class TaxiTrackingView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = TaxiTrackingSerializer
@@ -165,8 +164,7 @@ class TaxiTrackingView(generics.GenericAPIView):
         ride_id = kwargs.get("ride_id")
 
         ride = (
-            TaxiRide.objects
-            .select_related(
+            TaxiRide.objects.select_related(
                 "driver",
                 "driver__driver_profile",
                 "driver__worker_location",
@@ -182,9 +180,9 @@ class TaxiTrackingView(generics.GenericAPIView):
             return Response(
                 {
                     "success": False,
-                    "message": "Поездка не найдена."
+                    "message": "Поездка не найдена.",
                 },
-                status=status.HTTP_404_NOT_FOUND
+                status=status.HTTP_404_NOT_FOUND,
             )
 
         serializer = self.get_serializer(ride)
@@ -192,10 +190,11 @@ class TaxiTrackingView(generics.GenericAPIView):
         return Response(
             {
                 "success": True,
-                "data": serializer.data
+                "data": serializer.data,
             },
-            status=status.HTTP_200_OK
+            status=status.HTTP_200_OK,
         )
+
 
 class TaxiArriveView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
@@ -204,8 +203,9 @@ class TaxiArriveView(generics.GenericAPIView):
         return taxi_action_response(
             request,
             kwargs.get("taxi_id"),
-            mark_taxi_arrived
+            mark_taxi_arrived,
         )
+
 
 class TaxiStartTripView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
@@ -214,8 +214,9 @@ class TaxiStartTripView(generics.GenericAPIView):
         return taxi_action_response(
             request,
             kwargs.get("taxi_id"),
-            mark_taxi_in_trip
+            mark_taxi_in_trip,
         )
+
 
 class TaxiCompleteView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
@@ -224,6 +225,46 @@ class TaxiCompleteView(generics.GenericAPIView):
         return taxi_action_response(
             request,
             kwargs.get("taxi_id"),
-            complete_taxi_trip
+            complete_taxi_trip,
         )
 
+
+
+class DriverRideHistoryView(generics.ListAPIView):
+    serializer_class = DriverRideHistorySerializer
+    permission_classes = [IsAuthenticated]
+    # pagination_class = DriverRideHistoryPagination
+
+    def get_queryset(self):
+        user = self.request.user
+
+        queryset = TaxiRide.objects.filter(
+            driver=user
+        ).order_by("-requested_at")
+
+        status_param = self.request.query_params.get("status")
+        date_from = self.request.query_params.get("date_from")
+        date_to = self.request.query_params.get("date_to")
+
+        if status_param:
+            queryset = queryset.filter(status=status_param)
+
+        if date_from:
+            dt_from = timezone.make_aware(
+                datetime.combine(
+                    datetime.strptime(date_from, "%Y-%m-%d").date(),
+                    time.min
+                )
+            )
+            queryset = queryset.filter(requested_at__gte=dt_from)
+
+        if date_to:
+            dt_to = timezone.make_aware(
+                datetime.combine(
+                    datetime.strptime(date_to, "%Y-%m-%d").date(),
+                    time.max
+                )
+            )
+            queryset = queryset.filter(requested_at__lte=dt_to)
+
+        return queryset

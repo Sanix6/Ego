@@ -1,12 +1,79 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from rest_framework import status
 from django.shortcuts import get_object_or_404
-
 from apps.delivery.models import Delivery
 from apps.taxi.models import TaxiRide
 from .services import PaymentService
+from decimal import Decimal
+from django.db.models import Sum, F, DecimalField, ExpressionWrapper, Q
+from rest_framework import generics, status
+
+from .models import WorkerWallet, WalletTransaction
+from .serializers import *
+from .choices import *
+
+
+class WalletDashboardView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = WalletDashboardSerializer
+
+    def get(self, request, *args, **kwargs):
+        wallet, _ = WorkerWallet.objects.get_or_create(worker=request.user)
+
+        signed_amount_expr = ExpressionWrapper(
+            F("amount") * F("sign"),
+            output_field=DecimalField(max_digits=12, decimal_places=2)
+        )
+
+        completed_transactions = WalletTransaction.objects.filter(
+            wallet=wallet,
+            status=TransactionStatus.COMPLETED
+        )
+
+        balance = completed_transactions.aggregate(
+            total=Sum(signed_amount_expr)
+        )["total"] or Decimal("0.00")
+
+        total_income = completed_transactions.filter(
+            transaction_type=TransactionType.ORDER_EARNING,
+            sign=1
+        ).aggregate(
+            total=Sum("amount")
+        )["total"] or Decimal("0.00")
+
+        cash_total = completed_transactions.filter(
+            transaction_type=TransactionType.ORDER_EARNING,
+            sign=1,
+            channel=PaymentChannel.CASH
+        ).aggregate(
+            total=Sum("amount")
+        )["total"] or Decimal("0.00")
+
+        cashless_total = completed_transactions.filter(
+            transaction_type=TransactionType.ORDER_EARNING,
+            sign=1
+        ).exclude(
+            channel=PaymentChannel.CASH
+        ).aggregate(
+            total=Sum("amount")
+        )["total"] or Decimal("0.00")
+
+        data = {
+            "balance": balance,
+            "total_income": total_income,
+            "bonuses": Decimal("0.00"),
+            "orders_count": getattr(request.user, "orders_count", 0) or 0,
+            "hours_on_shift": 0,
+            "cash_total": cash_total,
+            "cashless_total": cashless_total,
+        }
+
+        serializer = self.get_serializer(data)
+        return Response({
+            "success": True,
+            "data": serializer.data
+        }, status=status.HTTP_200_OK)
 
 
 class CreateDeliveryPaymentAPIView(APIView):

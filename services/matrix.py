@@ -44,7 +44,6 @@ class RoutingService:
             write_log(f"Некорректная точка назначения: ({dropoff_lat}, {dropoff_lon})")
             raise RoutingServiceError("Некорректные координаты точки назначения.")
 
-        # Mapbox использует порядок lon,lat
         coordinates = f"{pickup_lon},{pickup_lat};{dropoff_lon},{dropoff_lat}"
         url = f"{cls.BASE_URL}/{coordinates}"
 
