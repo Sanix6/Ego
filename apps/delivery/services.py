@@ -10,7 +10,8 @@ from apps.users.models import *
 from math import radians, sin, cos, sqrt, atan2
 from decimal import Decimal
 from apps.balance.models import WorkerWallet, WalletTransaction, TransactionType, TransactionStatus
-
+from .detour import mark_route_stop_arrived, complete_route_stop
+#services.py - содержит вспомогательные функции для логики доставки, такие как поиск ближайших курьеров, расчет маршрута, проверка соответствия курьера требованиям доставки, а также функции для изменения статуса доставки (прибыл, забрал, доставил и т.д.)
 def find_nearest_couriers(lat, lon, limit=10, radius=5):
     write_log(f"FIND NEAREST COURIERS: lat={lat}, lon={lon}, limit={limit}, radius={radius}km")
 
@@ -32,7 +33,6 @@ def find_nearest_couriers(lat, lon, limit=10, radius=5):
     couriers = User.objects.filter(
         id__in=user_ids,
         worker_status__is_online=True,
-        worker_status__is_busy=False,
         courier_profile__status="approved",
     ).select_related("worker_status", "courier_profile")
     write_log(f"COURIERS AFTER FILTER: {[c.id for c in couriers]}")
@@ -51,7 +51,6 @@ def find_nearest_couriers(lat, lon, limit=10, radius=5):
     write_log(f"TOTAL COURIERS RETURNED: {len(result)}")
     return result
 
-
 def mark_delivery_arrived(delivery, courier):
     with transaction.atomic():
         delivery = Delivery.objects.select_for_update().get(id=delivery.id)
@@ -61,6 +60,10 @@ def mark_delivery_arrived(delivery, courier):
 
         if delivery.delivery_status != "courier_assigned":
             return False, "Курьер не назначен!"
+
+        ok, msg = mark_route_stop_arrived(courier, delivery, "pickup")
+        if not ok:
+            return False, msg
 
         now = timezone.now()
 
@@ -87,6 +90,10 @@ def mark_delivery_picked_up(delivery, courier):
         if delivery.delivery_status not in ["courier_arrived", "courier_assigned"]:
             return False, "Нельзя забрать заказ сейчас."
 
+        ok, msg = complete_route_stop(courier, delivery, "pickup")
+        if not ok:
+            return False, msg
+
         now = timezone.now()
 
         delivery.delivery_status = "in_delivery"
@@ -99,22 +106,31 @@ def mark_delivery_picked_up(delivery, courier):
 
     return True, "Заказ забран"
 
+
 def mark_delivery_arrived_b(delivery, user):
-    if delivery.courier_id != user.id:
-        return False, "Это не ваш заказ."
+    with transaction.atomic():
+        delivery = Delivery.objects.select_for_update().get(id=delivery.id)
 
-    if delivery.delivery_status != "in_delivery":
-        return False, "Нельзя отметить прибытие в точку назначения сейчас."
+        if delivery.courier_id != user.id:
+            return False, "Это не ваш заказ."
 
-    delivery.delivery_status = "courier_arrived_b"
+        if delivery.delivery_status != "in_delivery":
+            return False, "Нельзя отметить прибытие в точку назначения сейчас."
 
-    update_fields = ["delivery_status"]
+        ok, msg = mark_route_stop_arrived(user, delivery, "dropoff")
+        if not ok:
+            return False, msg
 
-    if hasattr(delivery, "arrived_b_at"):
-        delivery.arrived_b_at = timezone.now()
-        update_fields.append("arrived_b_at")
+        delivery.delivery_status = "courier_arrived_b"
 
-    delivery.save(update_fields=update_fields)
+        update_fields = ["delivery_status"]
+
+        if hasattr(delivery, "arrived_b_at"):
+            delivery.arrived_b_at = timezone.now()
+            update_fields.append("arrived_b_at")
+
+        delivery.save(update_fields=update_fields)
+
     return True, "Курьер прибыл в точку назначения"
 
 
@@ -128,8 +144,9 @@ def complete_delivery(delivery, courier):
         if delivery.delivery_status not in ["courier_arrived_b"]:
             return False, "Нельзя завершить заказ сейчас."
 
-        # if delivery.payment_status != "paid":
-        #     return False, "Заказ не оплачен."
+        ok, msg = complete_route_stop(courier, delivery, "dropoff")
+        if not ok:
+            return False, msg
 
         now = timezone.now()
 
@@ -137,8 +154,18 @@ def complete_delivery(delivery, courier):
         delivery.delivered_at = now
         delivery.save(update_fields=["delivery_status", "delivered_at"])
 
+        active_left = Delivery.objects.filter(
+            courier=courier,
+            delivery_status__in=[
+                "courier_assigned",
+                "courier_arrived",
+                "in_delivery",
+                "courier_arrived_b",
+            ]
+        ).exclude(id=delivery.id).exists()
+
         worker_status, _ = WorkerStatus.objects.get_or_create(user=courier)
-        worker_status.is_busy = False
+        worker_status.is_busy = active_left
         worker_status.save(update_fields=["is_busy", "last_seen"])
 
         User.objects.filter(id=courier.id).update(
@@ -172,7 +199,6 @@ def complete_delivery(delivery, courier):
                 )
 
     return True, "Заказ доставлен"
-    
 
 
 def cancel_delivery_by_client(delivery, user, cancel_reason=""):
@@ -186,9 +212,8 @@ def cancel_delivery_by_client(delivery, user, cancel_reason=""):
             return False, "Этот заказ уже нельзя отменить."
 
         delivery.delivery_status = "canceled"
-        delivery.canceled_by = "client"
         delivery.cancel_reason = cancel_reason
-        delivery.save(update_fields=["delivery_status", "canceled_by", "cancel_reason"])
+        delivery.save(update_fields=["delivery_status", "cancel_reason"])
 
     return True, "Заказ успешно отменен"
 
@@ -229,6 +254,14 @@ def courier_matches_delivery(delivery, courier):
         write_log(f"MATCH FAIL courier={courier.id}: no profile")
         return False
 
+    if delivery.type_transport and courier_profile.transport_type != delivery.type_transport:
+        write_log(
+            f"MATCH FAIL courier={courier.id}: "
+            f"courier_transport={courier_profile.transport_type} "
+            f"delivery_transport={delivery.type_transport}"
+        )
+        return False
+
     zone = courier_profile.delivery_zones
 
     if not zone:
@@ -244,7 +277,6 @@ def courier_matches_delivery(delivery, courier):
     write_log(
         f"MATCH courier={courier.id} "
         f"zone_id={zone.id} "
-        f"polygon={zone.polygon} "
         f"dropoff_lat={delivery.dropoff_lat} "
         f"dropoff_lon={delivery.dropoff_lon} "
         f"result={result}"

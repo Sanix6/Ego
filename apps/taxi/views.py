@@ -268,3 +268,54 @@ class DriverRideHistoryView(generics.ListAPIView):
             queryset = queryset.filter(requested_at__lte=dt_to)
 
         return queryset
+
+
+class TaxiCancelByClientView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = TaxiCancelByClientSerializer
+
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        taxi_id = kwargs.get("taxi_id")
+
+        if user.user_type != "client":
+            return Response(
+                {"success": False, "message": "Только клиент может отменить поездку"},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        taxi = TaxiRide.objects.filter(id=taxi_id, client=user).first()
+        if not taxi:
+            return Response(
+                {"success": False, "message": "Поездка не найдена"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        cancel_reason = serializer.validated_data.get("cancel_reason", "")
+
+        success, message = cancel_taxi_by_client(
+            taxi=taxi,
+            user=user,
+            cancel_reason=cancel_reason,
+        )
+
+        if not success:
+            return Response(
+                {"success": False, "message": message},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        taxi.refresh_from_db()
+        response_serializer = TaxiRideDetailSerializer(taxi)
+
+        return Response(
+            {
+                "success": True,
+                "message": message,
+                "data": response_serializer.data,
+            },
+            status=status.HTTP_200_OK
+        )

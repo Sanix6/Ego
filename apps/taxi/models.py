@@ -43,7 +43,6 @@ class TaxiRide(models.Model):
     total_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     surge_multiplier = models.DecimalField(max_digits=4, decimal_places=2, default=1.00)
 
-    #тарификация
     base_fare = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     per_km_rate = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     per_min_rate = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
@@ -78,6 +77,7 @@ class TaxiRide(models.Model):
     cancel_reason = models.TextField(blank=True, default="")
 
     updated_at = models.DateTimeField(auto_now=True)
+    is_hidden_for_client = models.BooleanField(default=False)
 
     def clean(self):
         if self.driver and getattr(self.driver, "user_type", None) != "driver":

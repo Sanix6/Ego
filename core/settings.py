@@ -29,7 +29,6 @@ INSTALLED_APPS = [
     #apps
     "apps.users",
     "apps.main",
-    "apps.orders",
     "apps.delivery",
     "apps.taxi",
     "apps.maps",
@@ -166,7 +165,7 @@ CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
 CELERY_TIMEZONE = "Asia/Bishkek"
 ONESIGNAL_APP_ID = os.getenv("ONESIGNAL_APP_ID", "")
-ONESIGNAL_API_KEY = os.getenv("ONESIGNAL_API_KEY", "")
+ONESIGNAL_API_KEY = os.getenv("ONESIGNAL_API_KEY", "os_v2_app_owmo3xulfbcfvgcckc5pibakarxqxknk3mkuowftqbrok2m7r6lgou7w6a2vxrro2lbgrq6wkz6hvbqf32b2rlms2vdynnjjjvzautq")
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 
 NIKITA_LOGIN = os.getenv("NIKITA_LOGIN")

@@ -14,10 +14,7 @@ from apps.users.models import (
 
 
 class CourierDispatchForm(forms.ModelForm):
-    # ===== USER =====
     verification_code = forms.CharField(required=False, label="Код подтверждения")
-    home_address = forms.CharField(required=False, label="Домашний адрес")
-    work_address = forms.CharField(required=False, label="Рабочий адрес")
     rating_avg = forms.DecimalField(required=False, label="Средний рейтинг", max_digits=3, decimal_places=2)
     rating_count = forms.IntegerField(required=False, label="Количество отзывов", min_value=0)
     orders_count = forms.IntegerField(required=False, label="Количество заказов", min_value=0)
@@ -25,6 +22,8 @@ class CourierDispatchForm(forms.ModelForm):
     # ===== STATUS =====
     is_online = forms.BooleanField(required=False, label="Онлайн")
     is_busy = forms.BooleanField(required=False, label="Занят")
+    active_deliveries_count = forms.IntegerField(required=False, label="Активные доставки", min_value=0)
+    max_parallel_deliveries = forms.IntegerField(required=False, label="Макс. параллельные доставки", min_value=1)
     last_seen = forms.DateTimeField(required=False, label="Последняя активность", disabled=True)
 
     # ===== LOCATION =====
@@ -74,8 +73,6 @@ class CourierDispatchForm(forms.ModelForm):
             "last_name",
             "is_active",
             "verification_code",
-            "home_address",
-            "work_address",
             "rating_avg",
             "rating_count",
             "orders_count",
@@ -91,8 +88,6 @@ class CourierDispatchForm(forms.ModelForm):
 
         # user
         self.fields["verification_code"].initial = user.verification_code
-        self.fields["home_address"].initial = user.home_address
-        self.fields["work_address"].initial = user.work_address
         self.fields["rating_avg"].initial = user.rating_avg
         self.fields["rating_count"].initial = user.rating_count
         self.fields["orders_count"].initial = user.orders_count
@@ -101,6 +96,8 @@ class CourierDispatchForm(forms.ModelForm):
         if status:
             self.fields["is_online"].initial = status.is_online
             self.fields["is_busy"].initial = status.is_busy
+            self.fields["active_deliveries_count"].initial = status.active_deliveries_count
+            self.fields["max_parallel_deliveries"].initial = status.max_parallel_deliveries
             self.fields["last_seen"].initial = status.last_seen
 
         # location
@@ -153,8 +150,6 @@ class CourierDispatchForm(forms.ModelForm):
         user = super().save(commit=False)
         user.user_type = "courier"
         user.verification_code = self.cleaned_data.get("verification_code")
-        user.home_address = self.cleaned_data.get("home_address")
-        user.work_address = self.cleaned_data.get("work_address")
         user.rating_avg = self.cleaned_data.get("rating_avg") or 0
         user.rating_count = self.cleaned_data.get("rating_count") or 0
         user.orders_count = self.cleaned_data.get("orders_count") or 0
@@ -166,6 +161,8 @@ class CourierDispatchForm(forms.ModelForm):
             worker_status, _ = WorkerStatus.objects.get_or_create(user=user)
             worker_status.is_online = self.cleaned_data.get("is_online", False)
             worker_status.is_busy = self.cleaned_data.get("is_busy", False)
+            worker_status.active_deliveries_count = self.cleaned_data.get("active_deliveries_count") or 0
+            worker_status.max_parallel_deliveries = self.cleaned_data.get("max_parallel_deliveries") or 5
             worker_status.save()
 
             lat = self.cleaned_data.get("lat")
@@ -202,8 +199,6 @@ class CourierDispatchForm(forms.ModelForm):
 class DriverDispatchForm(forms.ModelForm):
     # ===== USER =====
     verification_code = forms.CharField(required=False, label="Код подтверждения")
-    home_address = forms.CharField(required=False, label="Домашний адрес")
-    work_address = forms.CharField(required=False, label="Рабочий адрес")
     rating_avg = forms.DecimalField(required=False, label="Средний рейтинг", max_digits=3, decimal_places=2)
     rating_count = forms.IntegerField(required=False, label="Количество отзывов", min_value=0)
     orders_count = forms.IntegerField(required=False, label="Количество заказов", min_value=0)
@@ -252,8 +247,6 @@ class DriverDispatchForm(forms.ModelForm):
             "last_name",
             "is_active",
             "verification_code",
-            "home_address",
-            "work_address",
             "rating_avg",
             "rating_count",
             "orders_count",
@@ -269,8 +262,6 @@ class DriverDispatchForm(forms.ModelForm):
 
         # user
         self.fields["verification_code"].initial = user.verification_code
-        self.fields["home_address"].initial = user.home_address
-        self.fields["work_address"].initial = user.work_address
         self.fields["rating_avg"].initial = user.rating_avg
         self.fields["rating_count"].initial = user.rating_count
         self.fields["orders_count"].initial = user.orders_count
@@ -329,8 +320,6 @@ class DriverDispatchForm(forms.ModelForm):
         user = super().save(commit=False)
         user.user_type = "driver"
         user.verification_code = self.cleaned_data.get("verification_code")
-        user.home_address = self.cleaned_data.get("home_address")
-        user.work_address = self.cleaned_data.get("work_address")
         user.rating_avg = self.cleaned_data.get("rating_avg") or 0
         user.rating_count = self.cleaned_data.get("rating_count") or 0
         user.orders_count = self.cleaned_data.get("orders_count") or 0

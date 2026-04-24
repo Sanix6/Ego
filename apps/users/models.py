@@ -15,8 +15,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     date_joined = models.DateTimeField(auto_now_add=True)
-    home_address = models.CharField(max_length=255, blank=True, null=True)
-    work_address = models.CharField(max_length=255, blank=True, null=True)
+    logo = models.ImageField(upload_to="logos/", blank=True, null=True)
+
     verification_code = models.CharField(
         "Код подтверждения", max_length=4, blank=True, null=True
     )
@@ -40,6 +40,85 @@ class User(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name = "Пользователь"
         verbose_name_plural = "Пользователи"
+
+
+class UserAddress(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="addresses",
+        verbose_name="Пользователь",
+    )
+
+    title = models.CharField(
+        "Название адреса",
+        max_length=100,
+        help_text="Например: Дом, Работа, Универ"
+    )
+
+    address = models.CharField(
+        "Адрес",
+        max_length=255
+    )
+
+    lat = models.FloatField(
+        "Широта",
+        null=True,
+        blank=True
+    )
+
+    lon = models.FloatField(
+        "Долгота",
+        null=True,
+        blank=True
+    )
+
+    entrance = models.CharField(
+        "Подъезд",
+        max_length=20,
+        blank=True
+    )
+
+    floor = models.CharField(
+        "Этаж",
+        max_length=20,
+        blank=True
+    )
+
+    apartment = models.CharField(
+        "Квартира / офис",
+        max_length=50,
+        blank=True
+    )
+
+    intercom = models.CharField(
+        "Домофон",
+        max_length=50,
+        blank=True
+    )
+
+    comment = models.TextField(
+        "Комментарий",
+        blank=True,
+        default=""
+    )
+
+    created_at = models.DateTimeField(
+        "Создано",
+        auto_now_add=True
+    )
+
+    class Meta:
+        verbose_name = "Адрес пользователя"
+        verbose_name_plural = "Адреса пользователей"
+        ordering = ["-created_at"]
+
+        indexes = [
+            models.Index(fields=["user", "created_at"]),
+        ]
+
+    def __str__(self):
+        return f"{self.user_id} - {self.title}"
 
 
 class Client(User):
@@ -211,6 +290,8 @@ class WorkerStatus(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="worker_status")
     is_online = models.BooleanField(default=False)
     is_busy = models.BooleanField(default=False)
+    active_deliveries_count = models.PositiveIntegerField(default=0)
+    max_parallel_deliveries = models.PositiveIntegerField(default=5)
     last_seen = models.DateTimeField(auto_now=True)
 
     def __str__(self):

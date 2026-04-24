@@ -42,9 +42,6 @@ class BaseUserAdmin(admin.ModelAdmin):
         ("Персональные данные", {
             "fields": ("first_name", "last_name", "email")
         }),
-        ("Адреса", {
-            "fields": ("home_address", "work_address")
-        }),
         ("Доступ", {
             "fields": ("user_type", "is_active", "is_staff", "is_superuser")
         }),
@@ -246,6 +243,8 @@ class CourierDispatchAdmin(DispatchAdminMixin, admin.ModelAdmin):
         "darkstore_view",
         "delivery_zone_view",
         "car_info",
+        "active_deliveries_count_view",
+        "max_parallel_deliveries_view",
     )
 
     list_filter = (
@@ -264,8 +263,6 @@ class CourierDispatchAdmin(DispatchAdminMixin, admin.ModelAdmin):
         "first_name",
         "last_name",
         "verification_code",
-        "home_address",
-        "work_address",
         "courier_profile__car_number",
         "courier_profile__car_brand",
         "courier_profile__car_model",
@@ -283,12 +280,6 @@ class CourierDispatchAdmin(DispatchAdminMixin, admin.ModelAdmin):
                 "verification_code",
                 "is_active",
                 "date_joined",
-            )
-        }),
-        ("Адреса", {
-            "fields": (
-                "home_address",
-                "work_address",
             )
         }),
         ("Рейтинг и статистика", {
@@ -347,6 +338,16 @@ class CourierDispatchAdmin(DispatchAdminMixin, admin.ModelAdmin):
                 "courier_profile__delivery_zones",
             )
         )
+
+    @admin.display(description="Активные доставки", ordering="worker_status__active_deliveries_count")
+    def active_deliveries_count_view(self, obj):
+        status = getattr(obj, "worker_status", None)
+        return status.active_deliveries_count if status else 0
+
+    @admin.display(description="Макс. параллельные доставки", ordering="worker_status__max_parallel_deliveries")
+    def max_parallel_deliveries_view(self, obj):
+        status = getattr(obj, "worker_status", None)
+        return status.max_parallel_deliveries if status else 0
 
     def verification_code_view(self, obj):
         return obj.verification_code or "-"
@@ -442,8 +443,6 @@ class DriverDispatchAdmin(DispatchAdminMixin, admin.ModelAdmin):
         "first_name",
         "last_name",
         "verification_code",
-        "home_address",
-        "work_address",
         "driver_profile__car_number",
         "driver_profile__car_brand",
         "driver_profile__car_model",
@@ -463,12 +462,6 @@ class DriverDispatchAdmin(DispatchAdminMixin, admin.ModelAdmin):
                 "verification_code",
                 "is_active",
                 "date_joined",
-            )
-        }),
-        ("Адреса", {
-            "fields": (
-                "home_address",
-                "work_address",
             )
         }),
         ("Рейтинг и статистика", {

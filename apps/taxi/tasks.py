@@ -1,10 +1,9 @@
 from celery import shared_task
 from django.db import transaction
 from django.utils import timezone
-
 from apps.taxi.models import TaxiOffer, TaxiRide
 from apps.taxi.dispatch import dispatch_wave, expire_taxi_offer, TAXI_DISPATCH_WAVES
-
+from apps.notify.services_taxi import send_taxi_offer_push
 
 @shared_task
 def check_taxi_offer_timeout(offer_id):
@@ -60,3 +59,7 @@ def dispatch_taxi(ride_id, wave_index=0):
             args=[ride.id, wave_index + 1],
             countdown=config["timeout"]
         )
+
+@shared_task
+def send_taxi_offer_push_task(offer_id):
+    send_taxi_offer_push(offer_id)

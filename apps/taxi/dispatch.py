@@ -46,10 +46,16 @@ def send_taxi_offer_event(driver, ride, offer):
 
 
 def send_offer_to_driver(ride, driver):
+    from .tasks import send_taxi_offer_push_task
+
     offer = create_taxi_offer(ride, driver)
 
     transaction.on_commit(
         lambda: send_taxi_offer_event(driver, ride, offer)
+    )
+
+    transaction.on_commit(
+        lambda: send_taxi_offer_push_task.delay(offer.id)
     )
 
     return offer

@@ -8,7 +8,10 @@ from django.utils.dateparse import parse_datetime
 
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import Delivery, DeliveryOffer
+from django.db import transaction
+from .models import Delivery, CourierSlot, CourierRoute, CourierRouteStop, DeliveryOffer
+from .forms import CourierSlotAdminForm
+# from .services import find_nearest_couriers, courier_matches_delivery, has_offer_been
 
 
 @admin.register(DeliveryOffer)
@@ -260,6 +263,20 @@ class DeliveryAdmin(admin.ModelAdmin):
         "created_at",
     )
 
+    def save_model(self, request, obj, form, change):
+        is_new = obj.pk is None
+        selected_courier = obj.courier
+
+        super().save_model(request, obj, form, change)
+        if is_new and not selected_courier:
+            from .tasks import dispatch_delivery
+            transaction.on_commit(lambda: dispatch_delivery.delay(obj.id))
+
+
+        elif is_new and selected_courier:
+            from .dispatch import send_offer_to_courier
+            transaction.on_commit(lambda: send_offer_to_courier(obj, selected_courier))
+
 
 @admin.register(CourierSlot)
 class CourierSlotAdmin(admin.ModelAdmin):
@@ -420,3 +437,106 @@ class CourierSlotAdmin(admin.ModelAdmin):
         if obj and obj.status in ("in_work", "done", "closed_early"):
             return self.readonly_fields + ("start_at", "end_at", "type_slot")
         return self.readonly_fields
+
+
+class CourierRouteStopInline(admin.TabularInline):
+    model = CourierRouteStop
+    extra = 0
+    fields = (
+        "delivery",
+        "stop_type",
+        "sequence",
+        "lat",
+        "lon",
+        "status",
+        "eta_at",
+        "arrived_at",
+        "completed_at",
+    )
+    readonly_fields = (
+        "delivery",
+        "stop_type",
+        "sequence",
+        "lat",
+        "lon",
+        "eta_at",
+        "arrived_at",
+        "completed_at",
+    )
+    ordering = ("sequence",)
+
+
+@admin.register(CourierRoute)
+class CourierRouteAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "courier",
+        "status_colored",
+        "stops_count",
+        "created_at",
+        "updated_at",
+    )
+
+    list_filter = ("status",)
+    search_fields = ("courier__id", "courier__phone")
+    inlines = [CourierRouteStopInline]
+
+    readonly_fields = (
+        "created_at",
+        "updated_at",
+    )
+
+    def stops_count(self, obj):
+        return obj.stops.count()
+    stops_count.short_description = "Stops"
+
+    def status_colored(self, obj):
+        color = "green" if obj.status == "active" else "gray"
+        return format_html(
+            '<b style="color:{};">{}</b>',
+            color,
+            obj.status
+        )
+    status_colored.short_description = "Status"
+
+
+@admin.register(CourierRouteStop)
+class CourierRouteStopAdmin(admin.ModelAdmin):
+
+    list_display = (
+        "id",
+        "route",
+        "delivery",
+        "stop_type",
+        "sequence",
+        "status_colored",
+        "eta_at",
+    )
+
+    list_filter = (
+        "stop_type",
+        "status",
+    )
+
+    search_fields = (
+        "delivery__id",
+        "route__courier__id",
+    )
+
+    ordering = ("route", "sequence")
+
+    def status_colored(self, obj):
+        colors = {
+            "pending": "orange",
+            "arrived": "blue",
+            "done": "green",
+            "skipped": "red",
+        }
+
+        return format_html(
+            '<b style="color:{};">{}</b>',
+            colors.get(obj.status, "black"),
+            obj.status
+        )
+
+    status_colored.short_description = "Status"

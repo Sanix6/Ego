@@ -2,7 +2,7 @@ import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from assets.helpers.loggers import write_log
 
-
+#consumer.py - отвечает за WebSocket соединение с курьером, отправку ему офферов и получение его ответов (принят/отклонен оффер)
 class BaseConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):

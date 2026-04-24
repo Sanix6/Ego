@@ -2,7 +2,7 @@ from decimal import Decimal, ROUND_HALF_UP
 
 from apps.delivery.models import DeliveryTariff
 
-
+#pricing.py - отвечает за логику расчета стоимости доставки на основе тарифов, расстояния и времени. Также рассчитывает комиссию и выплату курьеру.
 class DeliveryPricingError(Exception):
     pass
 

@@ -10,7 +10,11 @@ from apps.delivery.services import *
 from apps.delivery.models import Delivery
 from .helpers import courier_has_active_in_work_slot
 from .serializers import *
+from .detour import try_attach_delivery_to_courier, save_courier_route_plan
 
+
+
+#dispatch.py - отвечает за логику отправки офферов курьерам и обработки их ответов (принятие/отклонение)
 OFFER_TIMEOUT_SECONDS = 20
 
 def dispatch_wave(delivery, limit):
@@ -27,30 +31,45 @@ def dispatch_wave(delivery, limit):
     sent_offers = []
 
     for distance, courier in nearest:
-        write_log(f"CHECK COURIER id={courier.id} distance={distance}")
+        try:
+            write_log(f"CHECK COURIER id={courier.id} distance={distance}")
 
-        if not courier_matches_delivery(delivery, courier):
-            write_log(
-                f"SKIP courier={courier.id} "
-                f"(darkstore/zone mismatch delivery={delivery.id})"
-            )
-            continue
+            if not courier_matches_delivery(delivery, courier):
+                write_log(
+                    f"SKIP courier={courier.id} "
+                    f"(darkstore/zone mismatch delivery={delivery.id})"
+                )
+                continue
 
-        if courier_has_active_in_work_slot(courier):
-            write_log(f"SKIP courier={courier.id} (active in_work slot)")
-            continue
+            write_log(f"AFTER MATCH courier={courier.id}")
 
-        if has_offer_been_sent(delivery, courier):
-            write_log(f"SKIP courier={courier.id} (already has offer)")
-            continue
+            if courier_has_active_in_work_slot(courier):
+                write_log(f"SKIP courier={courier.id} (active in_work slot)")
+                continue
 
-        offer = send_offer_to_courier(delivery, courier)
-        write_log(f"OFFER SENT id={offer.id} courier={courier.id}")
+            write_log(f"AFTER SLOT CHECK courier={courier.id}")
 
-        sent_offers.append(offer)
+            route_plan = try_attach_delivery_to_courier(courier, delivery)
+            write_log(f"ROUTE PLAN courier={courier.id}: {route_plan}")
 
-        if len(sent_offers) >= limit:
-            break
+            if not route_plan:
+                write_log(f"SKIP courier={courier.id} (no valid insertion)")
+                continue
+
+            if has_offer_been_sent(delivery, courier):
+                write_log(f"SKIP courier={courier.id} (already has offer)")
+                continue
+
+            offer = send_offer_to_courier(delivery, courier)
+            write_log(f"OFFER SENT id={offer.id} courier={courier.id}")
+
+            sent_offers.append(offer)
+
+            if len(sent_offers) >= limit:
+                break
+
+        except Exception as e:
+            write_log(f"DISPATCH ERROR courier={courier.id}: {str(e)}")
 
     write_log(f"TOTAL SENT: {len(sent_offers)}")
     return sent_offers
@@ -85,11 +104,16 @@ def send_delivery_offer_event(courier, delivery, offer):
     write_log(f"WS EVENT SENT: group=user_{courier.id}, offer={offer.id}")
 
 def send_offer_to_courier(delivery, courier):
-    from .tasks import check_delivery_offer_timeout
+    from .tasks import check_delivery_offer_timeout, send_delivery_offer_push_task
+
     offer = create_delivery_offer(delivery, courier)
 
     transaction.on_commit(
         lambda: send_delivery_offer_event(courier, delivery, offer)
+    )
+
+    transaction.on_commit(
+        lambda: send_delivery_offer_push_task.delay(offer.id)
     )
 
     transaction.on_commit(
@@ -130,6 +154,10 @@ def dispatch_next_courier(delivery):
         if courier_has_active_in_work_slot(courier):
             continue
 
+        route_plan = try_attach_delivery_to_courier(courier, delivery)
+        if not route_plan:
+            continue
+
         if has_offer_been_sent(delivery, courier):
             continue
 
@@ -145,7 +173,6 @@ def get_active_offer_for_courier(delivery, courier):
         status="pending",
         expires_at__gt=timezone.now(),
     ).first()
-
 
 def accept_delivery_offer(offer, courier):
     with transaction.atomic():
@@ -175,15 +202,21 @@ def accept_delivery_offer(offer, courier):
             offer.save(update_fields=["status", "responded_at"])
             return False, "Время оффера истекло."
 
-        if delivery.courier_id or delivery.delivery_status != "searching_courier":
+        if delivery.courier_id and delivery.courier_id != courier.id:
             offer.status = "expired"
             offer.responded_at = now
             offer.save(update_fields=["status", "responded_at"])
             return False, "Заказ уже занят."
 
+        route_plan = try_attach_delivery_to_courier(courier, delivery)
+        if not route_plan:
+            return False, "Не удалось встроить заказ в маршрут."
+
         delivery.courier = courier
         delivery.delivery_status = "courier_assigned"
         delivery.save(update_fields=["courier", "delivery_status"])
+
+        save_courier_route_plan(courier, route_plan["points"])
 
         offer.status = "accepted"
         offer.responded_at = now
@@ -216,7 +249,6 @@ def reject_delivery_offer(offer, courier):
             return False, "Оффер уже недоступен."
 
         offer.status = "rejected"
-        offer.is_busy = False
         offer.responded_at = timezone.now()
         offer.save(update_fields=["status", "responded_at"])
 

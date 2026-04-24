@@ -227,6 +227,7 @@ class Delivery(models.Model):
         default="",
         verbose_name="Причина отмены"
     )
+    is_hidden_for_client = models.BooleanField(default=False)
 
     def clean(self):
         if self.courier and getattr(self.courier, "user_type", None) != "courier":
@@ -278,3 +279,85 @@ class DeliveryOffer(models.Model):
 
     def __str__(self):
         return f"Offer #{self.id} delivery={self.delivery_id} courier={self.courier_id}"
+
+
+
+class CourierRoute(models.Model):
+    courier = models.OneToOneField(
+        "users.User",
+        on_delete=models.CASCADE,
+        related_name="active_route",
+        limit_choices_to={"user_type": "courier"},
+    )
+    status = models.CharField(
+        max_length=20,
+        default="active",
+        choices=[
+            ("active", "active"),
+            ("completed", "completed"),
+        ]
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Маршрут курьера {self.courier.first_name} {self.courier.last_name}"
+
+    class Meta:
+        verbose_name = "Маршрут курьера"
+        verbose_name_plural = "Маршруты курьеров"
+
+
+
+
+class CourierRouteStop(models.Model):
+    route = models.ForeignKey(
+        CourierRoute,
+        on_delete=models.CASCADE,
+        related_name="stops",
+    )
+    delivery = models.ForeignKey(
+        "delivery.Delivery",
+        on_delete=models.CASCADE,
+        related_name="route_stops",
+    )
+
+    stop_type = models.CharField(
+        max_length=10,
+        choices=[
+            ("pickup", "pickup"),
+            ("dropoff", "dropoff"),
+        ]
+    )
+
+    sequence = models.PositiveIntegerField(db_index=True)
+
+    lat = models.FloatField()
+    lon = models.FloatField()
+
+    status = models.CharField(
+        max_length=20,
+        default="pending",
+        choices=[
+            ("pending", "pending"),
+            ("arrived", "arrived"),
+            ("done", "done"),
+            ("skipped", "skipped"),
+        ]
+    )
+
+    eta_at = models.DateTimeField(null=True, blank=True)
+    arrived_at = models.DateTimeField(null=True, blank=True)
+    completed_at = models.DateTimeField(null=True, blank=True)
+
+    def __str__(self):
+        return f"Остановка {self.stop_type} для доставки #{self.delivery_id} (статус: {self.status})"
+
+    class Meta:
+        ordering = ["sequence"]
+        indexes = [
+            models.Index(fields=["route", "sequence"]),
+            models.Index(fields=["delivery", "stop_type"]),
+        ]
+        verbose_name = "Остановка маршрута"
+        verbose_name_plural = "Остановки маршрута"

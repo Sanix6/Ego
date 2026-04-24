@@ -1,4 +1,5 @@
 from rest_framework import status, permissions, generics, views
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.contrib.auth import login
 from .models import User
@@ -13,6 +14,11 @@ from django.db import transaction
 from services.geo import RedisGeoService
 from .models import WorkerLocation, WorkerStatus
 from apps.balance.models import WorkerWallet
+from apps.taxi.models import TaxiRide
+from apps.delivery.models import Delivery
+from django.shortcuts import get_object_or_404
+from rest_framework.viewsets import ModelViewSet
+
 
 
 
@@ -25,7 +31,12 @@ class SendCodeView(generics.GenericAPIView):
         serializer.is_valid(raise_exception=True)
 
         phone = serializer.validated_data["phone"]
-        user, _ = User.objects.get_or_create(phone=phone)
+
+        user, created = User.objects.get_or_create(phone=phone)
+
+        if not user.is_active:
+            user.is_active = True
+            user.save()
 
         sms_sent = send_verification_sms(user)
 
@@ -206,45 +217,18 @@ class ScanDriversAutoView(generics.UpdateAPIView):
         return self.request.user.driver_profile
 
 
-
-class SaveHomeAddressView(generics.GenericAPIView):
-    serializer_class = SaveAddressSerializer
+class UserAddressViewSet(ModelViewSet):
+    serializer_class = UserAddressSerializer
     permission_classes = [IsAuthenticated]
 
-    def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
+    def get_queryset(self):
+        return UserAddress.objects.filter(
+            user=self.request.user
+        ).order_by("-id")
 
-        request.user.home_address = serializer.validated_data["address"]
-        request.user.save(update_fields=["home_address"])
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
-        return Response(
-            {
-                "message": "Домашний адрес сохранен",
-                "home_address": request.user.home_address
-            },
-            status=status.HTTP_200_OK
-        )
-
-
-class SaveWorkAddressView(generics.GenericAPIView):
-    serializer_class = SaveAddressSerializer
-    permission_classes = [IsAuthenticated]
-
-    def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-
-        request.user.work_address = serializer.validated_data["address"]
-        request.user.save(update_fields=["work_address"])
-
-        return Response(
-            {
-                "message": "Рабочий адрес сохранен",
-                "work_address": request.user.work_address
-            },
-            status=status.HTTP_200_OK
-        )
 
 class PersonalInfoView(generics.RetrieveAPIView):
     serializer_class = PersonalInfoSerializer
@@ -254,6 +238,30 @@ class PersonalInfoView(generics.RetrieveAPIView):
         return self.request.user
 
 
+class LogoutProfileView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        try:
+            refresh_token = request.data.get("refresh")
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+
+            return Response({"detail": "Вы вышли из системы"})
+        except Exception:
+            return Response({"error": "Ошибка выхода"}, status=400)
+
+
+
+class DeleteProfileView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request):
+        user = request.user
+        user.is_active = False
+        user.save()
+
+        return Response({"detail": "Аккаунт деактивирован"}, status=status.HTTP_200_OK)
 
 class WorkerLocationUpdateView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
@@ -377,3 +385,105 @@ class WorkerProfile(generics.GenericAPIView):
             "user": user_data,
             "profile": profile_data
         })
+
+class MyOrdersView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        order_type = request.GET.get("type", "all")
+        data = []
+
+        if order_type in ["all", "taxi"]:
+            for ride in TaxiRide.objects.filter(client=user, is_hidden_for_client=False):
+                data.append({
+                    "id": ride.id,
+                    "type": "taxi",
+                    "status": ride.status,
+                    "from_address": ride.point_a,
+                    "to_address": ride.point_b,
+                    "price": ride.price,
+                    "distance_km": ride.distance_km,
+                    "duration_min": ride.duration_min,
+                    "created_at": ride.requested_at,
+                })
+
+        if order_type in ["all", "delivery"]:
+            for d in Delivery.objects.filter(client=user, is_hidden_for_client=False):
+                data.append({
+                    "id": d.id,
+                    "type": "delivery",
+                    "status": d.delivery_status,
+                    "from_address": d.point_a,
+                    "to_address": d.point_b,
+                    "price": d.price,
+                    "distance_km": d.planned_distance_km,
+                    "duration_min": d.planned_duration_min,
+                    "created_at": d.created_at,
+                })
+
+        data.sort(key=lambda x: x["created_at"], reverse=True)
+
+        serializer = MyOrderListSerializer(data, many=True)
+        return Response(serializer.data)
+
+class MyOrderDetailView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, order_type, pk):
+        user = request.user
+
+        if order_type == "taxi":
+            obj = get_object_or_404(TaxiRide, pk=pk, client=user)
+            return Response(TaxiRideDetailSerializer(obj).data)
+
+        elif order_type == "delivery":
+            obj = get_object_or_404(Delivery, pk=pk, client=user)
+            return Response(DeliveryDetailSerializer(obj).data)
+
+        return Response({"error": "Invalid type"}, status=400)
+
+
+class MyOrderDeleteView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, order_type, pk):
+        user = request.user
+
+        if order_type == "taxi":
+            obj = get_object_or_404(TaxiRide, pk=pk, client=user)
+            obj.is_hidden_for_client = True
+            obj.save(update_fields=["is_hidden_for_client"])
+
+        elif order_type == "delivery":
+            obj = get_object_or_404(Delivery, pk=pk, client=user)
+            obj.is_hidden_for_client = True
+            obj.save(update_fields=["is_hidden_for_client"])
+
+        else:
+            return Response(
+                {"detail": "Invalid type"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class LogoProfileView(generics.GenericAPIView):
+    serializer_class = LogoProfileSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request):
+        serializer = self.get_serializer(request.user)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = self.get_serializer(
+            request.user,
+            data=request.data,
+            partial=True
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(serializer.data)

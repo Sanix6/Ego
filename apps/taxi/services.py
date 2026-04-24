@@ -6,6 +6,7 @@ from .models import TaxiRide
 from .serializers import TaxiRideDetailSerializer
 from rest_framework.response import Response
 from rest_framework import status
+from django.db import transaction
 
 
 
@@ -134,3 +135,23 @@ def taxi_action_response(request, taxi_id, action_func):
     return Response(
         {"success": True, "message": message, "data": serializer.data}
     )
+
+
+
+def cancel_taxi_by_client(taxi, user, cancel_reason=""):
+    with transaction.atomic():
+        taxi = TaxiRide.objects.select_for_update().get(id=taxi.id)
+
+        if taxi.client_id != user.id:
+            return False, "Вы не можете отменить эту поездку."
+
+        if taxi.status in ["completed", "canceled"]:
+            return False, "Эту поездку уже нельзя отменить."
+
+        taxi.status = "canceled"
+        taxi.canceled_by = "client"
+        taxi.cancel_reason = cancel_reason
+        taxi.canceled_at = timezone.now()
+        taxi.save(update_fields=["status", "canceled_by", "cancel_reason", "canceled_at"])
+
+    return True, "Поездка успешно отменена"

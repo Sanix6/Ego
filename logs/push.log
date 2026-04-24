@@ -1,0 +1,197 @@
+START TAXI PUSH offer_id=554
+TAXI OFFER FOUND driver=13 ride=145
+TAXI NOTIFICATION CREATED=True
+TAXI DEVICES COUNT=0
+TAXI DEVICE IDS=[]
+TAXI DEVICE EXTERNAL IDS RAW=[]
+TAXI EXTERNAL IDS=[]
+TAXI NO EXTERNAL IDS
+START TAXI PUSH offer_id=555
+TAXI OFFER FOUND driver=8 ride=145
+TAXI NOTIFICATION CREATED=True
+TAXI DEVICES COUNT=1
+TAXI DEVICE IDS=[5]
+TAXI DEVICE EXTERNAL IDS RAW=['8']
+TAXI EXTERNAL IDS=['8']
+TAXI ONESIGNAL REQUEST PAYLOAD={"app_id": "7598edde-8b28-445a-9842-50baf4040a04", "include_aliases": {"external_id": ["8"]}, "target_channel": "push", "headings": {"en": "New ride", "ru": "Новая поездка"}, "contents": {"en": "You have a new order #145", "ru": "Вам поступил новый заказ #145"}, "data": {"offer_id": 555, "ride_id": 145, "type": "taxi_offer"}}
+TAXI ONESIGNAL RESPONSE STATUS=200
+TAXI ONESIGNAL RESPONSE BODY={"id":"","errors":{"invalid_aliases":{"external_id":["8"]}}}
+TAXI PUSH SENT SUCCESS
+START TAXI PUSH offer_id=556
+TAXI OFFER FOUND driver=12 ride=145
+TAXI NOTIFICATION CREATED=True
+TAXI DEVICES COUNT=0
+TAXI DEVICE IDS=[]
+TAXI DEVICE EXTERNAL IDS RAW=[]
+TAXI EXTERNAL IDS=[]
+START TAXI PUSH offer_id=557
+TAXI NO EXTERNAL IDS
+START TAXI PUSH offer_id=558
+TAXI OFFER FOUND driver=16 ride=145
+TAXI OFFER FOUND driver=27 ride=145
+TAXI NOTIFICATION CREATED=True
+TAXI NOTIFICATION CREATED=True
+TAXI DEVICES COUNT=1
+TAXI DEVICES COUNT=0
+TAXI DEVICE IDS=[6]
+TAXI DEVICE IDS=[]
+TAXI DEVICE EXTERNAL IDS RAW=['27']
+TAXI DEVICE EXTERNAL IDS RAW=[]
+TAXI EXTERNAL IDS=[]
+TAXI EXTERNAL IDS=['27']
+TAXI ONESIGNAL REQUEST PAYLOAD={"app_id": "7598edde-8b28-445a-9842-50baf4040a04", "include_aliases": {"external_id": ["27"]}, "target_channel": "push", "headings": {"en": "New ride", "ru": "Новая поездка"}, "contents": {"en": "You have a new order #145", "ru": "Вам поступил новый заказ #145"}, "data": {"offer_id": 557, "ride_id": 145, "type": "taxi_offer"}}
+TAXI NO EXTERNAL IDS
+TAXI ONESIGNAL RESPONSE STATUS=200
+TAXI ONESIGNAL RESPONSE BODY={"id":"","errors":["All included players are not subscribed"]}
+TAXI PUSH SENT SUCCESS
+START TAXI PUSH offer_id=559
+TAXI OFFER FOUND driver=13 ride=146
+TAXI NOTIFICATION CREATED=True
+TAXI DEVICES COUNT=0
+TAXI DEVICE IDS=[]
+TAXI DEVICE EXTERNAL IDS RAW=[]
+TAXI EXTERNAL IDS=[]
+TAXI NO EXTERNAL IDS
+START TAXI PUSH offer_id=560
+TAXI OFFER FOUND driver=8 ride=146
+TAXI NOTIFICATION CREATED=True
+TAXI DEVICES COUNT=1
+TAXI DEVICE IDS=[5]
+TAXI DEVICE EXTERNAL IDS RAW=['8']
+TAXI EXTERNAL IDS=['8']
+TAXI ONESIGNAL REQUEST PAYLOAD={"app_id": "7598edde-8b28-445a-9842-50baf4040a04", "include_aliases": {"external_id": ["8"]}, "target_channel": "push", "headings": {"en": "New ride", "ru": "Новая поездка"}, "contents": {"en": "You have a new order #146", "ru": "Вам поступил новый заказ #146"}, "data": {"offer_id": 560, "ride_id": 146, "type": "taxi_offer"}}
+TAXI ONESIGNAL RESPONSE STATUS=200
+TAXI ONESIGNAL RESPONSE BODY={"id":"","errors":{"invalid_aliases":{"external_id":["8"]}}}
+TAXI PUSH SENT SUCCESS
+START TAXI PUSH offer_id=561
+START TAXI PUSH offer_id=562
+TAXI OFFER FOUND driver=12 ride=146
+TAXI OFFER FOUND driver=16 ride=146
+TAXI NOTIFICATION CREATED=True
+TAXI DEVICES COUNT=0
+TAXI DEVICE IDS=[]
+TAXI DEVICE EXTERNAL IDS RAW=[]
+TAXI EXTERNAL IDS=[]
+TAXI NOTIFICATION CREATED=True
+TAXI DEVICES COUNT=0
+TAXI NO EXTERNAL IDS
+TAXI DEVICE IDS=[]
+TAXI DEVICE EXTERNAL IDS RAW=[]
+TAXI EXTERNAL IDS=[]
+TAXI NO EXTERNAL IDS
+START TAXI PUSH offer_id=563
+TAXI OFFER FOUND driver=27 ride=146
+TAXI NOTIFICATION CREATED=True
+TAXI DEVICES COUNT=1
+TAXI DEVICE IDS=[6]
+TAXI DEVICE EXTERNAL IDS RAW=['27']
+TAXI EXTERNAL IDS=['27']
+TAXI ONESIGNAL REQUEST PAYLOAD={"app_id": "7598edde-8b28-445a-9842-50baf4040a04", "include_aliases": {"external_id": ["27"]}, "target_channel": "push", "headings": {"en": "New ride", "ru": "Новая поездка"}, "contents": {"en": "You have a new order #146", "ru": "Вам поступил новый заказ #146"}, "data": {"offer_id": 563, "ride_id": 146, "type": "taxi_offer"}}
+TAXI ONESIGNAL RESPONSE STATUS=200
+TAXI ONESIGNAL RESPONSE BODY={"id":"","errors":["All included players are not subscribed"]}
+TAXI PUSH SENT SUCCESS
+START TAXI PUSH offer_id=564
+TAXI OFFER FOUND driver=12 ride=147
+TAXI NOTIFICATION CREATED=True
+TAXI DEVICES COUNT=0
+TAXI DEVICE IDS=[]
+TAXI DEVICE EXTERNAL IDS RAW=[]
+TAXI EXTERNAL IDS=[]
+TAXI NO EXTERNAL IDS
+START TAXI PUSH offer_id=565
+START TAXI PUSH offer_id=566
+TAXI OFFER FOUND driver=16 ride=147
+TAXI OFFER FOUND driver=8 ride=147
+TAXI NOTIFICATION CREATED=True
+TAXI DEVICES COUNT=0
+TAXI DEVICE IDS=[]
+TAXI DEVICE EXTERNAL IDS RAW=[]
+TAXI NOTIFICATION CREATED=True
+TAXI EXTERNAL IDS=[]
+TAXI NO EXTERNAL IDS
+TAXI DEVICES COUNT=1
+TAXI DEVICE IDS=[5]
+TAXI DEVICE EXTERNAL IDS RAW=['8']
+TAXI EXTERNAL IDS=['8']
+TAXI ONESIGNAL REQUEST PAYLOAD={"app_id": "7598edde-8b28-445a-9842-50baf4040a04", "include_aliases": {"external_id": ["8"]}, "target_channel": "push", "headings": {"en": "New ride", "ru": "Новая поездка"}, "contents": {"en": "You have a new order #147", "ru": "Вам поступил новый заказ #147"}, "data": {"offer_id": 566, "ride_id": 147, "type": "taxi_offer"}}
+TAXI ONESIGNAL RESPONSE STATUS=200
+TAXI ONESIGNAL RESPONSE BODY={"id":"","errors":{"invalid_aliases":{"external_id":["8"]}}}
+TAXI PUSH SENT SUCCESS
+START TAXI PUSH offer_id=567
+TAXI OFFER FOUND driver=13 ride=147
+TAXI NOTIFICATION CREATED=True
+TAXI DEVICES COUNT=0
+TAXI DEVICE IDS=[]
+TAXI DEVICE EXTERNAL IDS RAW=[]
+TAXI EXTERNAL IDS=[]
+TAXI NO EXTERNAL IDS
+START TAXI PUSH offer_id=568
+TAXI OFFER FOUND driver=8 ride=149
+TAXI NOTIFICATION CREATED=True
+TAXI DEVICES COUNT=1
+TAXI DEVICE IDS=[5]
+TAXI DEVICE EXTERNAL IDS RAW=['8']
+TAXI EXTERNAL IDS=['8']
+TAXI ONESIGNAL REQUEST PAYLOAD={"app_id": "7598edde-8b28-445a-9842-50baf4040a04", "include_aliases": {"external_id": ["8"]}, "target_channel": "push", "headings": {"en": "New ride", "ru": "Новая поездка"}, "contents": {"en": "You have a new order #149", "ru": "Вам поступил новый заказ #149"}, "data": {"offer_id": 568, "ride_id": 149, "type": "taxi_offer"}}
+TAXI ONESIGNAL RESPONSE STATUS=200
+TAXI ONESIGNAL RESPONSE BODY={"id":"","errors":{"invalid_aliases":{"external_id":["8"]}}}
+TAXI PUSH SENT SUCCESS
+START TAXI PUSH offer_id=569
+TAXI OFFER FOUND driver=13 ride=149
+TAXI NOTIFICATION CREATED=True
+TAXI DEVICES COUNT=0
+TAXI DEVICE IDS=[]
+TAXI DEVICE EXTERNAL IDS RAW=[]
+TAXI EXTERNAL IDS=[]
+TAXI NO EXTERNAL IDS
+START TAXI PUSH offer_id=570
+START TAXI PUSH offer_id=571
+TAXI OFFER FOUND driver=12 ride=149
+TAXI OFFER FOUND driver=16 ride=149
+TAXI NOTIFICATION CREATED=True
+TAXI DEVICES COUNT=0
+TAXI DEVICE IDS=[]
+TAXI DEVICE EXTERNAL IDS RAW=[]
+TAXI NOTIFICATION CREATED=True
+TAXI EXTERNAL IDS=[]
+TAXI DEVICES COUNT=0
+TAXI DEVICE IDS=[]
+TAXI NO EXTERNAL IDS
+TAXI DEVICE EXTERNAL IDS RAW=[]
+TAXI EXTERNAL IDS=[]
+TAXI NO EXTERNAL IDS
+START TAXI PUSH offer_id=572
+TAXI OFFER FOUND driver=13 ride=150
+TAXI NOTIFICATION CREATED=True
+TAXI DEVICES COUNT=0
+TAXI DEVICE IDS=[]
+TAXI DEVICE EXTERNAL IDS RAW=[]
+TAXI EXTERNAL IDS=[]
+TAXI NO EXTERNAL IDS
+START TAXI PUSH offer_id=573
+TAXI OFFER FOUND driver=33 ride=150
+TAXI NOTIFICATION CREATED=True
+TAXI DEVICES COUNT=1
+TAXI DEVICE IDS=[8]
+TAXI DEVICE EXTERNAL IDS RAW=['33']
+TAXI EXTERNAL IDS=['33']
+TAXI ONESIGNAL REQUEST PAYLOAD={"app_id": "7598edde-8b28-445a-9842-50baf4040a04", "include_aliases": {"external_id": ["33"]}, "target_channel": "push", "headings": {"en": "New ride", "ru": "Новая поездка"}, "contents": {"en": "You have a new order #150", "ru": "Вам поступил новый заказ #150"}, "data": {"offer_id": 573, "ride_id": 150, "type": "taxi_offer"}}
+TAXI ONESIGNAL RESPONSE STATUS=200
+TAXI ONESIGNAL RESPONSE BODY={"id":"","errors":["All included players are not subscribed"]}
+TAXI PUSH SENT SUCCESS
+START TAXI PUSH offer_id=574
+START TAXI PUSH offer_id=575
+TAXI OFFER FOUND driver=12 ride=150
+TAXI NOTIFICATION CREATED=True
+TAXI DEVICES COUNT=0
+TAXI DEVICE IDS=[]
+TAXI DEVICE EXTERNAL IDS RAW=[]
+TAXI EXTERNAL IDS=[]
+TAXI OFFER FOUND driver=16 ride=150
+TAXI NO EXTERNAL IDS
+TAXI NOTIFICATION CREATED=True
+TAXI DEVICES COUNT=0
+TAXI DEVICE IDS=[]
+TAXI DEVICE EXTERNAL IDS RAW=[]
+TAXI EXTERNAL IDS=[]
+TAXI NO EXTERNAL IDS

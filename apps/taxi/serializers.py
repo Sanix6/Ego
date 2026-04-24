@@ -5,7 +5,6 @@ from .pricing import PricingService, PricingError
 from services.matrix import RoutingService, RoutingServiceError
 
 
-
 class DriverRegisterSerializer(serializers.Serializer):
     first_name = serializers.CharField(max_length=30)
     last_name = serializers.CharField(max_length=30)
@@ -247,3 +246,7 @@ class DriverRideHistorySerializer(serializers.ModelSerializer):
 
     def get_earnings(self, obj):
         return obj.driver_payout or "0.00"
+
+
+class TaxiCancelByClientSerializer(serializers.Serializer):
+    cancel_reason = serializers.CharField(required=False, allow_blank=True, default="")

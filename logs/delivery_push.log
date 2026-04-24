@@ -1,0 +1,252 @@
+START DELIVERY PUSH offer_id=166
+DELIVERY OFFER FOUND courier=2 delivery=15852
+DELIVERY NOTIFICATION CREATED=True
+DELIVERY DEVICES COUNT=2
+DELIVERY EXTERNAL IDS=['0', '1']
+DELIVERY ONESIGNAL REQUEST PAYLOAD={'app_id': '7598edde-8b28-445a-9842-50baf4040a04', 'include_aliases': {'external_id': ['0', '1']}, 'target_channel': 'push', 'headings': {'en': 'New order', 'ru': 'Новый заказ'}, 'contents': {'en': 'You have a new order #15852', 'ru': 'Вам поступил новый заказ #15852'}, 'data': {'offer_id': 166, 'delivery_id': 15852, 'type': 'delivery_offer'}}
+DELIVERY ONESIGNAL RESPONSE STATUS=200
+DELIVERY ONESIGNAL RESPONSE BODY={"id":"","errors":["All included players are not subscribed"]}
+DELIVERY PUSH SENT SUCCESS
+START DELIVERY PUSH offer_id=167
+DELIVERY OFFER FOUND courier=2 delivery=15853
+DELIVERY NOTIFICATION CREATED=True
+DELIVERY DEVICES COUNT=2
+DELIVERY EXTERNAL IDS=['0', '1']
+DELIVERY ONESIGNAL REQUEST PAYLOAD={'app_id': '7598edde-8b28-445a-9842-50baf4040a04', 'include_aliases': {'external_id': ['0', '1']}, 'target_channel': 'push', 'headings': {'en': 'New order', 'ru': 'Новый заказ'}, 'contents': {'en': 'You have a new order #15853', 'ru': 'Вам поступил новый заказ #15853'}, 'data': {'offer_id': 167, 'delivery_id': 15853, 'type': 'delivery_offer'}}
+DELIVERY ONESIGNAL RESPONSE STATUS=200
+DELIVERY ONESIGNAL RESPONSE BODY={"id":"","errors":["All included players are not subscribed"]}
+DELIVERY PUSH SENT SUCCESS
+START DELIVERY PUSH offer_id=168
+DELIVERY OFFER FOUND courier=2 delivery=15855
+DELIVERY NOTIFICATION CREATED=True
+DELIVERY DEVICES COUNT=2
+DELIVERY EXTERNAL IDS=['0', '1']
+DELIVERY ONESIGNAL REQUEST PAYLOAD={'app_id': '7598edde-8b28-445a-9842-50baf4040a04', 'include_aliases': {'external_id': ['0', '1']}, 'target_channel': 'push', 'headings': {'en': 'New order', 'ru': 'Новый заказ'}, 'contents': {'en': 'You have a new order #15855', 'ru': 'Вам поступил новый заказ #15855'}, 'data': {'offer_id': 168, 'delivery_id': 15855, 'type': 'delivery_offer'}}
+DELIVERY ONESIGNAL RESPONSE STATUS=200
+DELIVERY ONESIGNAL RESPONSE BODY={"id":"","errors":["All included players are not subscribed"]}
+DELIVERY PUSH SENT SUCCESS
+START DELIVERY PUSH offer_id=169
+DELIVERY OFFER FOUND courier=2 delivery=15856
+DELIVERY NOTIFICATION CREATED=True
+DELIVERY DEVICES COUNT=2
+DELIVERY EXTERNAL IDS=['0', '1']
+DELIVERY ONESIGNAL REQUEST PAYLOAD={'app_id': '7598edde-8b28-445a-9842-50baf4040a04', 'include_aliases': {'external_id': ['0', '1']}, 'target_channel': 'push', 'headings': {'en': 'New order', 'ru': 'Новый заказ'}, 'contents': {'en': 'You have a new order #15856', 'ru': 'Вам поступил новый заказ #15856'}, 'data': {'offer_id': 169, 'delivery_id': 15856, 'type': 'delivery_offer'}}
+DELIVERY ONESIGNAL RESPONSE STATUS=200
+DELIVERY ONESIGNAL RESPONSE BODY={"id":"","errors":["All included players are not subscribed"]}
+DELIVERY PUSH SENT SUCCESS
+START DELIVERY PUSH offer_id=170
+DELIVERY OFFER FOUND courier=2 delivery=15857
+DELIVERY NOTIFICATION CREATED=True
+DELIVERY DEVICES COUNT=2
+DELIVERY EXTERNAL IDS=['0', '1']
+DELIVERY ONESIGNAL REQUEST PAYLOAD={'app_id': '7598edde-8b28-445a-9842-50baf4040a04', 'include_aliases': {'external_id': ['0', '1']}, 'target_channel': 'push', 'headings': {'en': 'New order', 'ru': 'Новый заказ'}, 'contents': {'en': 'You have a new order #15857', 'ru': 'Вам поступил новый заказ #15857'}, 'data': {'offer_id': 170, 'delivery_id': 15857, 'type': 'delivery_offer'}}
+DELIVERY ONESIGNAL RESPONSE STATUS=200
+DELIVERY ONESIGNAL RESPONSE BODY={"id":"","errors":["All included players are not subscribed"]}
+DELIVERY PUSH SENT SUCCESS
+START DELIVERY PUSH offer_id=171
+DELIVERY OFFER FOUND courier=2 delivery=15859
+DELIVERY NOTIFICATION CREATED=True
+DELIVERY DEVICES COUNT=2
+DELIVERY EXTERNAL IDS=['0', '1']
+DELIVERY ONESIGNAL REQUEST PAYLOAD={'app_id': '7598edde-8b28-445a-9842-50baf4040a04', 'include_aliases': {'external_id': ['0', '1']}, 'target_channel': 'push', 'headings': {'en': 'New order', 'ru': 'Новый заказ'}, 'contents': {'en': 'You have a new order #15859', 'ru': 'Вам поступил новый заказ #15859'}, 'data': {'offer_id': 171, 'delivery_id': 15859, 'type': 'delivery_offer'}}
+DELIVERY ONESIGNAL RESPONSE STATUS=200
+DELIVERY ONESIGNAL RESPONSE BODY={"id":"","errors":["All included players are not subscribed"]}
+DELIVERY PUSH SENT SUCCESS
+START DELIVERY PUSH offer_id=172
+DELIVERY OFFER FOUND courier=2 delivery=15861
+DELIVERY NOTIFICATION CREATED=True
+DELIVERY DEVICES COUNT=2
+DELIVERY EXTERNAL IDS=['1', '0']
+DELIVERY ONESIGNAL REQUEST PAYLOAD={'app_id': '7598edde-8b28-445a-9842-50baf4040a04', 'include_aliases': {'external_id': ['1', '0']}, 'target_channel': 'push', 'headings': {'en': 'New order', 'ru': 'Новый заказ'}, 'contents': {'en': 'You have a new order #15861', 'ru': 'Вам поступил новый заказ #15861'}, 'data': {'offer_id': 172, 'delivery_id': 15861, 'type': 'delivery_offer'}}
+DELIVERY ONESIGNAL RESPONSE STATUS=200
+DELIVERY ONESIGNAL RESPONSE BODY={"id":"","errors":["All included players are not subscribed"]}
+DELIVERY PUSH SENT SUCCESS
+START DELIVERY PUSH offer_id=173
+DELIVERY OFFER FOUND courier=2 delivery=15862
+DELIVERY NOTIFICATION CREATED=True
+DELIVERY DEVICES COUNT=2
+DELIVERY EXTERNAL IDS=['1', '0']
+DELIVERY ONESIGNAL REQUEST PAYLOAD={'app_id': '7598edde-8b28-445a-9842-50baf4040a04', 'include_aliases': {'external_id': ['1', '0']}, 'target_channel': 'push', 'headings': {'en': 'New order', 'ru': 'Новый заказ'}, 'contents': {'en': 'You have a new order #15862', 'ru': 'Вам поступил новый заказ #15862'}, 'data': {'offer_id': 173, 'delivery_id': 15862, 'type': 'delivery_offer'}}
+DELIVERY ONESIGNAL RESPONSE STATUS=200
+DELIVERY ONESIGNAL RESPONSE BODY={"id":"","errors":["All included players are not subscribed"]}
+DELIVERY PUSH SENT SUCCESS
+START DELIVERY PUSH offer_id=174
+DELIVERY OFFER FOUND courier=2 delivery=15863
+DELIVERY NOTIFICATION CREATED=True
+DELIVERY DEVICES COUNT=2
+DELIVERY EXTERNAL IDS=['1', '0']
+DELIVERY ONESIGNAL REQUEST PAYLOAD={'app_id': '7598edde-8b28-445a-9842-50baf4040a04', 'include_aliases': {'external_id': ['1', '0']}, 'target_channel': 'push', 'headings': {'en': 'New order', 'ru': 'Новый заказ'}, 'contents': {'en': 'You have a new order #15863', 'ru': 'Вам поступил новый заказ #15863'}, 'data': {'offer_id': 174, 'delivery_id': 15863, 'type': 'delivery_offer'}}
+DELIVERY ONESIGNAL RESPONSE STATUS=200
+DELIVERY ONESIGNAL RESPONSE BODY={"id":"","errors":["All included players are not subscribed"]}
+DELIVERY PUSH SENT SUCCESS
+START DELIVERY PUSH offer_id=175
+DELIVERY OFFER FOUND courier=2 delivery=15864
+DELIVERY NOTIFICATION CREATED=True
+DELIVERY DEVICES COUNT=2
+DELIVERY EXTERNAL IDS=['1', '0']
+DELIVERY ONESIGNAL REQUEST PAYLOAD={'app_id': '7598edde-8b28-445a-9842-50baf4040a04', 'include_aliases': {'external_id': ['1', '0']}, 'target_channel': 'push', 'headings': {'en': 'New order', 'ru': 'Новый заказ'}, 'contents': {'en': 'You have a new order #15864', 'ru': 'Вам поступил новый заказ #15864'}, 'data': {'offer_id': 175, 'delivery_id': 15864, 'type': 'delivery_offer'}}
+DELIVERY ONESIGNAL RESPONSE STATUS=200
+DELIVERY ONESIGNAL RESPONSE BODY={"id":"","errors":["All included players are not subscribed"]}
+DELIVERY PUSH SENT SUCCESS
+START DELIVERY PUSH offer_id=176
+DELIVERY OFFER FOUND courier=2 delivery=15865
+DELIVERY NOTIFICATION CREATED=True
+DELIVERY DEVICES COUNT=2
+DELIVERY EXTERNAL IDS=['1', '0']
+DELIVERY ONESIGNAL REQUEST PAYLOAD={'app_id': '7598edde-8b28-445a-9842-50baf4040a04', 'include_aliases': {'external_id': ['1', '0']}, 'target_channel': 'push', 'headings': {'en': 'New order', 'ru': 'Новый заказ'}, 'contents': {'en': 'You have a new order #15865', 'ru': 'Вам поступил новый заказ #15865'}, 'data': {'offer_id': 176, 'delivery_id': 15865, 'type': 'delivery_offer'}}
+DELIVERY ONESIGNAL RESPONSE STATUS=200
+DELIVERY ONESIGNAL RESPONSE BODY={"id":"","errors":["All included players are not subscribed"]}
+DELIVERY PUSH SENT SUCCESS
+START DELIVERY PUSH offer_id=177
+DELIVERY OFFER FOUND courier=2 delivery=15866
+DELIVERY NOTIFICATION CREATED=True
+DELIVERY DEVICES COUNT=2
+DELIVERY EXTERNAL IDS=['1', '0']
+DELIVERY ONESIGNAL REQUEST PAYLOAD={'app_id': '7598edde-8b28-445a-9842-50baf4040a04', 'include_aliases': {'external_id': ['1', '0']}, 'target_channel': 'push', 'headings': {'en': 'New order', 'ru': 'Новый заказ'}, 'contents': {'en': 'You have a new order #15866', 'ru': 'Вам поступил новый заказ #15866'}, 'data': {'offer_id': 177, 'delivery_id': 15866, 'type': 'delivery_offer'}}
+DELIVERY ONESIGNAL RESPONSE STATUS=200
+DELIVERY ONESIGNAL RESPONSE BODY={"id":"","errors":["All included players are not subscribed"]}
+DELIVERY PUSH SENT SUCCESS
+START DELIVERY PUSH offer_id=178
+DELIVERY OFFER FOUND courier=2 delivery=15867
+DELIVERY NOTIFICATION CREATED=True
+DELIVERY DEVICES COUNT=2
+DELIVERY EXTERNAL IDS=['1', '0']
+DELIVERY ONESIGNAL REQUEST PAYLOAD={'app_id': '7598edde-8b28-445a-9842-50baf4040a04', 'include_aliases': {'external_id': ['1', '0']}, 'target_channel': 'push', 'headings': {'en': 'New order', 'ru': 'Новый заказ'}, 'contents': {'en': 'You have a new order #15867', 'ru': 'Вам поступил новый заказ #15867'}, 'data': {'offer_id': 178, 'delivery_id': 15867, 'type': 'delivery_offer'}}
+DELIVERY ONESIGNAL RESPONSE STATUS=200
+DELIVERY ONESIGNAL RESPONSE BODY={"id":"","errors":["All included players are not subscribed"]}
+DELIVERY PUSH SENT SUCCESS
+START DELIVERY PUSH offer_id=179
+DELIVERY OFFER FOUND courier=2 delivery=15868
+DELIVERY NOTIFICATION CREATED=True
+DELIVERY DEVICES COUNT=2
+DELIVERY EXTERNAL IDS=['1', '0']
+DELIVERY ONESIGNAL REQUEST PAYLOAD={'app_id': '7598edde-8b28-445a-9842-50baf4040a04', 'include_aliases': {'external_id': ['1', '0']}, 'target_channel': 'push', 'headings': {'en': 'New order', 'ru': 'Новый заказ'}, 'contents': {'en': 'You have a new order #15868', 'ru': 'Вам поступил новый заказ #15868'}, 'data': {'offer_id': 179, 'delivery_id': 15868, 'type': 'delivery_offer'}}
+DELIVERY ONESIGNAL RESPONSE STATUS=200
+DELIVERY ONESIGNAL RESPONSE BODY={"id":"","errors":["All included players are not subscribed"]}
+DELIVERY PUSH SENT SUCCESS
+START DELIVERY PUSH offer_id=180
+DELIVERY OFFER FOUND courier=2 delivery=15870
+DELIVERY NOTIFICATION CREATED=True
+DELIVERY DEVICES COUNT=2
+DELIVERY EXTERNAL IDS=['1', '0']
+DELIVERY ONESIGNAL REQUEST PAYLOAD={'app_id': '7598edde-8b28-445a-9842-50baf4040a04', 'include_aliases': {'external_id': ['1', '0']}, 'target_channel': 'push', 'headings': {'en': 'New order', 'ru': 'Новый заказ'}, 'contents': {'en': 'You have a new order #15870', 'ru': 'Вам поступил новый заказ #15870'}, 'data': {'offer_id': 180, 'delivery_id': 15870, 'type': 'delivery_offer'}}
+DELIVERY ONESIGNAL RESPONSE STATUS=200
+DELIVERY ONESIGNAL RESPONSE BODY={"id":"","errors":["All included players are not subscribed"]}
+DELIVERY PUSH SENT SUCCESS
+START DELIVERY PUSH offer_id=181
+DELIVERY OFFER FOUND courier=2 delivery=15871
+DELIVERY NOTIFICATION CREATED=True
+DELIVERY DEVICES COUNT=2
+DELIVERY EXTERNAL IDS=['1', '0']
+DELIVERY ONESIGNAL REQUEST PAYLOAD={'app_id': '7598edde-8b28-445a-9842-50baf4040a04', 'include_aliases': {'external_id': ['1', '0']}, 'target_channel': 'push', 'headings': {'en': 'New order', 'ru': 'Новый заказ'}, 'contents': {'en': 'You have a new order #15871', 'ru': 'Вам поступил новый заказ #15871'}, 'data': {'offer_id': 181, 'delivery_id': 15871, 'type': 'delivery_offer'}}
+DELIVERY ONESIGNAL RESPONSE STATUS=200
+DELIVERY ONESIGNAL RESPONSE BODY={"id":"","errors":["All included players are not subscribed"]}
+DELIVERY PUSH SENT SUCCESS
+START DELIVERY PUSH offer_id=182
+DELIVERY OFFER FOUND courier=2 delivery=15873
+DELIVERY NOTIFICATION CREATED=True
+DELIVERY DEVICES COUNT=2
+DELIVERY EXTERNAL IDS=['1', '0']
+DELIVERY ONESIGNAL REQUEST PAYLOAD={'app_id': '7598edde-8b28-445a-9842-50baf4040a04', 'include_aliases': {'external_id': ['1', '0']}, 'target_channel': 'push', 'headings': {'en': 'New order', 'ru': 'Новый заказ'}, 'contents': {'en': 'You have a new order #15873', 'ru': 'Вам поступил новый заказ #15873'}, 'data': {'offer_id': 182, 'delivery_id': 15873, 'type': 'delivery_offer'}}
+DELIVERY ONESIGNAL RESPONSE STATUS=200
+DELIVERY ONESIGNAL RESPONSE BODY={"id":"","errors":["All included players are not subscribed"]}
+DELIVERY PUSH SENT SUCCESS
+START DELIVERY PUSH offer_id=183
+DELIVERY OFFER FOUND courier=2 delivery=15874
+DELIVERY NOTIFICATION CREATED=True
+DELIVERY DEVICES COUNT=2
+DELIVERY EXTERNAL IDS=['1', '0']
+DELIVERY ONESIGNAL REQUEST PAYLOAD={'app_id': '7598edde-8b28-445a-9842-50baf4040a04', 'include_aliases': {'external_id': ['1', '0']}, 'target_channel': 'push', 'headings': {'en': 'New order', 'ru': 'Новый заказ'}, 'contents': {'en': 'You have a new order #15874', 'ru': 'Вам поступил новый заказ #15874'}, 'data': {'offer_id': 183, 'delivery_id': 15874, 'type': 'delivery_offer'}}
+DELIVERY ONESIGNAL RESPONSE STATUS=200
+DELIVERY ONESIGNAL RESPONSE BODY={"id":"","errors":["All included players are not subscribed"]}
+DELIVERY PUSH SENT SUCCESS
+START DELIVERY PUSH offer_id=184
+DELIVERY OFFER FOUND courier=2 delivery=15875
+DELIVERY NOTIFICATION CREATED=True
+DELIVERY DEVICES COUNT=2
+DELIVERY EXTERNAL IDS=['1', '0']
+DELIVERY ONESIGNAL REQUEST PAYLOAD={'app_id': '7598edde-8b28-445a-9842-50baf4040a04', 'include_aliases': {'external_id': ['1', '0']}, 'target_channel': 'push', 'headings': {'en': 'New order', 'ru': 'Новый заказ'}, 'contents': {'en': 'You have a new order #15875', 'ru': 'Вам поступил новый заказ #15875'}, 'data': {'offer_id': 184, 'delivery_id': 15875, 'type': 'delivery_offer'}}
+DELIVERY ONESIGNAL RESPONSE STATUS=200
+DELIVERY ONESIGNAL RESPONSE BODY={"id":"","errors":["All included players are not subscribed"]}
+DELIVERY PUSH SENT SUCCESS
+START DELIVERY PUSH offer_id=185
+DELIVERY OFFER FOUND courier=2 delivery=15876
+DELIVERY NOTIFICATION CREATED=True
+DELIVERY DEVICES COUNT=2
+DELIVERY EXTERNAL IDS=['1', '0']
+DELIVERY ONESIGNAL REQUEST PAYLOAD={'app_id': '7598edde-8b28-445a-9842-50baf4040a04', 'include_aliases': {'external_id': ['1', '0']}, 'target_channel': 'push', 'headings': {'en': 'New order', 'ru': 'Новый заказ'}, 'contents': {'en': 'You have a new order #15876', 'ru': 'Вам поступил новый заказ #15876'}, 'data': {'offer_id': 185, 'delivery_id': 15876, 'type': 'delivery_offer'}}
+DELIVERY ONESIGNAL RESPONSE STATUS=200
+DELIVERY ONESIGNAL RESPONSE BODY={"id":"","errors":["All included players are not subscribed"]}
+DELIVERY PUSH SENT SUCCESS
+START DELIVERY PUSH offer_id=186
+DELIVERY OFFER FOUND courier=2 delivery=15879
+DELIVERY NOTIFICATION CREATED=True
+DELIVERY DEVICES COUNT=2
+DELIVERY EXTERNAL IDS=['1', '0']
+DELIVERY ONESIGNAL REQUEST PAYLOAD={'app_id': '7598edde-8b28-445a-9842-50baf4040a04', 'include_aliases': {'external_id': ['1', '0']}, 'target_channel': 'push', 'headings': {'en': 'New order', 'ru': 'Новый заказ'}, 'contents': {'en': 'You have a new order #15879', 'ru': 'Вам поступил новый заказ #15879'}, 'data': {'offer_id': 186, 'delivery_id': 15879, 'type': 'delivery_offer'}}
+DELIVERY ONESIGNAL RESPONSE STATUS=200
+DELIVERY ONESIGNAL RESPONSE BODY={"id":"","errors":["All included players are not subscribed"]}
+DELIVERY PUSH SENT SUCCESS
+START DELIVERY PUSH offer_id=187
+DELIVERY OFFER FOUND courier=2 delivery=15881
+DELIVERY NOTIFICATION CREATED=True
+DELIVERY DEVICES COUNT=2
+DELIVERY EXTERNAL IDS=['1', '0']
+DELIVERY ONESIGNAL REQUEST PAYLOAD={'app_id': '7598edde-8b28-445a-9842-50baf4040a04', 'include_aliases': {'external_id': ['1', '0']}, 'target_channel': 'push', 'headings': {'en': 'New order', 'ru': 'Новый заказ'}, 'contents': {'en': 'You have a new order #15881', 'ru': 'Вам поступил новый заказ #15881'}, 'data': {'offer_id': 187, 'delivery_id': 15881, 'type': 'delivery_offer'}}
+DELIVERY ONESIGNAL RESPONSE STATUS=200
+DELIVERY ONESIGNAL RESPONSE BODY={"id":"","errors":["All included players are not subscribed"]}
+DELIVERY PUSH SENT SUCCESS
+START DELIVERY PUSH offer_id=188
+DELIVERY OFFER FOUND courier=2 delivery=16399
+DELIVERY NOTIFICATION CREATED=True
+DELIVERY DEVICES COUNT=2
+DELIVERY EXTERNAL IDS=['1', '0']
+DELIVERY ONESIGNAL REQUEST PAYLOAD={'app_id': '7598edde-8b28-445a-9842-50baf4040a04', 'include_aliases': {'external_id': ['1', '0']}, 'target_channel': 'push', 'headings': {'en': 'New order', 'ru': 'Новый заказ'}, 'contents': {'en': 'You have a new order #16399', 'ru': 'Вам поступил новый заказ #16399'}, 'data': {'offer_id': 188, 'delivery_id': 16399, 'type': 'delivery_offer'}}
+DELIVERY ONESIGNAL RESPONSE STATUS=200
+DELIVERY ONESIGNAL RESPONSE BODY={"id":"","errors":["All included players are not subscribed"]}
+DELIVERY PUSH SENT SUCCESS
+START DELIVERY PUSH offer_id=189
+DELIVERY OFFER FOUND courier=2 delivery=16400
+DELIVERY NOTIFICATION CREATED=True
+DELIVERY DEVICES COUNT=2
+DELIVERY EXTERNAL IDS=['1', '0']
+DELIVERY ONESIGNAL REQUEST PAYLOAD={'app_id': '7598edde-8b28-445a-9842-50baf4040a04', 'include_aliases': {'external_id': ['1', '0']}, 'target_channel': 'push', 'headings': {'en': 'New order', 'ru': 'Новый заказ'}, 'contents': {'en': 'You have a new order #16400', 'ru': 'Вам поступил новый заказ #16400'}, 'data': {'offer_id': 189, 'delivery_id': 16400, 'type': 'delivery_offer'}}
+DELIVERY ONESIGNAL RESPONSE STATUS=200
+DELIVERY ONESIGNAL RESPONSE BODY={"id":"","errors":["All included players are not subscribed"]}
+DELIVERY PUSH SENT SUCCESS
+START DELIVERY PUSH offer_id=190
+DELIVERY OFFER FOUND courier=2 delivery=16419
+DELIVERY NOTIFICATION CREATED=True
+DELIVERY DEVICES COUNT=2
+DELIVERY EXTERNAL IDS=['0', '1']
+DELIVERY ONESIGNAL REQUEST PAYLOAD={'app_id': '7598edde-8b28-445a-9842-50baf4040a04', 'include_aliases': {'external_id': ['0', '1']}, 'target_channel': 'push', 'headings': {'en': 'New order', 'ru': 'Новый заказ'}, 'contents': {'en': 'You have a new order #16419', 'ru': 'Вам поступил новый заказ #16419'}, 'data': {'offer_id': 190, 'delivery_id': 16419, 'type': 'delivery_offer'}}
+DELIVERY ONESIGNAL RESPONSE STATUS=200
+DELIVERY ONESIGNAL RESPONSE BODY={"id":"","errors":["All included players are not subscribed"]}
+DELIVERY PUSH SENT SUCCESS
+START DELIVERY PUSH offer_id=191
+DELIVERY OFFER FOUND courier=2 delivery=16420
+DELIVERY NOTIFICATION CREATED=True
+DELIVERY DEVICES COUNT=2
+DELIVERY EXTERNAL IDS=['0', '1']
+DELIVERY ONESIGNAL REQUEST PAYLOAD={'app_id': '7598edde-8b28-445a-9842-50baf4040a04', 'include_aliases': {'external_id': ['0', '1']}, 'target_channel': 'push', 'headings': {'en': 'New order', 'ru': 'Новый заказ'}, 'contents': {'en': 'You have a new order #16420', 'ru': 'Вам поступил новый заказ #16420'}, 'data': {'offer_id': 191, 'delivery_id': 16420, 'type': 'delivery_offer'}}
+DELIVERY ONESIGNAL RESPONSE STATUS=200
+DELIVERY ONESIGNAL RESPONSE BODY={"id":"","errors":["All included players are not subscribed"]}
+DELIVERY PUSH SENT SUCCESS
+START DELIVERY PUSH offer_id=192
+DELIVERY OFFER FOUND courier=2 delivery=16421
+DELIVERY NOTIFICATION CREATED=True
+DELIVERY DEVICES COUNT=2
+DELIVERY EXTERNAL IDS=['0', '1']
+DELIVERY ONESIGNAL REQUEST PAYLOAD={'app_id': '7598edde-8b28-445a-9842-50baf4040a04', 'include_aliases': {'external_id': ['0', '1']}, 'target_channel': 'push', 'headings': {'en': 'New order', 'ru': 'Новый заказ'}, 'contents': {'en': 'You have a new order #16421', 'ru': 'Вам поступил новый заказ #16421'}, 'data': {'offer_id': 192, 'delivery_id': 16421, 'type': 'delivery_offer'}}
+DELIVERY ONESIGNAL RESPONSE STATUS=200
+DELIVERY ONESIGNAL RESPONSE BODY={"id":"","errors":["All included players are not subscribed"]}
+DELIVERY PUSH SENT SUCCESS
+START DELIVERY PUSH offer_id=193
+DELIVERY OFFER FOUND courier=2 delivery=16423
+DELIVERY NOTIFICATION CREATED=True
+DELIVERY DEVICES COUNT=2
+DELIVERY EXTERNAL IDS=['0', '1']
+DELIVERY ONESIGNAL REQUEST PAYLOAD={'app_id': '7598edde-8b28-445a-9842-50baf4040a04', 'include_aliases': {'external_id': ['0', '1']}, 'target_channel': 'push', 'headings': {'en': 'New order', 'ru': 'Новый заказ'}, 'contents': {'en': 'You have a new order #16423', 'ru': 'Вам поступил новый заказ #16423'}, 'data': {'offer_id': 193, 'delivery_id': 16423, 'type': 'delivery_offer'}}
+DELIVERY ONESIGNAL RESPONSE STATUS=200
+DELIVERY ONESIGNAL RESPONSE BODY={"id":"","errors":["All included players are not subscribed"]}
+DELIVERY PUSH SENT SUCCESS
