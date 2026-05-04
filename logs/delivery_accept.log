@@ -1,0 +1,10 @@
+START offer_id=205 delivery_id=16454
+SENT offer_id=205 status=failed
+START offer_id=206 delivery_id=16456
+SENT offer_id=206 status=failed
+START offer_id=207 delivery_id=16457
+SENT offer_id=207 status=failed
+START offer_id=208 delivery_id=16458
+SENT offer_id=208 status=sent
+START offer_id=209 delivery_id=16459
+SENT offer_id=209 status=sent

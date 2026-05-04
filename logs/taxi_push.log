@@ -1,0 +1,504 @@
+START task offer_id=595
+FOUND offer_id=595 driver_id=33 ride_id=157
+CALL taxi_offer_created offer_id=595
+SENT offer_id=595 status=sent push_id=416
+START task offer_id=596
+START task offer_id=597
+FOUND offer_id=596 driver_id=13 ride_id=157
+CALL taxi_offer_created offer_id=596
+FOUND offer_id=597 driver_id=12 ride_id=157
+CALL taxi_offer_created offer_id=597
+SENT offer_id=596 status=failed push_id=417
+SENT offer_id=597 status=failed push_id=418
+START task offer_id=598
+START task offer_id=599
+FOUND offer_id=599 driver_id=16 ride_id=157
+FOUND offer_id=598 driver_id=8 ride_id=157
+CALL taxi_offer_created offer_id=598
+CALL taxi_offer_created offer_id=599
+SENT offer_id=599 status=failed push_id=420
+SENT offer_id=598 status=sent push_id=419
+START task offer_id=600
+FOUND offer_id=600 driver_id=27 ride_id=158
+CALL taxi_offer_created offer_id=600
+SENT offer_id=600 status=sent push_id=421
+START task offer_id=601
+START task offer_id=602
+FOUND offer_id=601 driver_id=8 ride_id=158
+CALL taxi_offer_created offer_id=601
+FOUND offer_id=602 driver_id=13 ride_id=158
+CALL taxi_offer_created offer_id=602
+SENT offer_id=602 status=failed push_id=423
+SENT offer_id=601 status=sent push_id=422
+START task offer_id=603
+START task offer_id=604
+FOUND offer_id=603 driver_id=12 ride_id=158
+CALL taxi_offer_created offer_id=603
+FOUND offer_id=604 driver_id=33 ride_id=158
+CALL taxi_offer_created offer_id=604
+SENT offer_id=603 status=failed push_id=424
+SENT offer_id=604 status=sent push_id=425
+START task offer_id=605
+FOUND offer_id=605 driver_id=8 ride_id=159
+CALL taxi_offer_created offer_id=605
+SENT offer_id=605 status=sent push_id=426
+START task offer_id=606
+START task offer_id=607
+FOUND offer_id=606 driver_id=27 ride_id=159
+CALL taxi_offer_created offer_id=606
+FOUND offer_id=607 driver_id=13 ride_id=159
+CALL taxi_offer_created offer_id=607
+SENT offer_id=607 status=failed push_id=428
+SENT offer_id=606 status=sent push_id=427
+START task offer_id=608
+FOUND offer_id=608 driver_id=13 ride_id=160
+CALL taxi_offer_created offer_id=608
+SENT offer_id=608 status=failed push_id=433
+START task offer_id=609
+START task offer_id=610
+FOUND offer_id=609 driver_id=8 ride_id=160
+CALL taxi_offer_created offer_id=609
+FOUND offer_id=610 driver_id=33 ride_id=160
+CALL taxi_offer_created offer_id=610
+SENT offer_id=609 status=sent push_id=434
+SENT offer_id=610 status=sent push_id=435
+START task offer_id=611
+START task offer_id=612
+FOUND offer_id=611 driver_id=12 ride_id=160
+CALL taxi_offer_created offer_id=611
+FOUND offer_id=612 driver_id=16 ride_id=160
+CALL taxi_offer_created offer_id=612
+SENT offer_id=611 status=failed push_id=436
+SENT offer_id=612 status=failed push_id=437
+START task offer_id=613
+FOUND offer_id=613 driver_id=13 ride_id=161
+CALL taxi_offer_created offer_id=613
+SENT offer_id=613 status=failed push_id=438
+START task offer_id=614
+FOUND offer_id=614 driver_id=8 ride_id=161
+CALL taxi_offer_created offer_id=614
+SENT offer_id=614 status=sent push_id=439
+START task offer_id=615
+START task offer_id=616
+FOUND offer_id=615 driver_id=33 ride_id=161
+CALL taxi_offer_created offer_id=615
+FOUND offer_id=616 driver_id=12 ride_id=161
+CALL taxi_offer_created offer_id=616
+SENT offer_id=616 status=failed push_id=441
+SENT offer_id=615 status=sent push_id=440
+START task offer_id=617
+FOUND offer_id=617 driver_id=13 ride_id=162
+CALL taxi_offer_created offer_id=617
+SENT offer_id=617 status=failed push_id=442
+START task offer_id=618
+FOUND offer_id=618 driver_id=8 ride_id=162
+CALL taxi_offer_created offer_id=618
+SENT offer_id=618 status=sent push_id=443
+START task offer_id=619
+FOUND offer_id=619 driver_id=33 ride_id=162
+CALL taxi_offer_created offer_id=619
+START task offer_id=620
+FOUND offer_id=620 driver_id=27 ride_id=162
+CALL taxi_offer_created offer_id=620
+SENT offer_id=619 status=sent push_id=444
+START task offer_id=621
+FOUND offer_id=621 driver_id=12 ride_id=162
+CALL taxi_offer_created offer_id=621
+SENT offer_id=621 status=failed push_id=446
+SENT offer_id=620 status=sent push_id=445
+START task offer_id=623
+START task offer_id=622
+FOUND offer_id=623 driver_id=16 ride_id=164
+ERROR offer_id=623 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=624
+FOUND offer_id=622 driver_id=8 ride_id=163
+ERROR offer_id=622 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=625
+FOUND offer_id=624 driver_id=27 ride_id=165
+ERROR offer_id=624 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=626
+FOUND offer_id=625 driver_id=27 ride_id=166
+ERROR offer_id=625 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=627
+FOUND offer_id=626 driver_id=27 ride_id=167
+ERROR offer_id=626 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=628
+FOUND offer_id=627 driver_id=8 ride_id=168
+ERROR offer_id=627 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=629
+FOUND offer_id=628 driver_id=27 ride_id=169
+ERROR offer_id=628 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+FOUND offer_id=629 driver_id=8 ride_id=170
+ERROR offer_id=629 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=630
+FOUND offer_id=630 driver_id=12 ride_id=163
+ERROR offer_id=630 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=631
+FOUND offer_id=631 driver_id=72 ride_id=163
+ERROR offer_id=631 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=633
+START task offer_id=632
+FOUND offer_id=633 driver_id=33 ride_id=164
+ERROR offer_id=633 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+FOUND offer_id=632 driver_id=27 ride_id=164
+ERROR offer_id=632 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=634
+FOUND offer_id=634 driver_id=16 ride_id=165
+ERROR offer_id=634 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=635
+FOUND offer_id=635 driver_id=33 ride_id=165
+ERROR offer_id=635 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=636
+FOUND offer_id=636 driver_id=16 ride_id=166
+ERROR offer_id=636 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=637
+START task offer_id=638
+FOUND offer_id=637 driver_id=33 ride_id=166
+ERROR offer_id=637 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=639
+FOUND offer_id=638 driver_id=16 ride_id=167
+ERROR offer_id=638 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+FOUND offer_id=639 driver_id=33 ride_id=167
+ERROR offer_id=639 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=640
+FOUND offer_id=640 driver_id=12 ride_id=168
+ERROR offer_id=640 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=641
+FOUND offer_id=641 driver_id=72 ride_id=168
+ERROR offer_id=641 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=642
+FOUND offer_id=642 driver_id=16 ride_id=169
+ERROR offer_id=642 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=643
+FOUND offer_id=643 driver_id=33 ride_id=169
+ERROR offer_id=643 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=644
+START task offer_id=645
+FOUND offer_id=644 driver_id=13 ride_id=170
+ERROR offer_id=644 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+FOUND offer_id=645 driver_id=72 ride_id=170
+ERROR offer_id=645 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=646
+FOUND offer_id=646 driver_id=33 ride_id=163
+ERROR offer_id=646 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=647
+FOUND offer_id=647 driver_id=16 ride_id=163
+ERROR offer_id=647 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=648
+FOUND offer_id=648 driver_id=13 ride_id=163
+ERROR offer_id=648 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=649
+FOUND offer_id=649 driver_id=12 ride_id=164
+ERROR offer_id=649 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=650
+FOUND offer_id=650 driver_id=72 ride_id=164
+ERROR offer_id=650 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=651
+FOUND offer_id=651 driver_id=13 ride_id=164
+ERROR offer_id=651 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=652
+FOUND offer_id=652 driver_id=12 ride_id=165
+ERROR offer_id=652 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=653
+FOUND offer_id=653 driver_id=72 ride_id=165
+ERROR offer_id=653 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=655
+START task offer_id=654
+FOUND offer_id=655 driver_id=12 ride_id=166
+ERROR offer_id=655 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+FOUND offer_id=654 driver_id=13 ride_id=165
+ERROR offer_id=654 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=656
+START task offer_id=657
+FOUND offer_id=656 driver_id=72 ride_id=166
+ERROR offer_id=656 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+FOUND offer_id=657 driver_id=13 ride_id=166
+ERROR offer_id=657 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=658
+FOUND offer_id=658 driver_id=12 ride_id=167
+ERROR offer_id=658 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=659
+FOUND offer_id=659 driver_id=72 ride_id=167
+ERROR offer_id=659 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=660
+FOUND offer_id=660 driver_id=13 ride_id=167
+ERROR offer_id=660 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=661
+FOUND offer_id=661 driver_id=16 ride_id=168
+ERROR offer_id=661 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=662
+FOUND offer_id=662 driver_id=33 ride_id=168
+ERROR offer_id=662 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=663
+START task offer_id=664
+FOUND offer_id=663 driver_id=13 ride_id=168
+FOUND offer_id=664 driver_id=12 ride_id=169
+ERROR offer_id=664 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+ERROR offer_id=663 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=665
+START task offer_id=666
+FOUND offer_id=665 driver_id=72 ride_id=169
+ERROR offer_id=665 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=667
+FOUND offer_id=666 driver_id=13 ride_id=169
+ERROR offer_id=666 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=668
+FOUND offer_id=667 driver_id=12 ride_id=170
+ERROR offer_id=667 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+FOUND offer_id=668 driver_id=33 ride_id=170
+ERROR offer_id=668 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=669
+FOUND offer_id=669 driver_id=13 ride_id=171
+ERROR offer_id=669 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=670
+START task offer_id=671
+FOUND offer_id=670 driver_id=72 ride_id=171
+ERROR offer_id=670 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+FOUND offer_id=671 driver_id=33 ride_id=171
+ERROR offer_id=671 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=672
+START task offer_id=673
+FOUND offer_id=672 driver_id=8 ride_id=171
+ERROR offer_id=672 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+FOUND offer_id=673 driver_id=27 ride_id=171
+ERROR offer_id=673 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=674
+FOUND offer_id=674 driver_id=16 ride_id=172
+ERROR offer_id=674 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=675
+START task offer_id=676
+FOUND offer_id=675 driver_id=13 ride_id=172
+ERROR offer_id=675 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+FOUND offer_id=676 driver_id=8 ride_id=172
+ERROR offer_id=676 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=677
+START task offer_id=678
+FOUND offer_id=677 driver_id=33 ride_id=172
+ERROR offer_id=677 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+FOUND offer_id=678 driver_id=12 ride_id=172
+ERROR offer_id=678 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=679
+FOUND offer_id=679 driver_id=13 ride_id=173
+ERROR offer_id=679 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=680
+START task offer_id=681
+FOUND offer_id=680 driver_id=16 ride_id=173
+ERROR offer_id=680 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+FOUND offer_id=681 driver_id=8 ride_id=173
+ERROR offer_id=681 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=682
+START task offer_id=683
+FOUND offer_id=682 driver_id=33 ride_id=174
+ERROR offer_id=682 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+FOUND offer_id=683 driver_id=12 ride_id=174
+ERROR offer_id=683 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=684
+START task offer_id=685
+FOUND offer_id=684 driver_id=13 ride_id=174
+ERROR offer_id=684 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+FOUND offer_id=685 driver_id=8 ride_id=174
+ERROR offer_id=685 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=686
+FOUND offer_id=686 driver_id=13 ride_id=175
+ERROR offer_id=686 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=687
+FOUND offer_id=687 driver_id=8 ride_id=175
+ERROR offer_id=687 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=688
+FOUND offer_id=688 driver_id=13 ride_id=176
+ERROR offer_id=688 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=689
+START task offer_id=690
+FOUND offer_id=689 driver_id=33 ride_id=175
+ERROR offer_id=689 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+FOUND offer_id=690 driver_id=27 ride_id=175
+ERROR offer_id=690 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=691
+FOUND offer_id=691 driver_id=8 ride_id=176
+ERROR offer_id=691 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=692
+START task offer_id=693
+FOUND offer_id=692 driver_id=33 ride_id=176
+ERROR offer_id=692 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+FOUND offer_id=693 driver_id=27 ride_id=176
+ERROR offer_id=693 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=694
+START task offer_id=695
+FOUND offer_id=694 driver_id=13 ride_id=177
+ERROR offer_id=694 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+FOUND offer_id=695 driver_id=33 ride_id=177
+ERROR offer_id=695 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=696
+START task offer_id=697
+FOUND offer_id=696 driver_id=12 ride_id=177
+ERROR offer_id=696 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+FOUND offer_id=697 driver_id=8 ride_id=177
+ERROR offer_id=697 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=698
+FOUND offer_id=698 driver_id=33 ride_id=178
+ERROR offer_id=698 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=699
+FOUND offer_id=699 driver_id=12 ride_id=178
+ERROR offer_id=699 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=700
+START task offer_id=701
+FOUND offer_id=700 driver_id=13 ride_id=178
+ERROR offer_id=700 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+FOUND offer_id=701 driver_id=27 ride_id=178
+ERROR offer_id=701 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=702
+FOUND offer_id=702 driver_id=13 ride_id=179
+ERROR offer_id=702 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=703
+FOUND offer_id=703 driver_id=33 ride_id=179
+ERROR offer_id=703 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=704
+START task offer_id=705
+FOUND offer_id=704 driver_id=12 ride_id=179
+ERROR offer_id=704 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=706
+FOUND offer_id=705 driver_id=8 ride_id=179
+ERROR offer_id=705 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+FOUND offer_id=706 driver_id=27 ride_id=179
+ERROR offer_id=706 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=707
+FOUND offer_id=707 driver_id=33 ride_id=180
+ERROR offer_id=707 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=708
+START task offer_id=709
+FOUND offer_id=708 driver_id=13 ride_id=180
+ERROR offer_id=708 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+FOUND offer_id=709 driver_id=12 ride_id=180
+ERROR offer_id=709 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=710
+START task offer_id=711
+FOUND offer_id=710 driver_id=8 ride_id=180
+ERROR offer_id=710 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+FOUND offer_id=711 driver_id=27 ride_id=180
+ERROR offer_id=711 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=712
+FOUND offer_id=712 driver_id=8 ride_id=181
+ERROR offer_id=712 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=713
+START task offer_id=714
+FOUND offer_id=713 driver_id=13 ride_id=181
+ERROR offer_id=713 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+FOUND offer_id=714 driver_id=12 ride_id=181
+ERROR offer_id=714 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=715
+START task offer_id=716
+FOUND offer_id=715 driver_id=33 ride_id=181
+ERROR offer_id=715 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+FOUND offer_id=716 driver_id=27 ride_id=181
+ERROR offer_id=716 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=717
+FOUND offer_id=717 driver_id=33 ride_id=182
+ERROR offer_id=717 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=718
+START task offer_id=719
+FOUND offer_id=718 driver_id=12 ride_id=182
+ERROR offer_id=718 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+FOUND offer_id=719 driver_id=13 ride_id=182
+ERROR offer_id=719 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=720
+START task offer_id=721
+FOUND offer_id=720 driver_id=8 ride_id=182
+ERROR offer_id=720 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+FOUND offer_id=721 driver_id=27 ride_id=182
+ERROR offer_id=721 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=722
+FOUND offer_id=722 driver_id=33 ride_id=183
+ERROR offer_id=722 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=723
+START task offer_id=724
+FOUND offer_id=724 driver_id=12 ride_id=183
+ERROR offer_id=724 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+FOUND offer_id=723 driver_id=13 ride_id=183
+ERROR offer_id=723 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=725
+START task offer_id=726
+FOUND offer_id=725 driver_id=8 ride_id=183
+ERROR offer_id=725 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+FOUND offer_id=726 driver_id=27 ride_id=183
+ERROR offer_id=726 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=727
+FOUND offer_id=727 driver_id=33 ride_id=184
+ERROR offer_id=727 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=728
+START task offer_id=729
+FOUND offer_id=728 driver_id=13 ride_id=184
+ERROR offer_id=728 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+FOUND offer_id=729 driver_id=12 ride_id=184
+ERROR offer_id=729 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=730
+START task offer_id=731
+FOUND offer_id=730 driver_id=8 ride_id=184
+ERROR offer_id=730 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+FOUND offer_id=731 driver_id=27 ride_id=184
+ERROR offer_id=731 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=732
+FOUND offer_id=732 driver_id=8 ride_id=185
+ERROR offer_id=732 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=733
+FOUND offer_id=733 driver_id=33 ride_id=186
+ERROR offer_id=733 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=734
+START task offer_id=735
+FOUND offer_id=734 driver_id=12 ride_id=186
+ERROR offer_id=734 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+FOUND offer_id=735 driver_id=13 ride_id=186
+ERROR offer_id=735 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=736
+FOUND offer_id=736 driver_id=27 ride_id=186
+ERROR offer_id=736 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=737
+FOUND offer_id=737 driver_id=72 ride_id=187
+ERROR offer_id=737 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=738
+START task offer_id=739
+FOUND offer_id=738 driver_id=12 ride_id=187
+ERROR offer_id=738 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+FOUND offer_id=739 driver_id=33 ride_id=187
+ERROR offer_id=739 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=740
+FOUND offer_id=740 driver_id=13 ride_id=187
+ERROR offer_id=740 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=741
+FOUND offer_id=741 driver_id=72 ride_id=188
+ERROR offer_id=741 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=742
+FOUND offer_id=742 driver_id=33 ride_id=189
+ERROR offer_id=742 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=743
+START task offer_id=744
+FOUND offer_id=743 driver_id=13 ride_id=189
+ERROR offer_id=743 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+FOUND offer_id=744 driver_id=12 ride_id=189
+ERROR offer_id=744 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=745
+FOUND offer_id=745 driver_id=27 ride_id=189
+ERROR offer_id=745 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=746
+FOUND offer_id=746 driver_id=13 ride_id=190
+ERROR offer_id=746 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=747
+FOUND offer_id=747 driver_id=33 ride_id=190
+ERROR offer_id=747 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=748
+START task offer_id=749
+FOUND offer_id=748 driver_id=27 ride_id=190
+ERROR offer_id=748 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+FOUND offer_id=749 driver_id=12 ride_id=190
+ERROR offer_id=749 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=750
+FOUND offer_id=750 driver_id=13 ride_id=191
+ERROR offer_id=750 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=751
+FOUND offer_id=751 driver_id=33 ride_id=191
+ERROR offer_id=751 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+START task offer_id=752
+START task offer_id=753
+FOUND offer_id=752 driver_id=27 ride_id=191
+ERROR offer_id=752 error=PushService.send() got an unexpected keyword argument 'taxi_offer'
+FOUND offer_id=753 driver_id=12 ride_id=191
+ERROR offer_id=753 error=PushService.send() got an unexpected keyword argument 'taxi_offer'

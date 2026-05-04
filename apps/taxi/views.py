@@ -11,6 +11,7 @@ from .services import *
 from services.matrix import *
 from apps.taxi.pricing import *
 from .paginations import *
+from apps.notify.taxi import *
 
 
 class TaxiRideCreateView(generics.CreateAPIView):
@@ -64,6 +65,7 @@ class AcceptTaxiOfferView(generics.GenericAPIView):
         success, message = accept_taxi_offer(offer, user)
 
         if success:
+            taxi_offer_accepted(offer)
             ride = offer.ride
             serializer = TaxiRideDetailSerializer(ride)
             return Response(
@@ -204,6 +206,7 @@ class TaxiArriveView(generics.GenericAPIView):
             request,
             kwargs.get("taxi_id"),
             mark_taxi_arrived,
+            taxi_arrived
         )
 
 
@@ -215,6 +218,7 @@ class TaxiStartTripView(generics.GenericAPIView):
             request,
             kwargs.get("taxi_id"),
             mark_taxi_in_trip,
+            taxi_started
         )
 
 
@@ -226,6 +230,7 @@ class TaxiCompleteView(generics.GenericAPIView):
             request,
             kwargs.get("taxi_id"),
             complete_taxi_trip,
+            taxi_completed
         )
 
 
@@ -307,6 +312,7 @@ class TaxiCancelByClientView(generics.GenericAPIView):
                 {"success": False, "message": message},
                 status=status.HTTP_400_BAD_REQUEST
             )
+        taxi_cancelled(taxi)
 
         taxi.refresh_from_db()
         response_serializer = TaxiRideDetailSerializer(taxi)

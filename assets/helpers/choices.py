@@ -103,11 +103,6 @@ TRANSPORT_TYPES = (
         ("car", "Машина"),
     )
 
-PAYMENT_METHODS = (
-    ("cash", "Наличка"),
-    ("mbank", "MBank"),
-)
-
 
 PAYMENT_STATUSES = (
     ("unpaid", "Не оплачено"),

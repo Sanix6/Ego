@@ -33,7 +33,8 @@ INSTALLED_APPS = [
     "apps.taxi",
     "apps.maps",
     "apps.balance",
-    "apps.notify"
+    "apps.notify",
+    "apps.payments"
 ]
 
 MIDDLEWARE = [
@@ -155,17 +156,24 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
+APPEND_SLASH=False
 REDIS_URL = "redis://127.0.0.1:6379/0"
 CELERY_BROKER_URL = REDIS_URL
 CELERY_RESULT_BACKEND = REDIS_URL
 
+
+NAMBA_SECRET = os.getenv("NAMBA_API_KEY")
+NAMBA_MERCHANT_ID = os.getenv("NAMBA_MERCHANT_ID")
+NAMBA_BASE_URL = os.getenv("NAMBA_BASE_URL")
+
+
+DOMAIN = "https://ego.kg"
 CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
 CELERY_TIMEZONE = "Asia/Bishkek"
 ONESIGNAL_APP_ID = os.getenv("ONESIGNAL_APP_ID", "")
-ONESIGNAL_API_KEY = os.getenv("ONESIGNAL_API_KEY", "os_v2_app_owmo3xulfbcfvgcckc5pibakarxqxknk3mkuowftqbrok2m7r6lgou7w6a2vxrro2lbgrq6wkz6hvbqf32b2rlms2vdynnjjjvzautq")
+ONESIGNAL_API_KEY = "os_v2_app_owmo3xulfbcfvgcckc5pibakatuzekd2fg4uzafrmehvht2fftzvc42m32vfxves3fqm6nht3jgfdbyrobdsiuo6cdhsjhii2ztxvqi"
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 
 NIKITA_LOGIN = os.getenv("NIKITA_LOGIN")

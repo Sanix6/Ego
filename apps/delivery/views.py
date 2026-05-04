@@ -15,6 +15,8 @@ from services.matrix import RoutingService, RoutingServiceError
 from datetime import timedelta
 from django.utils import timezone
 from .paginations import *
+from apps.notify.delivery import *
+from apps.notify.slots import slot_booked, slot_cancelled
 
 
 class DeliveryCreateView(generics.GenericAPIView):
@@ -55,6 +57,7 @@ class MyActiveOffersView(generics.ListAPIView):
             status="pending"
         ).select_related("delivery").order_by("-sent_at")
 
+
 class AcceptOfferView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
 
@@ -87,6 +90,7 @@ class AcceptOfferView(generics.GenericAPIView):
                 {"success": False, "message": message},
                 status=status.HTTP_400_BAD_REQUEST
             )
+        delivery_offer_accepted(offer)
 
         offer.refresh_from_db()
         delivery = offer.delivery
@@ -159,6 +163,8 @@ class DeliveryCancelByClientView(generics.GenericAPIView):
                 {"success": False, "message": message},
                 status=status.HTTP_400_BAD_REQUEST
             )
+
+        delivery_cancelled(delivery)
 
         delivery.refresh_from_db()
         tracking_serializer = DeliveryTrackingSerializer(delivery)
@@ -271,6 +277,8 @@ class DeliveryArriveView(generics.GenericAPIView):
                 {"success": False, "message": message},
                 status=status.HTTP_400_BAD_REQUEST
             )
+        
+        delivery_arrived(delivery)
 
         delivery.refresh_from_db()
         serializer = DeliveryTrackingSerializer(delivery)
@@ -306,6 +314,9 @@ class DeliveryPickupView(generics.GenericAPIView):
                 {"success": False, "message": message},
                 status=status.HTTP_400_BAD_REQUEST
             )
+        
+        delivery_picked_up(delivery)
+
 
         delivery.refresh_from_db()
         serializer = DeliveryTrackingSerializer(delivery)
@@ -366,6 +377,7 @@ class DeliveryArrivePointBView(generics.GenericAPIView):
                 {"success": False, "message": message},
                 status=status.HTTP_400_BAD_REQUEST
             )
+        delivery_arrived_b(delivery)
 
         delivery.refresh_from_db()
         serializer = DeliveryTrackingSerializer(delivery)
@@ -402,6 +414,8 @@ class DeliveryCompleteView(generics.GenericAPIView):
                 {"success": False, "message": message},
                 status=status.HTTP_400_BAD_REQUEST
             )
+        
+        delivery_completed(delivery)
 
         delivery.refresh_from_db()
         serializer = DeliveryTrackingSerializer(delivery)
@@ -451,6 +465,8 @@ class MyCourierSlotsView(generics.ListAPIView):
             queryset = queryset.filter(status=status_param)
 
         return queryset
+    
+
     
 class CourierSlotBookView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
@@ -516,6 +532,10 @@ class CourierSlotBookView(generics.GenericAPIView):
                 slot.status = "offered"
 
             slot.save(update_fields=["courier", "status"])
+            try:
+                slot_booked(slot)
+            except Exception:
+                pass
 
         return Response(
             {
@@ -585,6 +605,11 @@ class CourierSlotCancelView(generics.GenericAPIView):
             slot.courier = None
             slot.status = "planned"
             slot.save(update_fields=["courier", "status"])
+
+            try:
+                slot_cancelled(slot, user)
+            except Exception:
+                pass
 
         return Response(
             {

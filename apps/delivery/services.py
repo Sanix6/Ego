@@ -144,6 +144,7 @@ def complete_delivery(delivery, courier):
         if delivery.delivery_status not in ["courier_arrived_b"]:
             return False, "Нельзя завершить заказ сейчас."
 
+
         ok, msg = complete_route_stop(courier, delivery, "dropoff")
         if not ok:
             return False, msg
@@ -174,7 +175,10 @@ def complete_delivery(delivery, courier):
 
         wallet, _ = WorkerWallet.objects.get_or_create(worker=courier)
 
-        earning_amount = getattr(delivery, "courier_fee", None)
+        earning_amount = (
+            getattr(delivery, "courier_fee", None)
+            or delivery.price
+        )
 
         if earning_amount is None:
             earning_amount = Decimal("0.00")

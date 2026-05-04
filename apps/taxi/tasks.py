@@ -3,7 +3,7 @@ from django.db import transaction
 from django.utils import timezone
 from apps.taxi.models import TaxiOffer, TaxiRide
 from apps.taxi.dispatch import dispatch_wave, expire_taxi_offer, TAXI_DISPATCH_WAVES
-from apps.notify.services_taxi import send_taxi_offer_push
+from apps.notify.taxi import *
 
 @shared_task
 def check_taxi_offer_timeout(offer_id):
@@ -62,4 +62,35 @@ def dispatch_taxi(ride_id, wave_index=0):
 
 @shared_task
 def send_taxi_offer_push_task(offer_id):
-    send_taxi_offer_push(offer_id)
+    with open("logs/taxi_push.log", "a", encoding="utf-8") as f:
+        f.write(f"START task offer_id={offer_id}\n")
+
+    offer = (
+        TaxiOffer.objects
+        .select_related("driver", "ride")
+        .filter(id=offer_id)
+        .first()
+    )
+
+    if not offer:
+        with open("logs/taxi_push.log", "a", encoding="utf-8") as f:
+            f.write(f"NOT FOUND offer_id={offer_id}\n")
+        return
+
+    with open("logs/taxi_push.log", "a", encoding="utf-8") as f:
+        f.write(
+            f"FOUND offer_id={offer.id} driver_id={offer.driver_id} ride_id={offer.ride_id}\n"
+        )
+
+    try:
+        result = taxi_offer_created(offer)
+
+        with open("logs/taxi_push.log", "a", encoding="utf-8") as f:
+            f.write(
+                f"SENT offer_id={offer.id} status={getattr(result, 'status', None)} "
+                f"push_id={getattr(result, 'id', None)}\n"
+            )
+
+    except Exception as e:
+        with open("logs/taxi_push.log", "a", encoding="utf-8") as f:
+            f.write(f"ERROR offer_id={offer_id} error={str(e)}\n")

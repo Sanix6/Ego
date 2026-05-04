@@ -127,7 +127,7 @@ def accept_taxi_offer(offer, driver):
         now = timezone.now()
 
         ride.driver = driver
-        ride.status = "driver_assigned"
+        ride.status = "assigned"
         ride.assigned_at = now
         ride.accepted_at = now
         ride.save(update_fields=["driver", "status", "assigned_at", "accepted_at"])

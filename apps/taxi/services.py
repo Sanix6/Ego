@@ -58,7 +58,7 @@ def mark_taxi_arrived(taxi, user):
     if taxi.driver_id != user.id:
         return False, "Это не ваша поездка."
 
-    if taxi.status not in ["accepted", "driver_assigned"]:
+    if taxi.status not in ["accepted", "assigned"]:
         return False, "Нельзя отметить прибытие сейчас."
 
     taxi.status = "arrived"
@@ -104,8 +104,7 @@ def complete_taxi_trip(taxi, user):
 
     return True, "Поездка завершена"
 
-
-def taxi_action_response(request, taxi_id, action_func):
+def taxi_action_response(request, taxi_id, action_func, notify_func=None):
     user = request.user
 
     if user.user_type != "driver":
@@ -128,6 +127,9 @@ def taxi_action_response(request, taxi_id, action_func):
             {"success": False, "message": message},
             status=status.HTTP_400_BAD_REQUEST
         )
+
+    if notify_func:
+        notify_func(taxi)
 
     taxi.refresh_from_db()
     serializer = TaxiRideDetailSerializer(taxi)
