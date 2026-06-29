@@ -1,4 +1,5 @@
 from django.contrib import admin, messages
+from unfold.admin import ModelAdmin
 from django.db.models import Q
 from django.utils.html import format_html
 from django.utils import timezone
@@ -8,7 +9,7 @@ from .models import PushDevice, PushNotification
 
 
 @admin.register(PushDevice)
-class PushDeviceAdmin(admin.ModelAdmin):
+class PushDeviceAdmin(ModelAdmin):
     list_display = (
         "id",
         "user_link",
@@ -102,7 +103,7 @@ class PushDeviceAdmin(admin.ModelAdmin):
 
 
 @admin.register(PushNotification)
-class PushNotificationAdmin(admin.ModelAdmin):
+class PushNotificationAdmin(ModelAdmin):
     list_display = (
         "id",
         "recipient_link",

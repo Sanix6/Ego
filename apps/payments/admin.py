@@ -1,10 +1,11 @@
 from django.contrib import admin
+from unfold.admin import ModelAdmin
 from django.utils.html import format_html
-from .models import Payment
+from .models import Payment, NambaTransfer
 
 
 @admin.register(Payment)
-class PaymentAdmin(admin.ModelAdmin):
+class PaymentAdmin(ModelAdmin):
     list_display = (
         "id",
         "colored_status",
@@ -68,13 +69,12 @@ class PaymentAdmin(admin.ModelAdmin):
         }),
     )
 
-    # ---------- КРАСИВЫЕ ОТОБРАЖЕНИЯ ----------
 
     def colored_status(self, obj):
         colors = {
-            "pending": "#f39c12",   # желтый
-            "success": "#27ae60",   # зеленый
-            "failed": "#e74c3c",    # красный
+            "pending": "#f39c12",   
+            "success": "#27ae60",   
+            "failed": "#e74c3c",  
         }
         return format_html(
             '<b style="color: {};">{}</b>',
@@ -86,7 +86,7 @@ class PaymentAdmin(admin.ModelAdmin):
     def amount_colored(self, obj):
         color = "#27ae60" if obj.status == "success" else "#e74c3c"
         return format_html(
-            '<b style="color: {};">{} $</b>',
+            '<b style="color: {};">{} сом</b>',
             color,
             obj.amount
         )
@@ -112,11 +112,11 @@ class PaymentAdmin(admin.ModelAdmin):
         delta = now() - obj.created_at
 
         if delta.days == 0:
-            color = "#27ae60"  # сегодня
+            color = "#27ae60" 
         elif delta.days == 1:
-            color = "#f39c12"  # вчера
+            color = "#f39c12"
         else:
-            color = "#7f8c8d"  # старые
+            color = "#7f8c8d" 
 
         return format_html(
             '<span style="color:{};">{}</span>',
@@ -125,7 +125,99 @@ class PaymentAdmin(admin.ModelAdmin):
         )
     created_at_colored.short_description = "Дата"
 
-    # ---------- ДОПОЛНИТЕЛЬНО ----------
 
     def has_add_permission(self, request):
-        return False  # запрет создания вручную (обычно платежи создаются системой)
+        return False  #
+
+
+
+
+@admin.register(NambaTransfer)
+class NambaTransferAdmin(ModelAdmin):
+
+    list_display = (
+        "id",
+        "wallet_transaction",
+        "amount",
+        "colored_status",
+        "external_id",
+        "created_at",
+    )
+
+    list_filter = (
+        "status",
+        "created_at",
+    )
+
+    search_fields = (
+        "id",
+        "external_id",
+        "wallet_transaction__id",
+        "wallet_transaction__comment",
+    )
+
+    readonly_fields = (
+        "wallet_transaction",
+        "amount",
+        "status",
+        "external_id",
+        "raw_response",
+        "created_at",
+    )
+
+    ordering = (
+        "-id",
+    )
+
+    list_per_page = 50
+
+    fieldsets = (
+        (
+            "Основная информация",
+            {
+                "fields": (
+                    "wallet_transaction",
+                    "amount",
+                    "status",
+                    "external_id",
+                    "created_at",
+                )
+            },
+        ),
+        (
+            "Ответ Namba",
+            {
+                "fields": (
+                    "raw_response",
+                ),
+                "classes": (
+                    "tab",
+                ),
+            },
+        ),
+    )
+
+    @admin.display(description="Статус")
+    def colored_status(self, obj):
+
+        colors = {
+            "success": "#16a34a",
+            "failed": "#dc2626",
+            "pending": "#ca8a04",
+        }
+
+        color = colors.get(obj.status, "#6b7280")
+
+        return (
+            f'<span style="'
+            f'padding:4px 10px;'
+            f'border-radius:8px;'
+            f'font-weight:600;'
+            f'color:white;'
+            f'background:{color};'
+            f'">'
+            f'{obj.status}'
+            f'</span>'
+        )
+
+    colored_status.allow_tags = True

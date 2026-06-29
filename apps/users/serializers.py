@@ -89,6 +89,12 @@ class ScanDriversLicenseSerializer(serializers.ModelSerializer):
             'issuing_authority'
         ]
 
+
+class DriverCarImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DriverCarImage
+        fields = ["id", "image"]
+
 class ScanDriversAutoSerializer(serializers.ModelSerializer):
     class Meta:
         model = DriverProfile
@@ -99,19 +105,23 @@ class ScanDriversAutoSerializer(serializers.ModelSerializer):
             'car_color',
             'car_number',
             "car_type",
-            'car_photo', 
         ]
 
-    def create(self, validated_data):
-        driver_profile = super().create(validated_data)
-        driver_profile.status = 'pending'
-        driver_profile.save()
-        return driver_profile
+    def update(self, instance, validated_data):
+        instance.status = 'pending'
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+
+        instance.save()
+        return instance
 
 
 
 
 class PersonalInfoSerializer(serializers.ModelSerializer):
+    transport_type = serializers.SerializerMethodField()
+
     class Meta:
         model = User
         fields = (
@@ -122,7 +132,15 @@ class PersonalInfoSerializer(serializers.ModelSerializer):
             "last_name",
             "rating_avg",
             "user_type",
+            "transport_type",
+            "logo",
         )
+
+    def get_transport_type(self, obj):
+        if obj.user_type == "courier":
+            if hasattr(obj, "courier_profile") and obj.courier_profile:
+                return obj.courier_profile.transport_type
+        return None
 
 
 class UserAddressSerializer(serializers.ModelSerializer):
@@ -151,6 +169,7 @@ class CourierProfileSerializer(serializers.ModelSerializer):
         source="user.orders_count",
         read_only=True
     )
+    
     class Meta:
         model = CourierProfile
         fields = "__all__"

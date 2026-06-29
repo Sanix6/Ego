@@ -2,6 +2,11 @@ from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
+from django.utils import timezone
+from datetime import timedelta
+
+from django.core.cache import cache
+
 from apps.delivery.models import Delivery
 from apps.taxi.models import TaxiRide
 from .models import Review
@@ -173,7 +178,6 @@ class TaxiReviewView(generics.GenericAPIView):
                 status=status.HTTP_404_NOT_FOUND,
             )
 
-        # поменяй статус на свой финальный статус поездки
         if ride.status != "completed":
             return Response(
                 {"success": False, "message": "Отзыв можно оставить только после завершения поездки"},
@@ -229,3 +233,119 @@ class TaxiReviewView(generics.GenericAPIView):
             },
             status=status.HTTP_201_CREATED,
         )
+
+
+
+
+
+CACHE_TTL = 60 * 5  
+
+
+class RecentAddressesView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        cache_key = f"recent_addresses:{user.id}"
+
+        cached = cache.get(cache_key)
+        if cached:
+            return Response({
+                "success": True,
+                "source": "cache",
+                "data": cached
+            })
+
+        limit_date = timezone.now() - timedelta(days=30)
+
+        delivery_qs = Delivery.objects.filter(
+            client_id=user.id,
+            created_at__gte=limit_date
+        ).values(
+            "id",
+            "point_a",
+            "point_b",
+            "pickup_lat",
+            "pickup_lon",
+            "dropoff_lat",
+            "dropoff_lon",
+            "created_at"
+        )
+
+        taxi_qs = TaxiRide.objects.filter(
+            client_id=user.id,
+            requested_at__gte=limit_date
+        ).values(
+            "id",
+            "point_a",
+            "point_b",
+            "pickup_lat",
+            "pickup_lon",
+            "dropoff_lat",
+            "dropoff_lon",
+            "requested_at"
+        )
+
+        result = []
+
+        for d in delivery_qs:
+            if d["point_a"]:
+                result.append({
+                    "type": "delivery",
+                    "role": "pickup",
+                    "address": d["point_a"],
+                    "lat": d["pickup_lat"],
+                    "lon": d["pickup_lon"],
+                    "created_at": d["created_at"]
+                })
+
+            if d["point_b"]:
+                result.append({
+                    "type": "delivery",
+                    "role": "dropoff",
+                    "address": d["point_b"],
+                    "lat": d["dropoff_lat"],
+                    "lon": d["dropoff_lon"],
+                    "created_at": d["created_at"]
+                })
+
+        for t in taxi_qs:
+            if t["point_a"]:
+                result.append({
+                    "type": "taxi",
+                    "role": "pickup",
+                    "address": t["point_a"],
+                    "lat": t["pickup_lat"],
+                    "lon": t["pickup_lon"],
+                    "created_at": t["requested_at"]
+                })
+
+            if t["point_b"]:
+                result.append({
+                    "type": "taxi",
+                    "role": "dropoff",
+                    "address": t["point_b"],
+                    "lat": t["dropoff_lat"],
+                    "lon": t["dropoff_lon"],
+                    "created_at": t["requested_at"]
+                })
+
+        result.sort(key=lambda x: x["created_at"], reverse=True)
+        result = result[:30]
+
+        cache.set(cache_key, result, CACHE_TTL)
+
+        return Response({
+            "success": True,
+            "source": "db",
+            "data": result
+        })
+
+
+
+
+
+
+
+
+

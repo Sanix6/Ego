@@ -20,6 +20,20 @@ class User(AbstractBaseUser, PermissionsMixin):
     verification_code = models.CharField(
         "Код подтверждения", max_length=4, blank=True, null=True
     )
+    universal_code = models.CharField(
+        "Универсальный код",
+        max_length=10,
+        blank=True,
+        null=True
+    )
+    darkstore = models.ForeignKey(
+        DarkStore,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="users",
+        verbose_name="Даркстор"
+    )
     rating_avg = models.DecimalField("Средний рейтинг", max_digits=3, decimal_places=2, default=0)
     rating_count = models.PositiveIntegerField("Количество отзывов", default=0)
     orders_count = models.PositiveIntegerField("Количество заказов", default=0)
@@ -168,7 +182,8 @@ class CourierProfile(models.Model):
 
     transport_type = models.CharField(
         max_length=20,
-        choices=TRANSPORT_TYPES
+        choices=TRANSPORT_TYPES,
+        null=True, blank=True
     )
 
     selfie = models.ImageField(upload_to="couriers/selfie/", blank=True, null=True)
@@ -192,6 +207,12 @@ class CourierProfile(models.Model):
     car_model = models.CharField(max_length=100, blank=True)
     car_color = models.CharField(max_length=50, blank=True)
     car_number = models.CharField(max_length=20, blank=True)
+    car_image = models.ImageField(
+        "Фото машины",
+        upload_to="couriers/car/",
+        blank=True,
+        null=True
+    )
 
     status = models.CharField(
         max_length=20,
@@ -200,6 +221,7 @@ class CourierProfile(models.Model):
     )
 
     created_at = models.DateTimeField(auto_now_add=True)
+    last_car_check_at = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         verbose_name = "Курьер"
@@ -207,6 +229,16 @@ class CourierProfile(models.Model):
 
     def __str__(self):
         return f'{self.delivery_zones}'
+
+
+class CourierCarImage(models.Model):
+    courier = models.ForeignKey(
+        "CourierProfile",
+        on_delete=models.CASCADE,
+        related_name="equipment_images"
+    )
+    image = models.ImageField(upload_to="couriers/equipment/")
+    created_at = models.DateTimeField(auto_now_add=True)
 
 
 class DriverProfile(models.Model):
@@ -261,10 +293,9 @@ class DriverProfile(models.Model):
     car_color = models.CharField("Цвет машины", max_length=50, blank=True)
     car_number = models.CharField("Номер машины", max_length=20, blank=True)
     car_type = models.CharField("Тип машины", max_length=50, blank=True)
-
-    car_photo = models.ImageField(
+    car_image = models.ImageField(
         "Фото машины",
-        upload_to='drivers/car/',
+        upload_to="drivers/car/",
         blank=True,
         null=True
     )
@@ -277,6 +308,7 @@ class DriverProfile(models.Model):
     )
 
     created_at = models.DateTimeField(auto_now_add=True)
+    last_car_check_at = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return f"Водитель {self.user.phone}"
@@ -286,6 +318,16 @@ class DriverProfile(models.Model):
         verbose_name_plural = "Таксисты"
 
 
+class DriverCarImage(models.Model):
+    driver = models.ForeignKey(
+        DriverProfile,
+        on_delete=models.CASCADE,
+        related_name="car_images"
+    )
+
+    image = models.ImageField(upload_to="drivers/car/gallery/")
+    created_at = models.DateTimeField(auto_now_add=True)
+
 class WorkerStatus(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="worker_status")
     is_online = models.BooleanField(default=False)
@@ -293,6 +335,14 @@ class WorkerStatus(models.Model):
     active_deliveries_count = models.PositiveIntegerField(default=0)
     max_parallel_deliveries = models.PositiveIntegerField(default=5)
     last_seen = models.DateTimeField(auto_now=True)
+    online_started_at = models.DateTimeField(
+        null=True,
+        blank=True
+    )
+
+    today_online_seconds = models.PositiveIntegerField(
+        default=0
+    )
 
     def __str__(self):
         return f"{self.user.phone} | online={self.is_online} | busy={self.is_busy}"

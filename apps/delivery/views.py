@@ -30,6 +30,7 @@ class DeliveryCreateView(generics.GenericAPIView):
 
         delivery = serializer.save(
             client=request.user,
+            darkstore=request.user.darkstore,
             delivery_status="searching_courier"
         )
 
@@ -296,33 +297,88 @@ class DeliveryPickupView(generics.GenericAPIView):
 
         if user.user_type != "courier":
             return Response(
-                {"success": False, "message": "Только курьер"},
+                {
+                    "success": False,
+                    "message": "Только курьер"
+                },
                 status=status.HTTP_403_FORBIDDEN
             )
 
-        delivery = Delivery.objects.filter(id=delivery_id).first()
+        delivery = Delivery.objects.filter(
+            id=delivery_id
+        ).select_related(
+            "tariff"
+        ).first()
+
         if not delivery:
             return Response(
-                {"success": False, "message": "Заказ не найден"},
+                {
+                    "success": False,
+                    "message": "Заказ не найден"
+                },
                 status=status.HTTP_404_NOT_FOUND
             )
 
-        success, message = mark_delivery_picked_up(delivery, user)
+        success, message = mark_delivery_picked_up(
+            delivery,
+            user
+        )
 
         if not success:
             return Response(
-                {"success": False, "message": message},
+                {
+                    "success": False,
+                    "message": message
+                },
                 status=status.HTTP_400_BAD_REQUEST
             )
-        
+
+        waiting_data = (
+            DeliveryWaitingService.calculate_waiting(
+                delivery
+            )
+        )
+
+        paid_waiting_minutes = waiting_data[
+            "paid_waiting_minutes"
+        ]
+
+        waiting_price = waiting_data[
+            "waiting_price"
+        ]
+        delivery.waiting_minutes = paid_waiting_minutes
+        delivery.waiting_price = waiting_price
+
+        price = Decimal(str(delivery.price or 0))
+
+        final_price = (
+            price
+            + waiting_price
+        )
+
+        delivery.price = final_price
+
+        delivery.save(
+            update_fields=[
+                "waiting_minutes",
+                "waiting_price",
+                "price",
+            ]
+        )
+
         delivery_picked_up(delivery)
 
-
         delivery.refresh_from_db()
-        serializer = DeliveryTrackingSerializer(delivery)
+
+        serializer = DeliveryTrackingSerializer(
+            delivery
+        )
 
         eta_data = None
-        worker_location = WorkerLocation.objects.filter(user=user).first()
+
+        worker_location = WorkerLocation.objects.filter(
+            user=user
+        ).first()
 
         if (
             worker_location
@@ -342,12 +398,22 @@ class DeliveryPickupView(generics.GenericAPIView):
                 "success": True,
                 "message": message,
                 "data": serializer.data,
+                "waiting": {
+                    "paid_minutes": paid_waiting_minutes,
+                    "waiting_price": str(waiting_price),
+                },
+                "pricing": {
+                    "final_price": str(final_price),
+                },
                 "tracking": {
                     "target": "point_b",
                     "eta": eta_data,
                 }
-            }
+            },
+            status=status.HTTP_200_OK
         )
+
+
 
 
 class DeliveryArrivePointBView(generics.GenericAPIView):
@@ -385,8 +451,7 @@ class DeliveryArrivePointBView(generics.GenericAPIView):
         return Response(
             {"success": True, "message": message, "data": serializer.data}
         )
-
-
+        
 class DeliveryCompleteView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
 
@@ -396,33 +461,58 @@ class DeliveryCompleteView(generics.GenericAPIView):
 
         if user.user_type != "courier":
             return Response(
-                {"success": False, "message": "Только курьер"},
+                {
+                    "success": False,
+                    "message": "Только курьер"
+                },
                 status=status.HTTP_403_FORBIDDEN
             )
 
         delivery = Delivery.objects.filter(id=delivery_id).first()
+
         if not delivery:
             return Response(
-                {"success": False, "message": "Заказ не найден"},
+                {
+                    "success": False,
+                    "message": "Заказ не найден"
+                },
                 status=status.HTTP_404_NOT_FOUND
             )
 
-        success, message = complete_delivery(delivery, user)
+        success, result = complete_delivery(delivery, user)
 
         if not success:
             return Response(
-                {"success": False, "message": message},
+                {
+                    "success": False,
+                    "message": result
+                },
                 status=status.HTTP_400_BAD_REQUEST
             )
-        
+
         delivery_completed(delivery)
 
         delivery.refresh_from_db()
         serializer = DeliveryTrackingSerializer(delivery)
 
-        return Response(
-            {"success": True, "message": message, "data": serializer.data}
-        )
+        message = result
+        commission_info = None
+
+        if isinstance(result, dict):
+            message = result.get("text", "Заказ доставлен")
+            commission_info = result.get("commission_info")
+
+        response_data = {
+            "success": True,
+            "message": message,
+            "data": serializer.data,
+        }
+
+        if commission_info:
+            response_data["commission_info"] = commission_info
+
+        return Response(response_data, status=status.HTTP_200_OK)
+
 
 class SlotListView(generics.GenericAPIView):
     serializer_class = SlotSerializer
@@ -702,3 +792,25 @@ class CourierOrderHistoryView(generics.ListAPIView):
             queryset = queryset.filter(created_at__lte=dt_to)
 
         return queryset
+
+
+class DeliveryStatusView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        delivery_id = kwargs.get("delivery_id")
+
+        delivery = Delivery.objects.filter(id=delivery_id).first()
+
+        if not delivery:
+            return Response(
+                {
+                    "success": False,
+                    "message": "Заказ не найден"
+                },
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        return Response({"success": True,"data": { "id": delivery.id,
+                    "status": delivery.delivery_status,}})

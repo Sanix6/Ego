@@ -1,0 +1,607 @@
+[WEBHOOK] RAW DATA: {'data': {'guid': '043badd1-dc13-440e-8646-e223c4c1a02c', 'type': 'PAYMENT_QR', 'amount': '50000', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-19T10:03:36.146Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-19T10:03:36.604Z', 'externalId': 'b6752900-fe52-4178-bfbe-30ce035e09d5', 'refundAmount': '0', 'paymentAmount': '50000', 'paymentLinkGuid': '5ed103fa-6802-4162-b346-bf83c86d39cc', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-19T10:03:36.670Z'}
+[WEBHOOK] external_id=b6752900-fe52-4178-bfbe-30ce035e09d5 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=188 current_status=pending
+[WEBHOOK] payment_id=188 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=188 type=delivery
+[ORDER_PAYMENT] START payment_id=188 type=delivery order_id=16584
+[ORDER_PAYMENT] Delivery found id=16584
+[WEBHOOK] RAW DATA: {'data': {'guid': 'a640e365-60fd-4b57-83ef-227a164f68a1', 'type': 'PAYMENT_QR', 'amount': '25800', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-19T10:28:55.685Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-19T10:28:56.192Z', 'externalId': '58c7b311-8d89-4050-abf0-f78ab823c44b', 'refundAmount': '0', 'paymentAmount': '25800', 'paymentLinkGuid': 'd28f08ec-7004-451b-bdd3-71c252371a71', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-19T10:28:56.257Z'}
+[WEBHOOK] external_id=58c7b311-8d89-4050-abf0-f78ab823c44b status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=193 current_status=pending
+[WEBHOOK] payment_id=193 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=193 type=delivery
+[ORDER_PAYMENT] START payment_id=193 type=delivery order_id=16587
+[ORDER_PAYMENT] Delivery found id=16587
+[WEBHOOK] RAW DATA: {'data': {'guid': '79ff1dd2-de37-42db-85c4-bb4b060bfb28', 'type': 'PAYMENT_QR', 'amount': '50000', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-19T10:19:55.244Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-19T10:19:55.636Z', 'externalId': '9da4849c-4e55-447d-ae0e-0b9468f30a0a', 'refundAmount': '0', 'paymentAmount': '50000', 'paymentLinkGuid': 'fc178108-fd7d-4047-9613-7aac9103d8ce', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-19T10:19:55.788Z'}
+[WEBHOOK] external_id=9da4849c-4e55-447d-ae0e-0b9468f30a0a status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=191 current_status=pending
+[WEBHOOK] payment_id=191 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=191 type=delivery
+[ORDER_PAYMENT] START payment_id=191 type=delivery order_id=16586
+[ORDER_PAYMENT] Delivery found id=16586
+[WEBHOOK] RAW DATA: {'data': {'guid': 'a640e365-60fd-4b57-83ef-227a164f68a1', 'type': 'PAYMENT_QR', 'amount': '25800', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-19T10:28:55.685Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-19T10:28:56.192Z', 'externalId': '58c7b311-8d89-4050-abf0-f78ab823c44b', 'refundAmount': '0', 'paymentAmount': '25800', 'paymentLinkGuid': 'd28f08ec-7004-451b-bdd3-71c252371a71', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-19T10:28:56.257Z'}
+[WEBHOOK] external_id=58c7b311-8d89-4050-abf0-f78ab823c44b status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=193 current_status=success
+[WEBHOOK] SKIP already processed payment_id=193
+[WEBHOOK] RAW DATA: {'data': {'guid': '043badd1-dc13-440e-8646-e223c4c1a02c', 'type': 'PAYMENT_QR', 'amount': '50000', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-19T10:03:36.146Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-19T10:03:36.604Z', 'externalId': 'b6752900-fe52-4178-bfbe-30ce035e09d5', 'refundAmount': '0', 'paymentAmount': '50000', 'paymentLinkGuid': '5ed103fa-6802-4162-b346-bf83c86d39cc', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-19T10:03:36.670Z'}
+[WEBHOOK] external_id=b6752900-fe52-4178-bfbe-30ce035e09d5 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=188 current_status=success
+[WEBHOOK] SKIP already processed payment_id=188
+[WEBHOOK] RAW DATA: {'data': {'guid': '79ff1dd2-de37-42db-85c4-bb4b060bfb28', 'type': 'PAYMENT_QR', 'amount': '50000', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-19T10:19:55.244Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-19T10:19:55.636Z', 'externalId': '9da4849c-4e55-447d-ae0e-0b9468f30a0a', 'refundAmount': '0', 'paymentAmount': '50000', 'paymentLinkGuid': 'fc178108-fd7d-4047-9613-7aac9103d8ce', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-19T10:19:55.788Z'}
+[WEBHOOK] external_id=9da4849c-4e55-447d-ae0e-0b9468f30a0a status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=191 current_status=success
+[WEBHOOK] SKIP already processed payment_id=191
+[WEBHOOK] RAW DATA: {'data': {'guid': '58028bc3-60f1-4c90-90ff-1db2715405e0', 'type': 'PAYMENT_QR', 'amount': '25800', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T08:08:49.247Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T08:08:49.697Z', 'externalId': '8f6ccca3-a36e-4995-8ca2-a516ab048f20', 'refundAmount': '0', 'paymentAmount': '25800', 'paymentLinkGuid': 'd0e75f39-a760-49b9-bf38-6ce9c8386faf', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T08:08:49.815Z'}
+[WEBHOOK] external_id=8f6ccca3-a36e-4995-8ca2-a516ab048f20 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=240 current_status=pending
+[WEBHOOK] payment_id=240 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=240 type=delivery
+[ORDER_PAYMENT] START payment_id=240
+[ORDER_PAYMENT] DELIVERY FOUND id=16600
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '58028bc3-60f1-4c90-90ff-1db2715405e0', 'type': 'PAYMENT_QR', 'amount': '25800', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T08:08:49.247Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T08:08:49.697Z', 'externalId': '8f6ccca3-a36e-4995-8ca2-a516ab048f20', 'refundAmount': '0', 'paymentAmount': '25800', 'paymentLinkGuid': 'd0e75f39-a760-49b9-bf38-6ce9c8386faf', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T08:08:49.815Z'}
+[WEBHOOK] external_id=8f6ccca3-a36e-4995-8ca2-a516ab048f20 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=240 current_status=pending
+[WEBHOOK] payment_id=240 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=240 type=delivery
+[ORDER_PAYMENT] START payment_id=240
+[ORDER_PAYMENT] DELIVERY FOUND id=16600
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '07d88282-3daa-451a-ab23-ebc3f768ff78', 'type': 'PAYMENT_QR', 'amount': '1000000', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T08:09:05.107Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T08:09:05.421Z', 'externalId': '6bf2f37a-8ae7-4730-bf63-f56c6ca6d914', 'refundAmount': '0', 'paymentAmount': '1000000', 'paymentLinkGuid': 'e23fa677-c827-42b2-91ea-35b96ccd5405', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T08:09:05.498Z'}
+[WEBHOOK] external_id=6bf2f37a-8ae7-4730-bf63-f56c6ca6d914 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=243 current_status=pending
+[WEBHOOK] payment_id=243 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=243 type=delivery
+[ORDER_PAYMENT] START payment_id=243
+[ORDER_PAYMENT] DELIVERY FOUND id=16609
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '58028bc3-60f1-4c90-90ff-1db2715405e0', 'type': 'PAYMENT_QR', 'amount': '25800', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T08:08:49.247Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T08:08:49.697Z', 'externalId': '8f6ccca3-a36e-4995-8ca2-a516ab048f20', 'refundAmount': '0', 'paymentAmount': '25800', 'paymentLinkGuid': 'd0e75f39-a760-49b9-bf38-6ce9c8386faf', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T08:08:49.815Z'}
+[WEBHOOK] external_id=8f6ccca3-a36e-4995-8ca2-a516ab048f20 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=240 current_status=pending
+[WEBHOOK] payment_id=240 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=240 type=delivery
+[ORDER_PAYMENT] START payment_id=240
+[ORDER_PAYMENT] DELIVERY FOUND id=16600
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '07d88282-3daa-451a-ab23-ebc3f768ff78', 'type': 'PAYMENT_QR', 'amount': '1000000', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T08:09:05.107Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T08:09:05.421Z', 'externalId': '6bf2f37a-8ae7-4730-bf63-f56c6ca6d914', 'refundAmount': '0', 'paymentAmount': '1000000', 'paymentLinkGuid': 'e23fa677-c827-42b2-91ea-35b96ccd5405', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T08:09:05.498Z'}
+[WEBHOOK] external_id=6bf2f37a-8ae7-4730-bf63-f56c6ca6d914 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=243 current_status=pending
+[WEBHOOK] payment_id=243 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=243 type=delivery
+[ORDER_PAYMENT] START payment_id=243
+[ORDER_PAYMENT] DELIVERY FOUND id=16609
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '58028bc3-60f1-4c90-90ff-1db2715405e0', 'type': 'PAYMENT_QR', 'amount': '25800', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T08:08:49.247Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T08:08:49.697Z', 'externalId': '8f6ccca3-a36e-4995-8ca2-a516ab048f20', 'refundAmount': '0', 'paymentAmount': '25800', 'paymentLinkGuid': 'd0e75f39-a760-49b9-bf38-6ce9c8386faf', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T08:08:49.815Z'}
+[WEBHOOK] external_id=8f6ccca3-a36e-4995-8ca2-a516ab048f20 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=240 current_status=pending
+[WEBHOOK] payment_id=240 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=240 type=delivery
+[ORDER_PAYMENT] START payment_id=240
+[ORDER_PAYMENT] DELIVERY FOUND id=16600
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '07d88282-3daa-451a-ab23-ebc3f768ff78', 'type': 'PAYMENT_QR', 'amount': '1000000', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T08:09:05.107Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T08:09:05.421Z', 'externalId': '6bf2f37a-8ae7-4730-bf63-f56c6ca6d914', 'refundAmount': '0', 'paymentAmount': '1000000', 'paymentLinkGuid': 'e23fa677-c827-42b2-91ea-35b96ccd5405', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T08:09:05.498Z'}
+[WEBHOOK] external_id=6bf2f37a-8ae7-4730-bf63-f56c6ca6d914 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=243 current_status=pending
+[WEBHOOK] payment_id=243 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=243 type=delivery
+[ORDER_PAYMENT] START payment_id=243
+[ORDER_PAYMENT] DELIVERY FOUND id=16609
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '58028bc3-60f1-4c90-90ff-1db2715405e0', 'type': 'PAYMENT_QR', 'amount': '25800', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T08:08:49.247Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T08:08:49.697Z', 'externalId': '8f6ccca3-a36e-4995-8ca2-a516ab048f20', 'refundAmount': '0', 'paymentAmount': '25800', 'paymentLinkGuid': 'd0e75f39-a760-49b9-bf38-6ce9c8386faf', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T08:08:49.815Z'}
+[WEBHOOK] external_id=8f6ccca3-a36e-4995-8ca2-a516ab048f20 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=240 current_status=pending
+[WEBHOOK] payment_id=240 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=240 type=delivery
+[ORDER_PAYMENT] START payment_id=240
+[ORDER_PAYMENT] DELIVERY FOUND id=16600
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '07d88282-3daa-451a-ab23-ebc3f768ff78', 'type': 'PAYMENT_QR', 'amount': '1000000', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T08:09:05.107Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T08:09:05.421Z', 'externalId': '6bf2f37a-8ae7-4730-bf63-f56c6ca6d914', 'refundAmount': '0', 'paymentAmount': '1000000', 'paymentLinkGuid': 'e23fa677-c827-42b2-91ea-35b96ccd5405', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T08:09:05.498Z'}
+[WEBHOOK] external_id=6bf2f37a-8ae7-4730-bf63-f56c6ca6d914 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=243 current_status=pending
+[WEBHOOK] payment_id=243 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=243 type=delivery
+[ORDER_PAYMENT] START payment_id=243
+[ORDER_PAYMENT] DELIVERY FOUND id=16609
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '58028bc3-60f1-4c90-90ff-1db2715405e0', 'type': 'PAYMENT_QR', 'amount': '25800', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T08:08:49.247Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T08:08:49.697Z', 'externalId': '8f6ccca3-a36e-4995-8ca2-a516ab048f20', 'refundAmount': '0', 'paymentAmount': '25800', 'paymentLinkGuid': 'd0e75f39-a760-49b9-bf38-6ce9c8386faf', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T08:08:49.815Z'}
+[WEBHOOK] external_id=8f6ccca3-a36e-4995-8ca2-a516ab048f20 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=240 current_status=pending
+[WEBHOOK] payment_id=240 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=240 type=delivery
+[ORDER_PAYMENT] START payment_id=240
+[ORDER_PAYMENT] DELIVERY FOUND id=16600
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '07d88282-3daa-451a-ab23-ebc3f768ff78', 'type': 'PAYMENT_QR', 'amount': '1000000', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T08:09:05.107Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T08:09:05.421Z', 'externalId': '6bf2f37a-8ae7-4730-bf63-f56c6ca6d914', 'refundAmount': '0', 'paymentAmount': '1000000', 'paymentLinkGuid': 'e23fa677-c827-42b2-91ea-35b96ccd5405', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T08:09:05.498Z'}
+[WEBHOOK] external_id=6bf2f37a-8ae7-4730-bf63-f56c6ca6d914 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=243 current_status=pending
+[WEBHOOK] payment_id=243 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=243 type=delivery
+[ORDER_PAYMENT] START payment_id=243
+[ORDER_PAYMENT] DELIVERY FOUND id=16609
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '58028bc3-60f1-4c90-90ff-1db2715405e0', 'type': 'PAYMENT_QR', 'amount': '25800', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T08:08:49.247Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T08:08:49.697Z', 'externalId': '8f6ccca3-a36e-4995-8ca2-a516ab048f20', 'refundAmount': '0', 'paymentAmount': '25800', 'paymentLinkGuid': 'd0e75f39-a760-49b9-bf38-6ce9c8386faf', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T08:08:49.815Z'}
+[WEBHOOK] external_id=8f6ccca3-a36e-4995-8ca2-a516ab048f20 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=240 current_status=pending
+[WEBHOOK] payment_id=240 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=240 type=delivery
+[ORDER_PAYMENT] START payment_id=240
+[ORDER_PAYMENT] DELIVERY FOUND id=16600
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '07d88282-3daa-451a-ab23-ebc3f768ff78', 'type': 'PAYMENT_QR', 'amount': '1000000', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T08:09:05.107Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T08:09:05.421Z', 'externalId': '6bf2f37a-8ae7-4730-bf63-f56c6ca6d914', 'refundAmount': '0', 'paymentAmount': '1000000', 'paymentLinkGuid': 'e23fa677-c827-42b2-91ea-35b96ccd5405', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T08:09:05.498Z'}
+[WEBHOOK] external_id=6bf2f37a-8ae7-4730-bf63-f56c6ca6d914 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=243 current_status=pending
+[WEBHOOK] payment_id=243 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=243 type=delivery
+[ORDER_PAYMENT] START payment_id=243
+[ORDER_PAYMENT] DELIVERY FOUND id=16609
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '58028bc3-60f1-4c90-90ff-1db2715405e0', 'type': 'PAYMENT_QR', 'amount': '25800', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T08:08:49.247Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T08:08:49.697Z', 'externalId': '8f6ccca3-a36e-4995-8ca2-a516ab048f20', 'refundAmount': '0', 'paymentAmount': '25800', 'paymentLinkGuid': 'd0e75f39-a760-49b9-bf38-6ce9c8386faf', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T08:08:49.815Z'}
+[WEBHOOK] external_id=8f6ccca3-a36e-4995-8ca2-a516ab048f20 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=240 current_status=pending
+[WEBHOOK] payment_id=240 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=240 type=delivery
+[ORDER_PAYMENT] START payment_id=240
+[ORDER_PAYMENT] DELIVERY FOUND id=16600
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '07d88282-3daa-451a-ab23-ebc3f768ff78', 'type': 'PAYMENT_QR', 'amount': '1000000', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T08:09:05.107Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T08:09:05.421Z', 'externalId': '6bf2f37a-8ae7-4730-bf63-f56c6ca6d914', 'refundAmount': '0', 'paymentAmount': '1000000', 'paymentLinkGuid': 'e23fa677-c827-42b2-91ea-35b96ccd5405', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T08:09:05.498Z'}
+[WEBHOOK] external_id=6bf2f37a-8ae7-4730-bf63-f56c6ca6d914 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=243 current_status=pending
+[WEBHOOK] payment_id=243 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=243 type=delivery
+[ORDER_PAYMENT] START payment_id=243
+[ORDER_PAYMENT] DELIVERY FOUND id=16609
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '58028bc3-60f1-4c90-90ff-1db2715405e0', 'type': 'PAYMENT_QR', 'amount': '25800', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T08:08:49.247Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T08:08:49.697Z', 'externalId': '8f6ccca3-a36e-4995-8ca2-a516ab048f20', 'refundAmount': '0', 'paymentAmount': '25800', 'paymentLinkGuid': 'd0e75f39-a760-49b9-bf38-6ce9c8386faf', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T08:08:49.815Z'}
+[WEBHOOK] external_id=8f6ccca3-a36e-4995-8ca2-a516ab048f20 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=240 current_status=pending
+[WEBHOOK] payment_id=240 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=240 type=delivery
+[ORDER_PAYMENT] START payment_id=240
+[ORDER_PAYMENT] DELIVERY FOUND id=16600
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '07d88282-3daa-451a-ab23-ebc3f768ff78', 'type': 'PAYMENT_QR', 'amount': '1000000', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T08:09:05.107Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T08:09:05.421Z', 'externalId': '6bf2f37a-8ae7-4730-bf63-f56c6ca6d914', 'refundAmount': '0', 'paymentAmount': '1000000', 'paymentLinkGuid': 'e23fa677-c827-42b2-91ea-35b96ccd5405', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T08:09:05.498Z'}
+[WEBHOOK] external_id=6bf2f37a-8ae7-4730-bf63-f56c6ca6d914 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=243 current_status=pending
+[WEBHOOK] payment_id=243 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=243 type=delivery
+[ORDER_PAYMENT] START payment_id=243
+[ORDER_PAYMENT] DELIVERY FOUND id=16609
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '58028bc3-60f1-4c90-90ff-1db2715405e0', 'type': 'PAYMENT_QR', 'amount': '25800', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T08:08:49.247Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T08:08:49.697Z', 'externalId': '8f6ccca3-a36e-4995-8ca2-a516ab048f20', 'refundAmount': '0', 'paymentAmount': '25800', 'paymentLinkGuid': 'd0e75f39-a760-49b9-bf38-6ce9c8386faf', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T08:08:49.815Z'}
+[WEBHOOK] external_id=8f6ccca3-a36e-4995-8ca2-a516ab048f20 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=240 current_status=pending
+[WEBHOOK] payment_id=240 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=240 type=delivery
+[ORDER_PAYMENT] START payment_id=240
+[ORDER_PAYMENT] DELIVERY FOUND id=16600
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '07d88282-3daa-451a-ab23-ebc3f768ff78', 'type': 'PAYMENT_QR', 'amount': '1000000', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T08:09:05.107Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T08:09:05.421Z', 'externalId': '6bf2f37a-8ae7-4730-bf63-f56c6ca6d914', 'refundAmount': '0', 'paymentAmount': '1000000', 'paymentLinkGuid': 'e23fa677-c827-42b2-91ea-35b96ccd5405', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T08:09:05.498Z'}
+[WEBHOOK] external_id=6bf2f37a-8ae7-4730-bf63-f56c6ca6d914 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=243 current_status=pending
+[WEBHOOK] payment_id=243 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=243 type=delivery
+[ORDER_PAYMENT] START payment_id=243
+[ORDER_PAYMENT] DELIVERY FOUND id=16609
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '58028bc3-60f1-4c90-90ff-1db2715405e0', 'type': 'PAYMENT_QR', 'amount': '25800', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T08:08:49.247Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T08:08:49.697Z', 'externalId': '8f6ccca3-a36e-4995-8ca2-a516ab048f20', 'refundAmount': '0', 'paymentAmount': '25800', 'paymentLinkGuid': 'd0e75f39-a760-49b9-bf38-6ce9c8386faf', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T08:08:49.815Z'}
+[WEBHOOK] external_id=8f6ccca3-a36e-4995-8ca2-a516ab048f20 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=240 current_status=pending
+[WEBHOOK] payment_id=240 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=240 type=delivery
+[ORDER_PAYMENT] START payment_id=240
+[ORDER_PAYMENT] DELIVERY FOUND id=16600
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '07d88282-3daa-451a-ab23-ebc3f768ff78', 'type': 'PAYMENT_QR', 'amount': '1000000', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T08:09:05.107Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T08:09:05.421Z', 'externalId': '6bf2f37a-8ae7-4730-bf63-f56c6ca6d914', 'refundAmount': '0', 'paymentAmount': '1000000', 'paymentLinkGuid': 'e23fa677-c827-42b2-91ea-35b96ccd5405', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T08:09:05.498Z'}
+[WEBHOOK] external_id=6bf2f37a-8ae7-4730-bf63-f56c6ca6d914 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=243 current_status=pending
+[WEBHOOK] payment_id=243 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=243 type=delivery
+[ORDER_PAYMENT] START payment_id=243
+[ORDER_PAYMENT] DELIVERY FOUND id=16609
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '58028bc3-60f1-4c90-90ff-1db2715405e0', 'type': 'PAYMENT_QR', 'amount': '25800', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T08:08:49.247Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T08:08:49.697Z', 'externalId': '8f6ccca3-a36e-4995-8ca2-a516ab048f20', 'refundAmount': '0', 'paymentAmount': '25800', 'paymentLinkGuid': 'd0e75f39-a760-49b9-bf38-6ce9c8386faf', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T08:08:49.815Z'}
+[WEBHOOK] external_id=8f6ccca3-a36e-4995-8ca2-a516ab048f20 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=240 current_status=pending
+[WEBHOOK] payment_id=240 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=240 type=delivery
+[ORDER_PAYMENT] START payment_id=240
+[ORDER_PAYMENT] DELIVERY FOUND id=16600
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '07d88282-3daa-451a-ab23-ebc3f768ff78', 'type': 'PAYMENT_QR', 'amount': '1000000', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T08:09:05.107Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T08:09:05.421Z', 'externalId': '6bf2f37a-8ae7-4730-bf63-f56c6ca6d914', 'refundAmount': '0', 'paymentAmount': '1000000', 'paymentLinkGuid': 'e23fa677-c827-42b2-91ea-35b96ccd5405', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T08:09:05.498Z'}
+[WEBHOOK] external_id=6bf2f37a-8ae7-4730-bf63-f56c6ca6d914 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=243 current_status=pending
+[WEBHOOK] payment_id=243 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=243 type=delivery
+[ORDER_PAYMENT] START payment_id=243
+[ORDER_PAYMENT] DELIVERY FOUND id=16609
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '58028bc3-60f1-4c90-90ff-1db2715405e0', 'type': 'PAYMENT_QR', 'amount': '25800', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T08:08:49.247Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T08:08:49.697Z', 'externalId': '8f6ccca3-a36e-4995-8ca2-a516ab048f20', 'refundAmount': '0', 'paymentAmount': '25800', 'paymentLinkGuid': 'd0e75f39-a760-49b9-bf38-6ce9c8386faf', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T08:08:49.815Z'}
+[WEBHOOK] external_id=8f6ccca3-a36e-4995-8ca2-a516ab048f20 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=240 current_status=pending
+[WEBHOOK] payment_id=240 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=240 type=delivery
+[ORDER_PAYMENT] START payment_id=240
+[ORDER_PAYMENT] DELIVERY FOUND id=16600
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '07d88282-3daa-451a-ab23-ebc3f768ff78', 'type': 'PAYMENT_QR', 'amount': '1000000', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T08:09:05.107Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T08:09:05.421Z', 'externalId': '6bf2f37a-8ae7-4730-bf63-f56c6ca6d914', 'refundAmount': '0', 'paymentAmount': '1000000', 'paymentLinkGuid': 'e23fa677-c827-42b2-91ea-35b96ccd5405', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T08:09:05.498Z'}
+[WEBHOOK] external_id=6bf2f37a-8ae7-4730-bf63-f56c6ca6d914 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=243 current_status=pending
+[WEBHOOK] payment_id=243 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=243 type=delivery
+[ORDER_PAYMENT] START payment_id=243
+[ORDER_PAYMENT] DELIVERY FOUND id=16609
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '58028bc3-60f1-4c90-90ff-1db2715405e0', 'type': 'PAYMENT_QR', 'amount': '25800', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T08:08:49.247Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T08:08:49.697Z', 'externalId': '8f6ccca3-a36e-4995-8ca2-a516ab048f20', 'refundAmount': '0', 'paymentAmount': '25800', 'paymentLinkGuid': 'd0e75f39-a760-49b9-bf38-6ce9c8386faf', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T08:08:49.815Z'}
+[WEBHOOK] external_id=8f6ccca3-a36e-4995-8ca2-a516ab048f20 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=240 current_status=pending
+[WEBHOOK] payment_id=240 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=240 type=delivery
+[ORDER_PAYMENT] START payment_id=240
+[ORDER_PAYMENT] DELIVERY FOUND id=16600
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '07d88282-3daa-451a-ab23-ebc3f768ff78', 'type': 'PAYMENT_QR', 'amount': '1000000', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T08:09:05.107Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T08:09:05.421Z', 'externalId': '6bf2f37a-8ae7-4730-bf63-f56c6ca6d914', 'refundAmount': '0', 'paymentAmount': '1000000', 'paymentLinkGuid': 'e23fa677-c827-42b2-91ea-35b96ccd5405', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T08:09:05.498Z'}
+[WEBHOOK] external_id=6bf2f37a-8ae7-4730-bf63-f56c6ca6d914 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=243 current_status=pending
+[WEBHOOK] payment_id=243 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=243 type=delivery
+[ORDER_PAYMENT] START payment_id=243
+[ORDER_PAYMENT] DELIVERY FOUND id=16609
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '58028bc3-60f1-4c90-90ff-1db2715405e0', 'type': 'PAYMENT_QR', 'amount': '25800', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T08:08:49.247Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T08:08:49.697Z', 'externalId': '8f6ccca3-a36e-4995-8ca2-a516ab048f20', 'refundAmount': '0', 'paymentAmount': '25800', 'paymentLinkGuid': 'd0e75f39-a760-49b9-bf38-6ce9c8386faf', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T08:08:49.815Z'}
+[WEBHOOK] external_id=8f6ccca3-a36e-4995-8ca2-a516ab048f20 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=240 current_status=pending
+[WEBHOOK] payment_id=240 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=240 type=delivery
+[ORDER_PAYMENT] START payment_id=240
+[ORDER_PAYMENT] DELIVERY FOUND id=16600
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '07d88282-3daa-451a-ab23-ebc3f768ff78', 'type': 'PAYMENT_QR', 'amount': '1000000', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T08:09:05.107Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T08:09:05.421Z', 'externalId': '6bf2f37a-8ae7-4730-bf63-f56c6ca6d914', 'refundAmount': '0', 'paymentAmount': '1000000', 'paymentLinkGuid': 'e23fa677-c827-42b2-91ea-35b96ccd5405', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T08:09:05.498Z'}
+[WEBHOOK] external_id=6bf2f37a-8ae7-4730-bf63-f56c6ca6d914 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=243 current_status=pending
+[WEBHOOK] payment_id=243 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=243 type=delivery
+[ORDER_PAYMENT] START payment_id=243
+[ORDER_PAYMENT] DELIVERY FOUND id=16609
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '07d88282-3daa-451a-ab23-ebc3f768ff78', 'type': 'PAYMENT_QR', 'amount': '1000000', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T08:09:05.107Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T08:09:05.421Z', 'externalId': '6bf2f37a-8ae7-4730-bf63-f56c6ca6d914', 'refundAmount': '0', 'paymentAmount': '1000000', 'paymentLinkGuid': 'e23fa677-c827-42b2-91ea-35b96ccd5405', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T08:09:05.498Z'}
+[WEBHOOK] external_id=6bf2f37a-8ae7-4730-bf63-f56c6ca6d914 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=243 current_status=pending
+[WEBHOOK] payment_id=243 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=243 type=delivery
+[ORDER_PAYMENT] START payment_id=243
+[ORDER_PAYMENT] DELIVERY FOUND id=16609
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '58028bc3-60f1-4c90-90ff-1db2715405e0', 'type': 'PAYMENT_QR', 'amount': '25800', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T08:08:49.247Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T08:08:49.697Z', 'externalId': '8f6ccca3-a36e-4995-8ca2-a516ab048f20', 'refundAmount': '0', 'paymentAmount': '25800', 'paymentLinkGuid': 'd0e75f39-a760-49b9-bf38-6ce9c8386faf', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T08:08:49.815Z'}
+[WEBHOOK] external_id=8f6ccca3-a36e-4995-8ca2-a516ab048f20 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=240 current_status=pending
+[WEBHOOK] payment_id=240 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=240 type=delivery
+[ORDER_PAYMENT] START payment_id=240
+[ORDER_PAYMENT] DELIVERY FOUND id=16600
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '07d88282-3daa-451a-ab23-ebc3f768ff78', 'type': 'PAYMENT_QR', 'amount': '1000000', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T08:09:05.107Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T08:09:05.421Z', 'externalId': '6bf2f37a-8ae7-4730-bf63-f56c6ca6d914', 'refundAmount': '0', 'paymentAmount': '1000000', 'paymentLinkGuid': 'e23fa677-c827-42b2-91ea-35b96ccd5405', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T08:09:05.498Z'}
+[WEBHOOK] external_id=6bf2f37a-8ae7-4730-bf63-f56c6ca6d914 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=243 current_status=pending
+[WEBHOOK] payment_id=243 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=243 type=delivery
+[ORDER_PAYMENT] START payment_id=243
+[ORDER_PAYMENT] DELIVERY FOUND id=16609
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '58028bc3-60f1-4c90-90ff-1db2715405e0', 'type': 'PAYMENT_QR', 'amount': '25800', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T08:08:49.247Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T08:08:49.697Z', 'externalId': '8f6ccca3-a36e-4995-8ca2-a516ab048f20', 'refundAmount': '0', 'paymentAmount': '25800', 'paymentLinkGuid': 'd0e75f39-a760-49b9-bf38-6ce9c8386faf', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T08:08:49.815Z'}
+[WEBHOOK] external_id=8f6ccca3-a36e-4995-8ca2-a516ab048f20 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=240 current_status=pending
+[WEBHOOK] payment_id=240 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=240 type=delivery
+[ORDER_PAYMENT] START payment_id=240
+[ORDER_PAYMENT] DELIVERY FOUND id=16600
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '07d88282-3daa-451a-ab23-ebc3f768ff78', 'type': 'PAYMENT_QR', 'amount': '1000000', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T08:09:05.107Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T08:09:05.421Z', 'externalId': '6bf2f37a-8ae7-4730-bf63-f56c6ca6d914', 'refundAmount': '0', 'paymentAmount': '1000000', 'paymentLinkGuid': 'e23fa677-c827-42b2-91ea-35b96ccd5405', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T08:09:05.498Z'}
+[WEBHOOK] external_id=6bf2f37a-8ae7-4730-bf63-f56c6ca6d914 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=243 current_status=pending
+[WEBHOOK] payment_id=243 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=243 type=delivery
+[ORDER_PAYMENT] START payment_id=243
+[ORDER_PAYMENT] DELIVERY FOUND id=16609
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '58028bc3-60f1-4c90-90ff-1db2715405e0', 'type': 'PAYMENT_QR', 'amount': '25800', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T08:08:49.247Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T08:08:49.697Z', 'externalId': '8f6ccca3-a36e-4995-8ca2-a516ab048f20', 'refundAmount': '0', 'paymentAmount': '25800', 'paymentLinkGuid': 'd0e75f39-a760-49b9-bf38-6ce9c8386faf', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T08:08:49.815Z'}
+[WEBHOOK] external_id=8f6ccca3-a36e-4995-8ca2-a516ab048f20 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=240 current_status=pending
+[WEBHOOK] payment_id=240 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=240 type=delivery
+[ORDER_PAYMENT] START payment_id=240
+[ORDER_PAYMENT] DELIVERY FOUND id=16600
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '07d88282-3daa-451a-ab23-ebc3f768ff78', 'type': 'PAYMENT_QR', 'amount': '1000000', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T08:09:05.107Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T08:09:05.421Z', 'externalId': '6bf2f37a-8ae7-4730-bf63-f56c6ca6d914', 'refundAmount': '0', 'paymentAmount': '1000000', 'paymentLinkGuid': 'e23fa677-c827-42b2-91ea-35b96ccd5405', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T08:09:05.498Z'}
+[WEBHOOK] external_id=6bf2f37a-8ae7-4730-bf63-f56c6ca6d914 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=243 current_status=pending
+[WEBHOOK] payment_id=243 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=243 type=delivery
+[ORDER_PAYMENT] START payment_id=243
+[ORDER_PAYMENT] DELIVERY FOUND id=16609
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '3a082039-c520-4805-8b6d-c5d0dcb8561b', 'type': 'PAYMENT_QR', 'amount': '25800', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T10:56:43.035Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T10:56:43.555Z', 'externalId': '2349e017-5119-4a75-84a9-4be9fa66b77c', 'refundAmount': '0', 'paymentAmount': '25800', 'paymentLinkGuid': '3946904c-9183-4c56-b019-e6210dea4967', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T10:56:43.651Z'}
+[WEBHOOK] external_id=2349e017-5119-4a75-84a9-4be9fa66b77c status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=247 current_status=pending
+[WEBHOOK] payment_id=247 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=247 type=delivery
+[ORDER_PAYMENT] START payment_id=247
+[ORDER_PAYMENT] DELIVERY FOUND id=16612
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '3a082039-c520-4805-8b6d-c5d0dcb8561b', 'type': 'PAYMENT_QR', 'amount': '25800', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T10:56:43.035Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T10:56:43.555Z', 'externalId': '2349e017-5119-4a75-84a9-4be9fa66b77c', 'refundAmount': '0', 'paymentAmount': '25800', 'paymentLinkGuid': '3946904c-9183-4c56-b019-e6210dea4967', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T10:56:43.651Z'}
+[WEBHOOK] external_id=2349e017-5119-4a75-84a9-4be9fa66b77c status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=247 current_status=pending
+[WEBHOOK] payment_id=247 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=247 type=delivery
+[ORDER_PAYMENT] START payment_id=247
+[ORDER_PAYMENT] DELIVERY FOUND id=16612
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '3a082039-c520-4805-8b6d-c5d0dcb8561b', 'type': 'PAYMENT_QR', 'amount': '25800', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T10:56:43.035Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T10:56:43.555Z', 'externalId': '2349e017-5119-4a75-84a9-4be9fa66b77c', 'refundAmount': '0', 'paymentAmount': '25800', 'paymentLinkGuid': '3946904c-9183-4c56-b019-e6210dea4967', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T10:56:43.651Z'}
+[WEBHOOK] external_id=2349e017-5119-4a75-84a9-4be9fa66b77c status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=247 current_status=pending
+[WEBHOOK] payment_id=247 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=247 type=delivery
+[ORDER_PAYMENT] START payment_id=247
+[ORDER_PAYMENT] DELIVERY FOUND id=16612
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '3a082039-c520-4805-8b6d-c5d0dcb8561b', 'type': 'PAYMENT_QR', 'amount': '25800', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T10:56:43.035Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T10:56:43.555Z', 'externalId': '2349e017-5119-4a75-84a9-4be9fa66b77c', 'refundAmount': '0', 'paymentAmount': '25800', 'paymentLinkGuid': '3946904c-9183-4c56-b019-e6210dea4967', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T10:56:43.651Z'}
+[WEBHOOK] external_id=2349e017-5119-4a75-84a9-4be9fa66b77c status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=247 current_status=pending
+[WEBHOOK] payment_id=247 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=247 type=delivery
+[ORDER_PAYMENT] START payment_id=247
+[ORDER_PAYMENT] DELIVERY FOUND id=16612
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '3a082039-c520-4805-8b6d-c5d0dcb8561b', 'type': 'PAYMENT_QR', 'amount': '25800', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T10:56:43.035Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T10:56:43.555Z', 'externalId': '2349e017-5119-4a75-84a9-4be9fa66b77c', 'refundAmount': '0', 'paymentAmount': '25800', 'paymentLinkGuid': '3946904c-9183-4c56-b019-e6210dea4967', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T10:56:43.651Z'}
+[WEBHOOK] external_id=2349e017-5119-4a75-84a9-4be9fa66b77c status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=247 current_status=pending
+[WEBHOOK] payment_id=247 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=247 type=delivery
+[ORDER_PAYMENT] START payment_id=247
+[ORDER_PAYMENT] DELIVERY FOUND id=16612
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '3a082039-c520-4805-8b6d-c5d0dcb8561b', 'type': 'PAYMENT_QR', 'amount': '25800', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T10:56:43.035Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T10:56:43.555Z', 'externalId': '2349e017-5119-4a75-84a9-4be9fa66b77c', 'refundAmount': '0', 'paymentAmount': '25800', 'paymentLinkGuid': '3946904c-9183-4c56-b019-e6210dea4967', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T10:56:43.651Z'}
+[WEBHOOK] external_id=2349e017-5119-4a75-84a9-4be9fa66b77c status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=247 current_status=pending
+[WEBHOOK] payment_id=247 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=247 type=delivery
+[ORDER_PAYMENT] START payment_id=247
+[ORDER_PAYMENT] DELIVERY FOUND id=16612
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '3a082039-c520-4805-8b6d-c5d0dcb8561b', 'type': 'PAYMENT_QR', 'amount': '25800', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T10:56:43.035Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T10:56:43.555Z', 'externalId': '2349e017-5119-4a75-84a9-4be9fa66b77c', 'refundAmount': '0', 'paymentAmount': '25800', 'paymentLinkGuid': '3946904c-9183-4c56-b019-e6210dea4967', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T10:56:43.651Z'}
+[WEBHOOK] external_id=2349e017-5119-4a75-84a9-4be9fa66b77c status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=247 current_status=pending
+[WEBHOOK] payment_id=247 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=247 type=delivery
+[ORDER_PAYMENT] START payment_id=247
+[ORDER_PAYMENT] DELIVERY FOUND id=16612
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '3a082039-c520-4805-8b6d-c5d0dcb8561b', 'type': 'PAYMENT_QR', 'amount': '25800', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T10:56:43.035Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T10:56:43.555Z', 'externalId': '2349e017-5119-4a75-84a9-4be9fa66b77c', 'refundAmount': '0', 'paymentAmount': '25800', 'paymentLinkGuid': '3946904c-9183-4c56-b019-e6210dea4967', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T10:56:43.651Z'}
+[WEBHOOK] external_id=2349e017-5119-4a75-84a9-4be9fa66b77c status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=247 current_status=pending
+[WEBHOOK] payment_id=247 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=247 type=delivery
+[ORDER_PAYMENT] START payment_id=247
+[ORDER_PAYMENT] DELIVERY FOUND id=16612
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '3a082039-c520-4805-8b6d-c5d0dcb8561b', 'type': 'PAYMENT_QR', 'amount': '25800', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T10:56:43.035Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T10:56:43.555Z', 'externalId': '2349e017-5119-4a75-84a9-4be9fa66b77c', 'refundAmount': '0', 'paymentAmount': '25800', 'paymentLinkGuid': '3946904c-9183-4c56-b019-e6210dea4967', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T10:56:43.651Z'}
+[WEBHOOK] external_id=2349e017-5119-4a75-84a9-4be9fa66b77c status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=247 current_status=pending
+[WEBHOOK] payment_id=247 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=247 type=delivery
+[ORDER_PAYMENT] START payment_id=247
+[ORDER_PAYMENT] DELIVERY FOUND id=16612
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '3a082039-c520-4805-8b6d-c5d0dcb8561b', 'type': 'PAYMENT_QR', 'amount': '25800', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T10:56:43.035Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T10:56:43.555Z', 'externalId': '2349e017-5119-4a75-84a9-4be9fa66b77c', 'refundAmount': '0', 'paymentAmount': '25800', 'paymentLinkGuid': '3946904c-9183-4c56-b019-e6210dea4967', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T10:56:43.651Z'}
+[WEBHOOK] external_id=2349e017-5119-4a75-84a9-4be9fa66b77c status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=247 current_status=pending
+[WEBHOOK] payment_id=247 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=247 type=delivery
+[ORDER_PAYMENT] START payment_id=247
+[ORDER_PAYMENT] DELIVERY FOUND id=16612
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '3a082039-c520-4805-8b6d-c5d0dcb8561b', 'type': 'PAYMENT_QR', 'amount': '25800', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T10:56:43.035Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T10:56:43.555Z', 'externalId': '2349e017-5119-4a75-84a9-4be9fa66b77c', 'refundAmount': '0', 'paymentAmount': '25800', 'paymentLinkGuid': '3946904c-9183-4c56-b019-e6210dea4967', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T10:56:43.651Z'}
+[WEBHOOK] external_id=2349e017-5119-4a75-84a9-4be9fa66b77c status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=247 current_status=pending
+[WEBHOOK] payment_id=247 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=247 type=delivery
+[ORDER_PAYMENT] START payment_id=247
+[ORDER_PAYMENT] DELIVERY FOUND id=16612
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '3a082039-c520-4805-8b6d-c5d0dcb8561b', 'type': 'PAYMENT_QR', 'amount': '25800', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T10:56:43.035Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T10:56:43.555Z', 'externalId': '2349e017-5119-4a75-84a9-4be9fa66b77c', 'refundAmount': '0', 'paymentAmount': '25800', 'paymentLinkGuid': '3946904c-9183-4c56-b019-e6210dea4967', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T10:56:43.651Z'}
+[WEBHOOK] external_id=2349e017-5119-4a75-84a9-4be9fa66b77c status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=247 current_status=pending
+[WEBHOOK] payment_id=247 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=247 type=delivery
+[ORDER_PAYMENT] START payment_id=247
+[ORDER_PAYMENT] DELIVERY FOUND id=16612
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '3a082039-c520-4805-8b6d-c5d0dcb8561b', 'type': 'PAYMENT_QR', 'amount': '25800', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T10:56:43.035Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T10:56:43.555Z', 'externalId': '2349e017-5119-4a75-84a9-4be9fa66b77c', 'refundAmount': '0', 'paymentAmount': '25800', 'paymentLinkGuid': '3946904c-9183-4c56-b019-e6210dea4967', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T10:56:43.651Z'}
+[WEBHOOK] external_id=2349e017-5119-4a75-84a9-4be9fa66b77c status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=247 current_status=pending
+[WEBHOOK] payment_id=247 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=247 type=delivery
+[ORDER_PAYMENT] START payment_id=247
+[ORDER_PAYMENT] DELIVERY FOUND id=16612
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '3a082039-c520-4805-8b6d-c5d0dcb8561b', 'type': 'PAYMENT_QR', 'amount': '25800', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T10:56:43.035Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T10:56:43.555Z', 'externalId': '2349e017-5119-4a75-84a9-4be9fa66b77c', 'refundAmount': '0', 'paymentAmount': '25800', 'paymentLinkGuid': '3946904c-9183-4c56-b019-e6210dea4967', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T10:56:43.651Z'}
+[WEBHOOK] external_id=2349e017-5119-4a75-84a9-4be9fa66b77c status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=247 current_status=pending
+[WEBHOOK] payment_id=247 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=247 type=delivery
+[ORDER_PAYMENT] START payment_id=247
+[ORDER_PAYMENT] DELIVERY FOUND id=16612
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '3a082039-c520-4805-8b6d-c5d0dcb8561b', 'type': 'PAYMENT_QR', 'amount': '25800', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T10:56:43.035Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T10:56:43.555Z', 'externalId': '2349e017-5119-4a75-84a9-4be9fa66b77c', 'refundAmount': '0', 'paymentAmount': '25800', 'paymentLinkGuid': '3946904c-9183-4c56-b019-e6210dea4967', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T10:56:43.651Z'}
+[WEBHOOK] external_id=2349e017-5119-4a75-84a9-4be9fa66b77c status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=247 current_status=pending
+[WEBHOOK] payment_id=247 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=247 type=delivery
+[ORDER_PAYMENT] START payment_id=247
+[ORDER_PAYMENT] DELIVERY FOUND id=16612
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '3a082039-c520-4805-8b6d-c5d0dcb8561b', 'type': 'PAYMENT_QR', 'amount': '25800', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T10:56:43.035Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T10:56:43.555Z', 'externalId': '2349e017-5119-4a75-84a9-4be9fa66b77c', 'refundAmount': '0', 'paymentAmount': '25800', 'paymentLinkGuid': '3946904c-9183-4c56-b019-e6210dea4967', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T10:56:43.651Z'}
+[WEBHOOK] external_id=2349e017-5119-4a75-84a9-4be9fa66b77c status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=247 current_status=pending
+[WEBHOOK] payment_id=247 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=247 type=delivery
+[ORDER_PAYMENT] START payment_id=247
+[ORDER_PAYMENT] DELIVERY FOUND id=16612
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '3a082039-c520-4805-8b6d-c5d0dcb8561b', 'type': 'PAYMENT_QR', 'amount': '25800', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T10:56:43.035Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T10:56:43.555Z', 'externalId': '2349e017-5119-4a75-84a9-4be9fa66b77c', 'refundAmount': '0', 'paymentAmount': '25800', 'paymentLinkGuid': '3946904c-9183-4c56-b019-e6210dea4967', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T10:56:43.651Z'}
+[WEBHOOK] external_id=2349e017-5119-4a75-84a9-4be9fa66b77c status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=247 current_status=pending
+[WEBHOOK] payment_id=247 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=247 type=delivery
+[ORDER_PAYMENT] START payment_id=247
+[ORDER_PAYMENT] DELIVERY FOUND id=16612
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '1e211c18-0d15-4938-967c-0129f2ed9ddc', 'type': 'PAYMENT_QR', 'amount': '9000', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T11:51:33.657Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T11:51:34.077Z', 'externalId': '4a51c5ff-2cda-46db-b00f-510958702d08', 'refundAmount': '0', 'paymentAmount': '9000', 'paymentLinkGuid': 'd9d42462-9d90-4281-9334-4ad133b47926', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T11:51:34.154Z'}
+[WEBHOOK] external_id=4a51c5ff-2cda-46db-b00f-510958702d08 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=257 current_status=pending
+[WEBHOOK] payment_id=257 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=257 type=taxi
+[ORDER_PAYMENT] START payment_id=257
+[ORDER_PAYMENT] DELIVERY FOUND id=510
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '1e211c18-0d15-4938-967c-0129f2ed9ddc', 'type': 'PAYMENT_QR', 'amount': '9000', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T11:51:33.657Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T11:51:34.077Z', 'externalId': '4a51c5ff-2cda-46db-b00f-510958702d08', 'refundAmount': '0', 'paymentAmount': '9000', 'paymentLinkGuid': 'd9d42462-9d90-4281-9334-4ad133b47926', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T11:51:34.154Z'}
+[WEBHOOK] external_id=4a51c5ff-2cda-46db-b00f-510958702d08 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=257 current_status=pending
+[WEBHOOK] payment_id=257 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=257 type=taxi
+[ORDER_PAYMENT] START payment_id=257
+[ORDER_PAYMENT] DELIVERY FOUND id=510
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '1e211c18-0d15-4938-967c-0129f2ed9ddc', 'type': 'PAYMENT_QR', 'amount': '9000', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T11:51:33.657Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T11:51:34.077Z', 'externalId': '4a51c5ff-2cda-46db-b00f-510958702d08', 'refundAmount': '0', 'paymentAmount': '9000', 'paymentLinkGuid': 'd9d42462-9d90-4281-9334-4ad133b47926', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T11:51:34.154Z'}
+[WEBHOOK] external_id=4a51c5ff-2cda-46db-b00f-510958702d08 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=257 current_status=pending
+[WEBHOOK] payment_id=257 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=257 type=taxi
+[ORDER_PAYMENT] START payment_id=257
+[ORDER_PAYMENT] DELIVERY FOUND id=510
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '1e211c18-0d15-4938-967c-0129f2ed9ddc', 'type': 'PAYMENT_QR', 'amount': '9000', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T11:51:33.657Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T11:51:34.077Z', 'externalId': '4a51c5ff-2cda-46db-b00f-510958702d08', 'refundAmount': '0', 'paymentAmount': '9000', 'paymentLinkGuid': 'd9d42462-9d90-4281-9334-4ad133b47926', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T11:51:34.154Z'}
+[WEBHOOK] external_id=4a51c5ff-2cda-46db-b00f-510958702d08 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=257 current_status=pending
+[WEBHOOK] payment_id=257 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=257 type=taxi
+[ORDER_PAYMENT] START payment_id=257
+[ORDER_PAYMENT] DELIVERY FOUND id=510
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '1e211c18-0d15-4938-967c-0129f2ed9ddc', 'type': 'PAYMENT_QR', 'amount': '9000', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T11:51:33.657Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T11:51:34.077Z', 'externalId': '4a51c5ff-2cda-46db-b00f-510958702d08', 'refundAmount': '0', 'paymentAmount': '9000', 'paymentLinkGuid': 'd9d42462-9d90-4281-9334-4ad133b47926', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T11:51:34.154Z'}
+[WEBHOOK] external_id=4a51c5ff-2cda-46db-b00f-510958702d08 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=257 current_status=pending
+[WEBHOOK] payment_id=257 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=257 type=taxi
+[ORDER_PAYMENT] START payment_id=257
+[ORDER_PAYMENT] DELIVERY FOUND id=510
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '1e211c18-0d15-4938-967c-0129f2ed9ddc', 'type': 'PAYMENT_QR', 'amount': '9000', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T11:51:33.657Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T11:51:34.077Z', 'externalId': '4a51c5ff-2cda-46db-b00f-510958702d08', 'refundAmount': '0', 'paymentAmount': '9000', 'paymentLinkGuid': 'd9d42462-9d90-4281-9334-4ad133b47926', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T11:51:34.154Z'}
+[WEBHOOK] external_id=4a51c5ff-2cda-46db-b00f-510958702d08 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=257 current_status=pending
+[WEBHOOK] payment_id=257 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=257 type=taxi
+[ORDER_PAYMENT] START payment_id=257
+[ORDER_PAYMENT] DELIVERY FOUND id=510
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '1e211c18-0d15-4938-967c-0129f2ed9ddc', 'type': 'PAYMENT_QR', 'amount': '9000', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T11:51:33.657Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T11:51:34.077Z', 'externalId': '4a51c5ff-2cda-46db-b00f-510958702d08', 'refundAmount': '0', 'paymentAmount': '9000', 'paymentLinkGuid': 'd9d42462-9d90-4281-9334-4ad133b47926', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T11:51:34.154Z'}
+[WEBHOOK] external_id=4a51c5ff-2cda-46db-b00f-510958702d08 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=257 current_status=pending
+[WEBHOOK] payment_id=257 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=257 type=taxi
+[ORDER_PAYMENT] START payment_id=257
+[ORDER_PAYMENT] DELIVERY FOUND id=510
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '1e211c18-0d15-4938-967c-0129f2ed9ddc', 'type': 'PAYMENT_QR', 'amount': '9000', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T11:51:33.657Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T11:51:34.077Z', 'externalId': '4a51c5ff-2cda-46db-b00f-510958702d08', 'refundAmount': '0', 'paymentAmount': '9000', 'paymentLinkGuid': 'd9d42462-9d90-4281-9334-4ad133b47926', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T11:51:34.154Z'}
+[WEBHOOK] external_id=4a51c5ff-2cda-46db-b00f-510958702d08 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=257 current_status=pending
+[WEBHOOK] payment_id=257 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=257 type=taxi
+[ORDER_PAYMENT] START payment_id=257
+[ORDER_PAYMENT] DELIVERY FOUND id=510
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '1e211c18-0d15-4938-967c-0129f2ed9ddc', 'type': 'PAYMENT_QR', 'amount': '9000', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T11:51:33.657Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T11:51:34.077Z', 'externalId': '4a51c5ff-2cda-46db-b00f-510958702d08', 'refundAmount': '0', 'paymentAmount': '9000', 'paymentLinkGuid': 'd9d42462-9d90-4281-9334-4ad133b47926', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T11:51:34.154Z'}
+[WEBHOOK] external_id=4a51c5ff-2cda-46db-b00f-510958702d08 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=257 current_status=pending
+[WEBHOOK] payment_id=257 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=257 type=taxi
+[ORDER_PAYMENT] START payment_id=257
+[ORDER_PAYMENT] DELIVERY FOUND id=510
+[WEBHOOK] ERROR: The following fields do not exist in this model, are m2m fields, primary keys, or are non-concrete fields: is_paid
+[WEBHOOK] RAW DATA: {'data': {'guid': '1e211c18-0d15-4938-967c-0129f2ed9ddc', 'type': 'PAYMENT_QR', 'amount': '9000', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T11:51:33.657Z', 'payerGuid': 'e3712b45-f047-4f48-add6-4d6a3da503e3', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T11:51:34.077Z', 'externalId': '4a51c5ff-2cda-46db-b00f-510958702d08', 'refundAmount': '0', 'paymentAmount': '9000', 'paymentLinkGuid': 'd9d42462-9d90-4281-9334-4ad133b47926', 'maskedPhoneNumber': '**********040', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T11:51:34.154Z'}
+[WEBHOOK] external_id=4a51c5ff-2cda-46db-b00f-510958702d08 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=257 current_status=pending
+[WEBHOOK] payment_id=257 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=257 type=taxi
+[ORDER_PAYMENT] START payment_id=257
+[ORDER_PAYMENT] DELIVERY FOUND id=510
+[ORDER_PAYMENT] WORKER NOT FOUND
+[WEBHOOK] RAW DATA: {'data': {'guid': '9bd15257-d47f-4ba3-9ad0-942b15904aac', 'type': 'PAYMENT_QR', 'amount': '12588', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T12:23:23.166Z', 'payerGuid': 'aa3a2ada-2b04-45fd-9a9c-7343ec73e680', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T12:23:23.590Z', 'externalId': '04fa0693-e5f9-412e-89cd-7df752c6529e', 'refundAmount': '0', 'paymentAmount': '12588', 'paymentLinkGuid': '8e957387-7bcf-4870-b2c4-b167b4f25e11', 'maskedPhoneNumber': '**********623', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T12:23:23.679Z'}
+[WEBHOOK] external_id=04fa0693-e5f9-412e-89cd-7df752c6529e status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=267 current_status=pending
+[WEBHOOK] payment_id=267 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=267 type=taxi
+[ORDER_PAYMENT] START payment_id=267
+[ORDER_PAYMENT] DELIVERY FOUND id=518
+[ORDER_PAYMENT] WORKER NOT FOUND
+[WEBHOOK] RAW DATA: {'data': {'guid': '6dd76a9a-253d-4320-9c80-4bdcba462590', 'type': 'PAYMENT_QR', 'amount': '25800', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T12:30:05.263Z', 'payerGuid': 'aa3a2ada-2b04-45fd-9a9c-7343ec73e680', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T12:30:05.728Z', 'externalId': '8e1f9d06-76a4-4d6b-8904-fc537a488142', 'refundAmount': '0', 'paymentAmount': '25800', 'paymentLinkGuid': 'e9c682bc-e50d-41da-8320-821c8c78dcae', 'maskedPhoneNumber': '**********623', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T12:30:05.813Z'}
+[WEBHOOK] external_id=8e1f9d06-76a4-4d6b-8904-fc537a488142 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=271 current_status=pending
+[WEBHOOK] payment_id=271 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=271 type=delivery
+[ORDER_PAYMENT] START payment_id=271
+[ORDER_PAYMENT] DELIVERY FOUND id=16614
+[ORDER_PAYMENT] earning_amount=258.00
+[ORDER_PAYMENT] TRANSACTION CREATED id=76
+[WEBHOOK] RAW DATA: {'data': {'guid': 'c3f68d2c-0248-409a-9e3e-8ee56ef17159', 'type': 'PAYMENT_QR', 'amount': '12500', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-20T12:42:23.748Z', 'payerGuid': 'aa3a2ada-2b04-45fd-9a9c-7343ec73e680', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-20T12:42:24.227Z', 'externalId': '8e8cfd3b-da15-4ab1-b827-e1fd72a49d87', 'refundAmount': '0', 'paymentAmount': '12500', 'paymentLinkGuid': 'dde56338-6d4f-4eb2-b8bb-665917da9e0a', 'maskedPhoneNumber': '**********623', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-20T12:42:24.322Z'}
+[WEBHOOK] external_id=8e8cfd3b-da15-4ab1-b827-e1fd72a49d87 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=276 current_status=pending
+[WEBHOOK] payment_id=276 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=276 type=taxi
+[ORDER_PAYMENT] START payment_id=276
+[ORDER_PAYMENT] DELIVERY FOUND id=1566
+[ORDER_PAYMENT] WORKER NOT FOUND
+[WEBHOOK] RAW DATA: {'data': {'guid': '48504acf-54e1-4a6f-a32e-3ef68edb7518', 'type': 'PAYMENT_QR', 'amount': '77000', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-21T07:21:22.249Z', 'payerGuid': 'aa3a2ada-2b04-45fd-9a9c-7343ec73e680', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-21T07:21:22.652Z', 'externalId': '28435f6c-21d6-4bc1-a260-86043a4d487f', 'refundAmount': '0', 'paymentAmount': '77000', 'paymentLinkGuid': 'ee316efa-b8af-4be0-bb52-7298dde1f043', 'maskedPhoneNumber': '**********623', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-21T07:21:22.767Z'}
+[WEBHOOK] external_id=28435f6c-21d6-4bc1-a260-86043a4d487f status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=282 current_status=pending
+[WEBHOOK] payment_id=282 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=282 type=taxi
+[ORDER_PAYMENT] START payment_id=282
+[ORDER_PAYMENT] TAXI FOUND id=527
+[ORDER_PAYMENT] earning_amount=73.87
+[ORDER_PAYMENT] TRANSACTION CREATED id=78
+[WEBHOOK] RAW DATA: {'data': {'guid': 'e94e6828-761b-4d58-88b3-969fd3e8bd30', 'type': 'PAYMENT_QR', 'amount': '30000', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-21T07:46:09.974Z', 'payerGuid': 'aa3a2ada-2b04-45fd-9a9c-7343ec73e680', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-21T07:46:10.377Z', 'externalId': '6749cbc2-ecc6-408a-bd73-06c56569a19e', 'refundAmount': '0', 'paymentAmount': '30000', 'paymentLinkGuid': '85b05018-dcaa-47cb-98e5-0f7e06223355', 'maskedPhoneNumber': '**********623', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-21T07:46:10.490Z'}
+[WEBHOOK] external_id=6749cbc2-ecc6-408a-bd73-06c56569a19e status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=283 current_status=pending
+[WEBHOOK] payment_id=283 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=283 type=deposit
+[DEPOSIT] START payment_id=283 user_id=99 amount=300.00
+[DEPOSIT] Wallet found wallet_id=24
+[DEPOSIT] TRANSACTION CREATED id=81
+[DEPOSIT] NOTIFICATION SENT user_id=99
+[WEBHOOK] RAW DATA: {'data': {'guid': 'b3ab5daf-89de-4011-adde-6f35c4dc994b', 'type': 'PAYMENT_QR', 'amount': '7776', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-21T11:53:29.229Z', 'payerGuid': 'aa3a2ada-2b04-45fd-9a9c-7343ec73e680', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-21T11:53:29.658Z', 'externalId': '59076761-a156-43b1-854d-7512a1d95649', 'refundAmount': '0', 'paymentAmount': '7776', 'paymentLinkGuid': 'c053db09-daa1-445a-bbcf-8512bbe169ef', 'maskedPhoneNumber': '**********623', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-21T11:53:29.820Z'}
+[WEBHOOK] external_id=59076761-a156-43b1-854d-7512a1d95649 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=300 current_status=pending
+[WEBHOOK] payment_id=300 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=300 type=taxi
+[ORDER_PAYMENT] START payment_id=300
+[ORDER_PAYMENT] TAXI FOUND id=540
+[ORDER_PAYMENT] earning_amount=73.87
+[ORDER_PAYMENT] TRANSACTION CREATED id=84
+[WEBHOOK] RAW DATA: {'data': {'guid': '2f1eb08a-0156-48a5-9fca-061b73df1919', 'type': 'PAYMENT_QR', 'amount': '15000', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-21T12:04:45.956Z', 'payerGuid': 'aa3a2ada-2b04-45fd-9a9c-7343ec73e680', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-21T12:04:46.440Z', 'externalId': 'c5f4298a-482d-49c7-beef-fc454772d3a6', 'refundAmount': '0', 'paymentAmount': '15000', 'paymentLinkGuid': '7d6b86dc-9d68-4150-abc2-6f30d919b7ad', 'maskedPhoneNumber': '**********623', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-21T12:04:46.516Z'}
+[WEBHOOK] external_id=c5f4298a-482d-49c7-beef-fc454772d3a6 status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=311 current_status=pending
+[WEBHOOK] payment_id=311 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=311 type=delivery
+[ORDER_PAYMENT] START payment_id=311
+[ORDER_PAYMENT] DELIVERY FOUND id=16629
+[ORDER_PAYMENT] earning_amount=150.00
+[ORDER_PAYMENT] TRANSACTION CREATED id=89
+[WEBHOOK] RAW DATA: {'data': {'guid': '1ac0a367-b815-4011-8eae-220bc5ae46f5', 'type': 'PAYMENT_QR', 'amount': '7200', 'remark': 'PAYMENT', 'status': 'COMPLETED', 'channel': 'BALANCE', 'details': {}, 'currency': 'KGS', 'createdAt': '2026-05-25T08:05:24.881Z', 'payerGuid': 'aa3a2ada-2b04-45fd-9a9c-7343ec73e680', 'payerType': 'CUSTOMER', 'settledAt': '2026-05-25T08:05:25.325Z', 'externalId': '6fdd265c-9760-4d39-b802-26c58df2a9ea', 'refundAmount': '0', 'paymentAmount': '7200', 'paymentLinkGuid': 'fe0d0db9-59a8-4cc1-9983-5fc1945ddc6f', 'maskedPhoneNumber': '**********623', 'merchantAccountGuid': '972ed8bb-491e-4518-8171-9bf5c14a3dfe'}, 'type': 'PAYMENT_ORDER', 'version': '2', 'createdAt': '2026-05-25T08:05:25.407Z'}
+[WEBHOOK] external_id=6fdd265c-9760-4d39-b802-26c58df2a9ea status=COMPLETED
+[WEBHOOK] PAYMENT FOUND payment_id=355 current_status=pending
+[WEBHOOK] payment_id=355 marked SUCCESS
+[PAYMENT_SUCCESS] payment_id=355 type=taxi
+[ORDER_PAYMENT] START payment_id=355
+[ORDER_PAYMENT] TAXI FOUND id=582
+[ORDER_PAYMENT] earning_amount=69.26
+[ORDER_PAYMENT] TRANSACTION CREATED id=101

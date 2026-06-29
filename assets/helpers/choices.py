@@ -110,4 +110,5 @@ PAYMENT_STATUSES = (
     ("paid", "Оплачено"),
     ("failed", "Ошибка оплаты"),
     ("canceled", "Отменено"),
+    ("refunded", "Возврат"),
 )

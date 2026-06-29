@@ -75,6 +75,17 @@ class TaxiRide(models.Model):
         blank=True,
     )
     cancel_reason = models.TextField(blank=True, default="")
+    waiting_minutes = models.PositiveIntegerField(
+        "Платное ожидание (мин)",
+        default=0
+    )
+
+    waiting_price = models.DecimalField(
+        "Стоимость ожидания",
+        max_digits=10,
+        decimal_places=2,
+        default=0
+    )
 
     updated_at = models.DateTimeField(auto_now=True)
     is_hidden_for_client = models.BooleanField(default=False)

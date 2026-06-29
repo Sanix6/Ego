@@ -6,6 +6,8 @@ from assets.helpers.choices import *
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from shapely.geometry import Point, Polygon
+from decimal import Decimal
+
 
 
 
@@ -23,13 +25,6 @@ class DarkStore(models.Model):
 
 
 class Tariff(models.Model):
-    CAR_CLASSES = (
-        ("econom", "Эконом"),
-        ("comfort", "Комфорт"),
-        ("comfort_plus", "Комфорт+"),
-        ("business", "Бизнес"),
-    )
-
     car_class = models.CharField("Класс автомобиля", max_length=20, choices=CAR_CLASSES)
 
     base_fare = models.DecimalField("Базовая плата", max_digits=10, decimal_places=2)
@@ -38,8 +33,16 @@ class Tariff(models.Model):
 
     per_km_rate = models.DecimalField("Тариф за километр", max_digits=10, decimal_places=2)
     per_min_rate = models.DecimalField("Тариф за минуту", max_digits=10, decimal_places=2)
-
-    commission_percent = models.DecimalField("Процент комиссии", max_digits=5, decimal_places=2, default=5.00)
+    waiting_free_min = models.PositiveIntegerField(
+        default=5,
+        verbose_name="Бесплатное ожидание (мин)"
+    )
+    waiting_per_minute = models.DecimalField(
+        "Цена ожидания за минуту",
+        max_digits=10,
+        decimal_places=2,
+        default=0
+    )
 
     is_active = models.BooleanField("Активен", default=True)
     created_at = models.DateTimeField("Дата создания", auto_now_add=True)
@@ -60,9 +63,18 @@ class DeliveryTariff(models.Model):
     per_km_rate = models.DecimalField("Тариф за километр", max_digits=10, decimal_places=2)
     per_min_rate = models.DecimalField("Тариф за минуту", max_digits=10, decimal_places=2)
 
-    commission_percent = models.DecimalField("Процент комиссии", max_digits=5, decimal_places=2, default=5.00)
     door_to_door_price = models.DecimalField("Цена до двери", max_digits=10, decimal_places=2)
     entrance_price = models.DecimalField("Цена до подьезда", max_digits=10, decimal_places=2)
+    waiting_free_min = models.PositiveIntegerField(
+        default=5,
+        verbose_name="Бесплатное ожидание (мин)"
+    )
+    waiting_per_minute = models.DecimalField(
+        "Цена ожидания за минуту",
+        max_digits=10,
+        decimal_places=2,
+        default=0
+    )
 
     is_active = models.BooleanField("Активен", default=True)
     created_at = models.DateTimeField("Дата создания", auto_now_add=True)
@@ -188,3 +200,182 @@ class DeliveryZone(models.Model):
 
         except Exception:
             return False
+
+
+
+class TaxiCommission(models.Model):
+    title = models.CharField(
+        "Название",
+        max_length=255
+    )
+
+    car_class = models.CharField(
+        "Класс автомобиля",
+        max_length=20,
+        choices=CAR_CLASSES,
+        db_index=True
+    )
+
+    payment_method = models.CharField(
+        "Тип оплаты",
+        max_length=20,
+        choices=PAYMENT_METHODS,
+        null=True,
+        blank=True,
+        help_text="Если пусто — применяется ко всем типам оплат"
+    )
+
+    commission_percent = models.DecimalField(
+        "Процент комиссии",
+        max_digits=5,
+        decimal_places=2,
+        default=Decimal("10.00")
+    )
+
+    min_commission = models.DecimalField(
+        "Минимальная комиссия",
+        max_digits=10,
+        decimal_places=2,
+        default=Decimal("0.00")
+    )
+
+    max_commission = models.DecimalField(
+        "Максимальная комиссия",
+        max_digits=10,
+        decimal_places=2,
+        null=True,
+        blank=True
+    )
+
+    minimum_balance = models.DecimalField(
+        "Минимальный баланс для работы",
+        max_digits=10,
+        decimal_places=2,
+        default=Decimal("300.00"),
+        help_text="Если баланс ниже — водитель не сможет принимать заказы"
+    )
+
+    is_active = models.BooleanField(
+        "Активен",
+        default=True
+    )
+
+    created_at = models.DateTimeField(
+        "Дата создания",
+        auto_now_add=True
+    )
+
+    updated_at = models.DateTimeField(
+        "Дата обновления",
+        auto_now=True
+    )
+
+    class Meta:
+        verbose_name = "Комиссия такси"
+        verbose_name_plural = "Комиссии такси"
+
+        indexes = [
+            models.Index(fields=["car_class", "payment_method"]),
+            models.Index(fields=["is_active"]),
+        ]
+
+        ordering = ["-id"]
+
+    def __str__(self):
+        payment = self.get_payment_method_display() if self.payment_method else "Все оплаты"
+
+        return (
+            f"{self.title} | "
+            f"{self.get_car_class_display()} | "
+            f"{payment} | "
+            f"{self.commission_percent}%"
+        )
+
+
+class DeliveryCommission(models.Model):
+
+    title = models.CharField(
+        "Название",
+        max_length=255
+    )
+
+    type_delivery = models.CharField(
+        "Тип доставки",
+        max_length=20,
+        choices=DELIVERY_TYPES,
+        db_index=True
+    )
+
+    payment_method = models.CharField(
+        "Тип оплаты",
+        max_length=20,
+        choices=PAYMENT_METHODS,
+        null=True,
+        blank=True,
+        help_text="Если пусто — применяется ко всем типам оплат"
+    )
+
+    commission_percent = models.DecimalField(
+        "Процент комиссии",
+        max_digits=5,
+        decimal_places=2,
+        default=Decimal("12.00")
+    )
+
+    min_commission = models.DecimalField(
+        "Минимальная комиссия",
+        max_digits=10,
+        decimal_places=2,
+        default=Decimal("0.00")
+    )
+
+    max_commission = models.DecimalField(
+        "Максимальная комиссия",
+        max_digits=10,
+        decimal_places=2,
+        null=True,
+        blank=True
+    )
+
+    minimum_balance = models.DecimalField(
+        "Минимальный баланс для работы",
+        max_digits=10,
+        decimal_places=2,
+        default=Decimal("300.00")
+    )
+
+    is_active = models.BooleanField(
+        "Активен",
+        default=True
+    )
+
+    created_at = models.DateTimeField(
+        "Дата создания",
+        auto_now_add=True
+    )
+
+    updated_at = models.DateTimeField(
+        "Дата обновления",
+        auto_now=True
+    )
+
+    class Meta:
+        verbose_name = "Комиссия доставки"
+        verbose_name_plural = "Комиссии доставки"
+
+        indexes = [
+            models.Index(fields=["type_delivery", "payment_method"]),
+            models.Index(fields=["is_active"]),
+        ]
+
+        ordering = ["-id"]
+
+    def __str__(self):
+        payment = self.get_payment_method_display() if self.payment_method else "Все оплаты"
+
+        return (
+            f"{self.title} | "
+            f"{self.get_type_delivery_display()} | "
+            f"{payment} | "
+            f"{self.commission_percent}%"
+        )

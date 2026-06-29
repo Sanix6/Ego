@@ -1,0 +1,124 @@
+:root {
+    --primary: #b7ff00;
+    --primary-600: #95ff00;
+    --primary-700: #7de000;
+    --sidebar-bg: #050505;
+}
+
+/* ===================================================== */
+/* SIDEBAR */
+/* ===================================================== */
+
+#sidebar {
+    background: #050505 !important;
+    border-right: 1px solid rgba(183,255,0,0.08);
+}
+
+/* ===================================================== */
+/* LOGO */
+/* ===================================================== */
+
+#header {
+    background: #050505 !important;
+}
+
+/* ===================================================== */
+/* MENU ITEMS */
+/* ===================================================== */
+
+#sidebar a {
+    border-radius: 12px;
+    transition: all .2s ease;
+}
+
+#sidebar a:hover {
+    background: rgba(183,255,0,0.08) !important;
+    transform: translateX(2px);
+}
+
+/* ===================================================== */
+/* ACTIVE MENU */
+/* ===================================================== */
+
+#sidebar a.bg-primary-600 {
+    /* background: linear-gradient(
+        90deg,
+        #95ff00,
+        #6c00ff
+    ) !important; */
+
+    color: white !important;
+
+    box-shadow:
+        0 0 12px rgba(149,255,0,.35);
+}
+
+/* ===================================================== */
+/* ICONS */
+/* ===================================================== */
+
+.material-symbols-outlined {
+    font-variation-settings:
+        'FILL' 1,
+        'wght' 500,
+        'GRAD' 0,
+        'opsz' 24;
+
+    color: #b7ff00 !important;
+}
+
+/* ===================================================== */
+/* TABLES */
+/* ===================================================== */
+
+table {
+    /* border-radius: 16px; */
+    overflow: hidden;
+}
+
+/* ===================================================== */
+/* BUTTONS */
+/* ===================================================== */
+
+button,
+.button,
+input[type=submit] {
+
+    border-radius: 12px !important;
+
+    /* background: linear-gradient(
+        90deg,
+        #95ff00,
+        #6c00ff
+    ) !important; */
+
+    border: none !important;
+
+    box-shadow:
+        0 0 14px rgba(149,255,0,.25);
+}
+
+/* ===================================================== */
+/* CARDS */
+/* ===================================================== */
+
+.bg-white,
+.dark\\:bg-base-900 {
+
+    border-radius: 18px !important;
+
+    border: 1px solid rgba(183,255,0,0.08);
+}
+
+/* ===================================================== */
+/* SCROLLBAR */
+/* ===================================================== */
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #95ff00;
+    border-radius: 20px;
+}

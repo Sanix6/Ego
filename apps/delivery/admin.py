@@ -1,4 +1,5 @@
 from django.contrib import admin
+from unfold.admin import ModelAdmin
 from django.core.exceptions import ValidationError
 from .models import Delivery, CourierSlot, DeliveryOffer
 from django.utils.html import format_html
@@ -7,15 +8,95 @@ from django.utils import timezone
 from django.utils.dateparse import parse_datetime
 
 from django.contrib import admin
+from unfold.admin import ModelAdmin
 from django.utils.html import format_html
 from django.db import transaction
 from .models import Delivery, CourierSlot, CourierRoute, CourierRouteStop, DeliveryOffer
 from .forms import CourierSlotAdminForm
-# from .services import find_nearest_couriers, courier_matches_delivery, has_offer_been
+import csv
+from django.http import HttpResponse
+
+
+class ExportDeliveryCsvMixin:
+
+    def export_as_csv(self, request, queryset):
+
+        response = HttpResponse(content_type="text/csv")
+        response["Content-Disposition"] = (
+            'attachment; filename=deliveries.csv'
+        )
+
+        writer = csv.writer(response)
+
+        writer.writerow([
+            "ID",
+            "Статус",
+            "Тип доставки",
+            "Курьер",
+            "Клиент",
+            "Телефон клиента",
+            "Откуда",
+            "Куда",
+            "Цена",
+            "Door to door",
+            "Доставить до",
+            "Создан",
+        ])
+
+        for obj in queryset:
+
+            writer.writerow([
+                obj.id,
+
+                (
+                    obj.get_delivery_status_display()
+                    if hasattr(obj, "get_delivery_status_display")
+                    else obj.delivery_status
+                ),
+
+                (
+                    obj.get_type_delivery_display()
+                    if hasattr(obj, "get_type_delivery_display")
+                    else obj.type_delivery
+                ),
+
+                str(obj.courier) if obj.courier else "-",
+
+                str(obj.client) if obj.client else "-",
+
+                (
+                    obj.client.phone
+                    if obj.client and hasattr(obj.client, "phone")
+                    else "-"
+                ),
+
+                obj.point_a or "-",
+                obj.point_b or "-",
+
+                obj.price if obj.price is not None else "-",
+
+                "Да" if obj.door_to_door else "Нет",
+
+                (
+                    obj.deadline_at.strftime("%d.%m.%Y %H:%M")
+                    if obj.deadline_at else "-"
+                ),
+
+                (
+                    obj.created_at.strftime("%d.%m.%Y %H:%M")
+                    if obj.created_at else "-"
+                ),
+            ])
+
+        return response
+
+    export_as_csv.short_description = "📥 Экспортировать доставки в CSV"
 
 
 @admin.register(DeliveryOffer)
-class DeliveryOfferAdmin(admin.ModelAdmin):
+class DeliveryOfferAdmin(ExportDeliveryCsvMixin, ModelAdmin):
+
+    actions = ["export_as_csv"]
     list_display = (
         "id",
         "delivery_link",
@@ -52,7 +133,7 @@ class DeliveryOfferAdmin(admin.ModelAdmin):
         "delivery_route_info",
         "delivery_contacts_info",
         "delivery_comments_info",
-        "delivery_time_info",
+        # "delivery_time_info",
     )
 
     fieldsets = (
@@ -81,11 +162,11 @@ class DeliveryOfferAdmin(admin.ModelAdmin):
                 "delivery_contacts_info",
             )
         }),
-        ("Доставка — время", {
-            "fields": (
-                "delivery_time_info",
-            )
-        }),
+        # ("Доставка — время", {
+        #     "fields": (
+        #         "delivery_time_info",
+        #     )
+        # }),
         ("Доставка — комментарии", {
             "fields": (
                 "delivery_comments_info",
@@ -105,6 +186,7 @@ class DeliveryOfferAdmin(admin.ModelAdmin):
             obj.delivery_id,
             obj.delivery_id,
         )
+
 
     @admin.display(description="Основная информация по доставке")
     def delivery_main_info(self, obj):
@@ -183,12 +265,6 @@ class DeliveryOfferAdmin(admin.ModelAdmin):
             d.recipient_phone or "-",
         )
 
-    @admin.display(description="Время")
-    def delivery_time_info(self, obj):
-        d = obj.delivery
-        if not d:
-            return "-"
-
         return format_html(
             """
             <div style="line-height:1.8;">
@@ -205,7 +281,9 @@ class DeliveryOfferAdmin(admin.ModelAdmin):
             d.deadline_at.strftime("%d.%m.%Y %H:%M") if d.deadline_at else "-",
             d.arrived_at.strftime("%d.%m.%Y %H:%M") if d.arrived_at else "-",
             d.free_waiting_started_at.strftime("%d.%m.%Y %H:%M") if d.free_waiting_started_at else "-",
-            d.free_waiting_minutes,
+
+            "-", 
+
             d.paid_waiting_started_at.strftime("%d.%m.%Y %H:%M") if d.paid_waiting_started_at else "-",
             d.pickup_at.strftime("%d.%m.%Y %H:%M") if d.pickup_at else "-",
             d.delivered_at.strftime("%d.%m.%Y %H:%M") if d.delivered_at else "-",
@@ -251,7 +329,9 @@ class DeliveryOfferAdmin(admin.ModelAdmin):
 
 
 @admin.register(Delivery)
-class DeliveryAdmin(admin.ModelAdmin):
+class DeliveryAdmin(ExportDeliveryCsvMixin, ModelAdmin):
+
+    actions = ["export_as_csv"]
     list_display = (
         "id",
         "delivery_status",
@@ -279,7 +359,7 @@ class DeliveryAdmin(admin.ModelAdmin):
 
 
 @admin.register(CourierSlot)
-class CourierSlotAdmin(admin.ModelAdmin):
+class CourierSlotAdmin(ModelAdmin):
     form = CourierSlotAdminForm
 
     list_display = (
@@ -467,7 +547,7 @@ class CourierRouteStopInline(admin.TabularInline):
 
 
 @admin.register(CourierRoute)
-class CourierRouteAdmin(admin.ModelAdmin):
+class CourierRouteAdmin(ModelAdmin):
     list_display = (
         "id",
         "courier",
@@ -501,7 +581,7 @@ class CourierRouteAdmin(admin.ModelAdmin):
 
 
 @admin.register(CourierRouteStop)
-class CourierRouteStopAdmin(admin.ModelAdmin):
+class CourierRouteStopAdmin(ModelAdmin):
 
     list_display = (
         "id",

@@ -9,7 +9,6 @@ def taxi_offer_created(offer):
         title="Новая поездка",
         message=f"Вам поступил заказ #{offer.ride_id}",
         ride=offer.ride,
-        taxi_offer=offer,
         payload={
             "type": "navigate",
             "screen": "TaxiOffer",

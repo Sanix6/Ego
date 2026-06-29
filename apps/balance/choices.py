@@ -1,22 +1,43 @@
 from django.db import models
 
 
+class BonusType(models.TextChoices):
+    ORDERS_COUNT = "orders_count", "За количество заказов"
+    ONLINE_HOURS = "online_hours", "За онлайн время"
+    PEAK_HOURS = "peak_hours", "Часы пик"
+    RATING = "rating", "Высокий рейтинг"
+    MISSION = "mission", "Миссия"
+    NEWBIE = "newbie", "Новичок"
+
+
+
 class WorkerType(models.TextChoices):
     DRIVER = "driver", "Таксист"
     COURIER = "courier", "Курьер"
 
 
+
 class PaymentChannel(models.TextChoices):
     CASH = "cash", "Наличка"
-    MBANK = "mbank", "MBank"
+    ONLINE = "online", "Онлайн"
+
 
 
 class TransactionType(models.TextChoices):
-    ORDER_EARNING = "order_earning", "Доход по заказу"
+    ORDER_EARNING_CASH = "order_earning_cash", "Доход наличными"
+    ORDER_EARNING_ONLINE = "order_earning_online", "Доход онлайн"
+
+    DEPOSIT = "deposit", "Пополнение"
+
+    COMMISSION = "cash_commission", 'Вычет комиссии'
+
     WITHDRAWAL_HOLD = "withdrawal_hold", "Холд на вывод"
     WITHDRAWAL = "withdrawal", "Вывод"
     WITHDRAWAL_CANCEL = "withdrawal_cancel", "Отмена вывода"
+
     ADJUSTMENT = "adjustment", "Корректировка"
+
+    BONUS = "bonus", "Бонус"
 
 
 class TransactionStatus(models.TextChoices):
@@ -27,9 +48,9 @@ class TransactionStatus(models.TextChoices):
 
 class WithdrawalStatus(models.TextChoices):
     PENDING = "pending", "В ожидании"
-    APPROVED = "approved", "Подтверждено"
+    APPROVED = "approved", "Одобрено"
     REJECTED = "rejected", "Отклонено"
-    PAID = "paid", "Выплачено"
+    # PAID = "paid", "Выплачено"
     CANCELED = "canceled", "Отменено"
 
 
@@ -40,7 +61,8 @@ class PaymentProvider(models.TextChoices):
 
 class PaymentMethod(models.TextChoices):
     CASH = "cash", "Наличка"
-    MBANK = "mbank", "MBank"
+    ONLINE = "online", "Онлайн"
+
 
 
 class PaymentStatus(models.TextChoices):

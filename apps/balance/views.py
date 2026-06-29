@@ -4,7 +4,8 @@ from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
 from apps.delivery.models import Delivery
 from apps.taxi.models import TaxiRide
-from .services import PaymentService
+from .services import *
+from django.db.models.functions import Coalesce
 from decimal import Decimal
 from django.db.models import Sum, F, DecimalField, ExpressionWrapper, Q
 from rest_framework import generics, status
@@ -12,6 +13,11 @@ from rest_framework import generics, status
 from .models import WorkerWallet, WalletTransaction
 from .serializers import *
 from .choices import *
+from .models import *
+from decimal import Decimal
+from django.db.models import Sum, Q
+from django.utils import timezone
+from apps.main.models import *
 
 
 class WalletDashboardView(generics.GenericAPIView):
@@ -19,140 +25,167 @@ class WalletDashboardView(generics.GenericAPIView):
     serializer_class = WalletDashboardSerializer
 
     def get(self, request, *args, **kwargs):
-        wallet, _ = WorkerWallet.objects.get_or_create(worker=request.user)
+        worker = request.user
+        wallet, _ = WorkerWallet.objects.get_or_create(worker=worker)
 
-        signed_amount_expr = ExpressionWrapper(
-            F("amount") * F("sign"),
-            output_field=DecimalField(max_digits=12, decimal_places=2)
-        )
+        today = timezone.localdate()
 
-        completed_transactions = WalletTransaction.objects.filter(
-            wallet=wallet,
-            status=TransactionStatus.COMPLETED
-        )
-
-        balance = completed_transactions.aggregate(
-            total=Sum(signed_amount_expr)
-        )["total"] or Decimal("0.00")
-
-        total_income = completed_transactions.filter(
-            transaction_type=TransactionType.ORDER_EARNING,
-            sign=1
-        ).aggregate(
-            total=Sum("amount")
-        )["total"] or Decimal("0.00")
-
-        cash_total = completed_transactions.filter(
-            transaction_type=TransactionType.ORDER_EARNING,
+        today_transactions = wallet.transactions.filter(
+            status=TransactionStatus.COMPLETED,
             sign=1,
-            channel=PaymentChannel.CASH
-        ).aggregate(
-            total=Sum("amount")
-        )["total"] or Decimal("0.00")
+            created_at__date=today,
+        )
 
-        cashless_total = completed_transactions.filter(
-            transaction_type=TransactionType.ORDER_EARNING,
-            sign=1
-        ).exclude(
-            channel=PaymentChannel.CASH
-        ).aggregate(
-            total=Sum("amount")
-        )["total"] or Decimal("0.00")
+        orders_count = today_transactions.filter(
+            Q(taxi_ride__isnull=False) |
+            Q(delivery__isnull=False)
+        ).count()
+
+        today_income = today_transactions.aggregate(
+            total=Coalesce(Sum("amount"), Decimal("0.00"))
+        )["total"]
+
+        commission_percent = Decimal("0.00")
+
+        if worker.user_type == "courier":
+            delivery_profile = getattr(worker, "delivery_profile", None)
+
+            type_delivery = getattr(delivery_profile, "type_delivery", None)
+
+            commission = DeliveryCommission.objects.filter(
+                is_active=True,
+                type_delivery=type_delivery,
+            ).filter(
+                Q(payment_method__isnull=True) |
+                Q(payment_method="")
+            ).order_by("-id").first()
+
+            if commission:
+                commission_percent = commission.commission_percent
+
+        elif worker.user_type == "driver":
+            driver_profile = getattr(worker, "driver_profile", None)
+
+            car_class = getattr(driver_profile, "car_class", None)
+
+            commission = TaxiCommission.objects.filter(
+                is_active=True,
+                car_class=car_class,
+            ).filter(
+                Q(payment_method__isnull=True) |
+                Q(payment_method="")
+            ).order_by("-id").first()
+
+            if commission:
+                commission_percent = commission.commission_percent
 
         data = {
-            "balance": balance,
-            "total_income": total_income,
-            "bonuses": Decimal("0.00"),
-            "orders_count": getattr(request.user, "orders_count", 0) or 0,
+            "balance": wallet.balance,
+            "total_income": wallet.total_earnings,
+            "bonuses": wallet.total_bonuses,
+
+            "orders_count": orders_count,
+            "today_income": today_income,
+
             "hours_on_shift": 0,
-            "cash_total": cash_total,
-            "cashless_total": cashless_total,
+
+            "cash_total": wallet.cash_earnings,
+            "cashless_total": wallet.online_earnings,
+
+            "commission_percent": commission_percent,
         }
 
         serializer = self.get_serializer(data)
+
         return Response({
             "success": True,
             "data": serializer.data
         }, status=status.HTTP_200_OK)
 
+        
 
-class CreateDeliveryPaymentAPIView(APIView):
+class WithdrawalRequestCreateAPIView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
+    serializer_class = WithdrawalRequestSerializer
 
-    def post(self, request, delivery_id):
-        delivery = get_object_or_404(
-            Delivery,
-            id=delivery_id,
-            client=request.user
-        )
+    def post(self, request, *args, **kwargs):
+        user = request.user
 
-        try:
-            payment = PaymentService().create_delivery_payment(delivery)
-        except ValueError as e:
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        amount = serializer.validated_data["amount"]
+        card_number = serializer.validated_data["card_number"]
+        card_holder = serializer.validated_data.get("card_holder")
+
+        wallet = WorkerWallet.objects.filter(worker=user).first()
+
+        if not wallet:
             return Response(
-                {"detail": str(e)},
+                {"error": "Wallet not found"},
                 status=status.HTTP_400_BAD_REQUEST
             )
-        except Exception as e:
-            return Response(
-                {"detail": str(e)},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
 
-        delivery.payment_status = "pending"
-        delivery.save(update_fields=["payment_status"])
+        if wallet.balance < amount:
+            return Response({"error": "Нехватает средств в вашем балансе"}, status=400)
+
+        withdrawal = WithdrawalRequest.objects.create(
+            wallet=wallet,
+            amount=amount,
+            card_number=card_number,
+            card_holder=card_holder,
+            status="pending"
+        )
 
         return Response(
             {
-                "delivery_id": delivery.id,
-                "amount": str(payment.amount),
-                "payment_id": payment.id,
-                "external_payment_id": payment.external_payment_id,
-                "qr_url": payment.qr_url,
-                "deeplink": payment.deeplink,
-                "status": payment.status,
-                "mkassa_response": payment.raw_init_response,
+                "id": withdrawal.id,
+                "status": withdrawal.status,
+                "amount": withdrawal.amount,
+                "card_number": withdrawal.card_number,
             },
-            status=status.HTTP_200_OK
+            status=status.HTTP_201_CREATED
         )
 
 
-class CreateTaxiPaymentAPIView(APIView):
+class WalletHistoryView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def post(self, request, ride_id):
-        ride = get_object_or_404(
-            TaxiRide,
-            id=ride_id,
-            client=request.user
+    def get(self, request):
+        wallet = request.user.wallet
+
+        topups = wallet.transactions.filter(
+            status="COMPLETED",
+            sign=1
         )
 
-        try:
-            payment = PaymentService().create_taxi_payment(ride)
-        except ValueError as e:
-            return Response(
-                {"detail": str(e)},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        except Exception as e:
-            return Response(
-                {"detail": str(e)},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
+        withdrawals = wallet.withdrawal_requests.all()
 
-        ride.payment_status = "pending"
-        ride.save(update_fields=["payment_status"])
+        history = []
+        for t in topups:
+            history.append({
+                "type": "topup",
+                "status": t.status.lower(),
+                "amount": str(t.amount),
+                "date": format_date(t.created_at),
+                "created_at": t.created_at
+            })
 
-        return Response(
-            {
-                "ride_id": ride.id,
-                "amount": str(payment.amount),
-                "payment_id": payment.id,
-                "external_payment_id": payment.external_payment_id,
-                "qr_url": payment.qr_url,
-                "deeplink": payment.deeplink,
-                "status": payment.status,
-                "mkassa_response": payment.raw_init_response,
-            },
-            status=status.HTTP_200_OK
-        )
+        for w in withdrawals:
+            history.append({
+                "type": "withdrawal",
+                "status": w.status.lower(),
+                "amount": str(w.amount),
+                "date": format_date(w.created_at),
+                "created_at": w.created_at
+            })
+
+        history.sort(key=lambda x: x["created_at"], reverse=True)
+
+        for i in history:
+            i.pop("created_at")
+
+        return Response({
+            "balance": wallet.balance,
+            "results": history
+        })

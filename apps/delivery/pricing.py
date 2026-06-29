@@ -1,8 +1,11 @@
 from decimal import Decimal, ROUND_HALF_UP
+import math
+from django.utils import timezone
+
 
 from apps.delivery.models import DeliveryTariff
 
-#pricing.py - отвечает за логику расчета стоимости доставки на основе тарифов, расстояния и времени. Также рассчитывает комиссию и выплату курьеру.
+#pricing.py - отвечает за логику расчета стоимости доставки на основе тарифов, расстояния и времени. 
 class DeliveryPricingError(Exception):
     pass
 
@@ -33,19 +36,19 @@ class DeliveryPricingService:
         return total.quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
 
     @staticmethod
-    def calculate_commission(*, price: Decimal, commission_percent: Decimal) -> tuple[Decimal, Decimal]:
+    def calculate_commission(*, price: Decimal) -> tuple[Decimal, Decimal]:
         price = Decimal(str(price))
-        commission_percent = Decimal(str(commission_percent))
+        # commission_percent = Decimal(str(commission_percent))
 
-        commission_amount = (
-            price * commission_percent / Decimal("100")
-        ).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
+        # commission_amount = (
+        #     price * commission_percent / Decimal("100")
+        # ).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
 
         courier_payout = (
-            price - commission_amount
+            price 
         ).quantize(Decimal("0.01"), rounding=ROUND_HALF_UP)
 
-        return commission_amount, courier_payout
+        return  courier_payout
 
     @classmethod
     def get_prices_for_all_types(cls, *, distance_km: Decimal, duration_min: int) -> list[dict]:
@@ -63,9 +66,9 @@ class DeliveryPricingService:
                 duration_min=duration_min,
             )
 
-            commission_amount, courier_payout = cls.calculate_commission(
+            courier_payout = cls.calculate_commission(
                 price=price,
-                commission_percent=tariff.commission_percent,
+                # commission_percent=tariff.commission_percent,
             )
 
             results.append({
@@ -74,8 +77,63 @@ class DeliveryPricingService:
                 "price": str(price),
                 "estimated_price": str(price),
                 "total_price": str(price),
-                "commission_amount": str(commission_amount),
+                # "commission_amount": str(commission_amount),
                 "courier_payout": str(courier_payout),
             })
 
         return results
+
+
+class DeliveryWaitingService:
+
+    @staticmethod
+    def calculate_waiting(delivery):
+
+
+        if not delivery.arrived_at:
+            return {
+                "total_waiting_minutes": 0,
+                "paid_waiting_minutes": 0,
+                "waiting_price": Decimal("0.00"),
+            }
+
+        tariff = delivery.tariff
+
+        if not tariff:
+            return {
+                "total_waiting_minutes": 0,
+                "paid_waiting_minutes": 0,
+                "waiting_price": Decimal("0.00"),
+            }
+
+        now = timezone.now()
+
+        total_waiting_minutes = math.ceil(
+            (
+                now - delivery.arrived_at
+            ).total_seconds() / 60
+        )
+
+        if total_waiting_minutes < 0:
+            total_waiting_minutes = 0
+
+        free_minutes = tariff.waiting_free_min
+
+        paid_waiting_minutes = max(
+            total_waiting_minutes - free_minutes,
+            0
+        )
+
+        waiting_price = (
+            Decimal(str(paid_waiting_minutes))
+            * Decimal(str(tariff.waiting_per_minute))
+        ).quantize(
+            Decimal("0.01"),
+            rounding=ROUND_HALF_UP
+        )
+
+        return {
+            "total_waiting_minutes": total_waiting_minutes,
+            "paid_waiting_minutes": paid_waiting_minutes,
+            "waiting_price": waiting_price,
+        }

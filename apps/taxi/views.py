@@ -41,7 +41,6 @@ class TaxiRideCreateView(generics.CreateAPIView):
             status=status.HTTP_201_CREATED,
         )
 
-
 class AcceptTaxiOfferView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
 
@@ -66,8 +65,20 @@ class AcceptTaxiOfferView(generics.GenericAPIView):
 
         if success:
             taxi_offer_accepted(offer)
-            ride = offer.ride
+
+            ride = (
+                TaxiRide.objects
+                .select_related(
+                    "client",
+                    "driver",
+                    "driver__driver_profile",
+                    "driver__worker_location",
+                )
+                .get(id=offer.ride_id)
+            )
+
             serializer = TaxiRideDetailSerializer(ride)
+
             return Response(
                 {
                     "success": True,
@@ -81,6 +92,7 @@ class AcceptTaxiOfferView(generics.GenericAPIView):
             {"success": False, "message": message},
             status=status.HTTP_400_BAD_REQUEST,
         )
+
 
 
 class RejectTaxiOfferView(generics.GenericAPIView):
@@ -312,6 +324,7 @@ class TaxiCancelByClientView(generics.GenericAPIView):
                 {"success": False, "message": message},
                 status=status.HTTP_400_BAD_REQUEST
             )
+            
         taxi_cancelled(taxi)
 
         taxi.refresh_from_db()
@@ -324,4 +337,34 @@ class TaxiCancelByClientView(generics.GenericAPIView):
                 "data": response_serializer.data,
             },
             status=status.HTTP_200_OK
+        )
+
+
+class TaxiRideStatusView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        taxi_id = kwargs.get("taxi_id")
+
+        taxi = TaxiRide.objects.filter(id=taxi_id).first()
+
+        if not taxi:
+            return Response(
+                {
+                    "success": False,
+                    "message": "Поездка не найдена"
+                },
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        return Response(
+            {
+                "success": True,
+                "data": {
+                    "id": taxi.id,
+                    "status": taxi.status,
+                    "canceled_by": taxi.canceled_by,
+                }
+            }
         )

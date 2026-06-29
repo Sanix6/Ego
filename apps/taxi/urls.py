@@ -12,4 +12,5 @@ urlpatterns = [
     path("trips/<int:taxi_id>/complete/", TaxiCompleteView.as_view(), name="taxi-complete"),
     path("driver/rides/history/", DriverRideHistoryView.as_view(), name="driver-ride-history"),
     path("taxi/<int:taxi_id>/cancel/", TaxiCancelByClientView.as_view(), name="taxi-cancel-by-client"),
+    path("taxi/<int:taxi_id>/status/",TaxiRideStatusView.as_view(),name="taxi-status",),
 ]

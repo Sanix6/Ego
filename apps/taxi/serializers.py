@@ -3,6 +3,8 @@ from .models import TaxiRide
 from apps.users.models import User, WorkerLocation
 from .pricing import PricingService, PricingError
 from services.matrix import RoutingService, RoutingServiceError
+from apps.delivery.services import build_eta_data
+
 
 
 class DriverRegisterSerializer(serializers.Serializer):
@@ -92,17 +94,62 @@ class TaxiRideCreateSerializer(serializers.ModelSerializer):
             per_min_rate=tariff.per_min_rate,
             included_km=tariff.included_km,
             included_min=tariff.included_min,
-            commission_percent=tariff.commission_percent,
             commission_amount=pricing["commission_amount"],
             driver_payout=pricing["driver_payout"],
         )
         return ride
 
-
 class TaxiRideDetailSerializer(serializers.ModelSerializer):
+    driver_arrival_eta = serializers.SerializerMethodField()
+
     class Meta:
         model = TaxiRide
         fields = "__all__"
+        extra_fields = ("driver_arrival_eta",)
+
+    def get_field_names(self, declared_fields, info):
+        fields = super().get_field_names(declared_fields, info)
+        return fields + list(getattr(self.Meta, "extra_fields", []))
+
+    def get_driver_arrival_eta(self, ride):
+        if not ride.driver_id:
+            return None
+
+        if ride.status == "arrived":
+            return {
+                "distance_km": 0,
+                "eta_sec": 0,
+                "eta_min": 0,
+            }
+
+        if ride.status not in ("assigned", "accepted"):
+            return None
+
+        location = getattr(ride.driver, "worker_location", None)
+        if not location:
+            return None
+
+        if None in (
+            location.lat,
+            location.lon,
+            ride.pickup_lat,
+            ride.pickup_lon,
+        ):
+            return None
+
+        eta_data = build_eta_data(
+            from_lat=location.lat,
+            from_lon=location.lon,
+            to_lat=ride.pickup_lat,
+            to_lon=ride.pickup_lon,
+            speed_kmh=35.0,
+        )
+
+        return {
+            "distance_km": eta_data["distance_km"],
+            "eta_sec": eta_data["eta_sec"],
+            "eta_min": round(eta_data["eta_sec"] / 60),
+        }
 
 
 class TaxiPricesPreviewSerializer(serializers.Serializer):
@@ -118,6 +165,7 @@ class DriverInfoSerializer(serializers.ModelSerializer):
     car_color = serializers.SerializerMethodField()
     car_number = serializers.SerializerMethodField()
     car_type = serializers.SerializerMethodField()
+    selfie = serializers.SerializerMethodField()
 
     class Meta:
         model = User
@@ -131,7 +179,18 @@ class DriverInfoSerializer(serializers.ModelSerializer):
             "car_color",
             "car_number",
             "car_type",
+            "rating_avg",
+            "selfie",
         ]
+
+    def get_selfie(self, obj):
+        profile = getattr(obj, "driver_profile", None)
+
+        if not profile or not profile.selfie:
+            return None
+
+        return profile.selfie.url
+    
 
     def get_car_brand(self, obj):
         profile = getattr(obj, "driver_profile", None)
@@ -163,11 +222,11 @@ class DriverLocationSerializer(serializers.ModelSerializer):
             "updated_at",
         ]
 
-
 class TaxiTrackingSerializer(serializers.ModelSerializer):
     driver = DriverInfoSerializer(read_only=True)
     driver_location = serializers.SerializerMethodField()
     driver_assigned = serializers.SerializerMethodField()
+    tracking = serializers.SerializerMethodField()
 
     class Meta:
         model = TaxiRide
@@ -201,6 +260,7 @@ class TaxiTrackingSerializer(serializers.ModelSerializer):
             "driver_assigned",
             "driver",
             "driver_location",
+            "tracking",
         ]
 
     def get_driver_assigned(self, obj):
@@ -216,6 +276,85 @@ class TaxiTrackingSerializer(serializers.ModelSerializer):
             return None
 
         return DriverLocationSerializer(location).data
+
+    def get_tracking(self, obj):
+        driver = obj.driver
+        if not driver:
+            return {
+                "target": None,
+                "eta": None,
+            }
+
+        location = getattr(driver, "worker_location", None)
+        if not location:
+            return {
+                "target": None,
+                "eta": None,
+            }
+
+        if obj.status in ("assigned", "accepted"):
+            if obj.pickup_lat is None or obj.pickup_lon is None:
+                return {
+                    "target": "point_a",
+                    "eta": None,
+                }
+
+            eta = build_eta_data(
+                from_lat=float(location.lat),
+                from_lon=float(location.lon),
+                to_lat=float(obj.pickup_lat),
+                to_lon=float(obj.pickup_lon),
+                speed_kmh=35.0,
+            )
+
+            return {
+                "target": "point_a",
+                "eta": {
+                    "distance_km": eta["distance_km"],
+                    "eta_sec": eta["eta_sec"],
+                    "eta_min": round(eta["eta_sec"] / 60),
+                },
+            }
+
+        if obj.status == "arrived":
+            return {
+                "target": "point_a",
+                "eta": {
+                    "distance_km": 0,
+                    "eta_sec": 0,
+                    "eta_min": 0,
+                },
+            }
+
+        if obj.status == "in_trip":
+            if obj.dropoff_lat is None or obj.dropoff_lon is None:
+                return {
+                    "target": "point_b",
+                    "eta": None,
+                }
+
+            eta = build_eta_data(
+                from_lat=float(location.lat),
+                from_lon=float(location.lon),
+                to_lat=float(obj.dropoff_lat),
+                to_lon=float(obj.dropoff_lon),
+                speed_kmh=35.0,
+            )
+
+            return {
+                "target": "point_b",
+                "eta": {
+                    "distance_km": eta["distance_km"],
+                    "eta_sec": eta["eta_sec"],
+                    "eta_min": round(eta["eta_sec"] / 60),
+                },
+            }
+
+        return {
+            "target": None,
+            "eta": None,
+        }
+
 
 
 class DriverRideHistorySerializer(serializers.ModelSerializer):

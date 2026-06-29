@@ -3,8 +3,6 @@ from django.conf import settings
 from django.utils import timezone
 
 from .models import PushNotification, PushDevice
-from apps.delivery.models import DeliveryOffer
-
 
 ONESIGNAL_URL = "https://api.onesignal.com/notifications?c=push"
 
@@ -22,7 +20,7 @@ class PushService:
         payload: dict = None,
         ride=None,
         delivery=None,
-        offer=None,
+        # offer=None,
         slot=None,
     ):
         payload = payload or {}
@@ -40,8 +38,7 @@ class PushService:
                 "payload": payload,
                 "ride": ride,
                 "delivery": delivery,
-                "taxi_offer": offer if ride else None,
-                "delivery_offer": offer if delivery else None,
+                # "offer": offer,
                 "slot": slot,
                 "status": "pending",
             }
@@ -52,11 +49,11 @@ class PushService:
 
         devices = PushDevice.objects.filter(user=user, is_active=True)
 
-        external_ids = list({
+        external_ids = [
             str(d.external_user_id).strip()
             for d in devices
             if d.external_user_id
-        })
+        ]
 
         if not external_ids:
             notification.status = "failed"
@@ -82,7 +79,7 @@ class PushService:
         }
 
         headers = {
-            "Authorization": f"Key {settings.ONESIGNAL_API_KEY}",  # 🔥 ВАЖНО
+            "Authorization": f"Key {settings.ONESIGNAL_API_KEY}",
             "Content-Type": "application/json",
         }
 
@@ -102,7 +99,6 @@ class PushService:
                     notification.provider_message_id = response.json().get("id")
                 except Exception:
                     pass
-
             else:
                 notification.status = "failed"
                 notification.error_message = response.text
@@ -116,4 +112,3 @@ class PushService:
 
         notification.save()
         return notification
-

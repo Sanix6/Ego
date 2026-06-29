@@ -1,4 +1,5 @@
 from django.contrib import admin
+from unfold.admin import ModelAdmin
 from django import forms
 from django.core.exceptions import ValidationError
 
@@ -24,7 +25,7 @@ class TaxiRideAdminForm(forms.ModelForm):
 
 
 @admin.register(TaxiRide)
-class TaxiRideAdmin(admin.ModelAdmin):
+class TaxiRideAdmin(ModelAdmin):
     form = TaxiRideAdminForm
 
     list_display = (

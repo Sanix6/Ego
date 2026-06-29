@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import *
 from apps.users.models import WorkerLocation, User
+from apps.delivery.services import build_eta_data
 
 
 class DeliveryCreateSerializer(serializers.ModelSerializer):
@@ -144,6 +145,7 @@ class DeliveryOfferSerializer(serializers.ModelSerializer):
 
 class CourierInfoSerializer(serializers.ModelSerializer):
     transport_type = serializers.SerializerMethodField()
+    selfie = serializers.SerializerMethodField()
 
     class Meta:
         model = User
@@ -153,7 +155,17 @@ class CourierInfoSerializer(serializers.ModelSerializer):
             "last_name",
             "phone",
             "transport_type",
+            "rating_avg",
+            "selfie",
         ]
+
+    def get_selfie(self, obj):
+        profile = getattr(obj, "courier_profile", None)
+
+        if not profile or not profile.selfie:
+            return None
+
+        return profile.selfie.url
 
     def get_transport_type(self, obj):
         profile = getattr(obj, "courier_profile", None)
@@ -173,6 +185,7 @@ class CourierLocationSerializer(serializers.ModelSerializer):
 class DeliveryTrackingSerializer(serializers.ModelSerializer):
     courier = CourierInfoSerializer(read_only=True)
     courier_location = serializers.SerializerMethodField()
+    tracking = serializers.SerializerMethodField()
 
     class Meta:
         model = Delivery
@@ -193,6 +206,7 @@ class DeliveryTrackingSerializer(serializers.ModelSerializer):
             "client_comment",
             "courier",
             "courier_location",
+            "tracking",
             "created_at",
         ]
 
@@ -206,6 +220,95 @@ class DeliveryTrackingSerializer(serializers.ModelSerializer):
             return None
 
         return CourierLocationSerializer(location).data
+
+    def get_tracking(self, obj):
+        courier = obj.courier
+        if not courier:
+            return {
+                "target": None,
+                "eta": None,
+            }
+
+        location = getattr(courier, "worker_location", None)
+        if not location:
+            return {
+                "target": None,
+                "eta": None,
+            }
+
+        if obj.delivery_status in ("courier_assigned", "waiting_pickup"):
+            if obj.pickup_lat is None or obj.pickup_lon is None:
+                return {
+                    "target": "point_a",
+                    "eta": None,
+                }
+
+            eta = build_eta_data(
+                from_lat=float(location.lat),
+                from_lon=float(location.lon),
+                to_lat=float(obj.pickup_lat),
+                to_lon=float(obj.pickup_lon),
+                speed_kmh=25.0,
+            )
+
+            return {
+                "target": "point_a",
+                "eta": {
+                    "distance_km": eta["distance_km"],
+                    "eta_sec": eta["eta_sec"],
+                    "eta_min": round(eta["eta_sec"] / 60),
+                },
+            }
+
+        if obj.delivery_status in ("courier_arrived", "picked_up"):
+            return {
+                "target": "point_a",
+                "eta": {
+                    "distance_km": 0,
+                    "eta_sec": 0,
+                    "eta_min": 0,
+                },
+            }
+
+        if obj.delivery_status == "in_delivery":
+            if obj.dropoff_lat is None or obj.dropoff_lon is None:
+                return {
+                    "target": "point_b",
+                    "eta": None,
+                }
+
+            eta = build_eta_data(
+                from_lat=float(location.lat),
+                from_lon=float(location.lon),
+                to_lat=float(obj.dropoff_lat),
+                to_lon=float(obj.dropoff_lon),
+                speed_kmh=25.0,
+            )
+
+            return {
+                "target": "point_b",
+                "eta": {
+                    "distance_km": eta["distance_km"],
+                    "eta_sec": eta["eta_sec"],
+                    "eta_min": round(eta["eta_sec"] / 60),
+                },
+            }
+
+        if obj.delivery_status in ("courier_arrived_b", "delivered"):
+            return {
+                "target": "point_b",
+                "eta": {
+                    "distance_km": 0,
+                    "eta_sec": 0,
+                    "eta_min": 0,
+                },
+            }
+
+        return {
+            "target": None,
+            "eta": None,
+        }
+
 
 
 class DeliverySerializer(serializers.ModelSerializer):

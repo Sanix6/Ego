@@ -12,14 +12,12 @@ from rest_framework.exceptions import MethodNotAllowed
 from drf_spectacular.utils import extend_schema
 from django.db import transaction
 from services.geo import RedisGeoService
-from .models import WorkerLocation, WorkerStatus
+from .models import *
 from apps.balance.models import WorkerWallet
 from apps.taxi.models import TaxiRide
 from apps.delivery.models import Delivery
 from django.shortcuts import get_object_or_404
 from rest_framework.viewsets import ModelViewSet
-
-
 
 
 class SendCodeView(generics.GenericAPIView):
@@ -36,7 +34,16 @@ class SendCodeView(generics.GenericAPIView):
 
         if not user.is_active:
             user.is_active = True
-            user.save()
+            user.save(update_fields=["is_active"])
+
+        if user.universal_code:
+            return Response(
+                {
+                    "message": "Введите универсальный код",
+                    "has_universal_code": True,
+                },
+                status=status.HTTP_200_OK,
+            )
 
         sms_sent = send_verification_sms(user)
 
@@ -47,7 +54,10 @@ class SendCodeView(generics.GenericAPIView):
             )
 
         return Response(
-            {"message": "Verification code sent"},
+            {
+                "message": "Verification code sent",
+                "has_universal_code": False,
+            },
             status=status.HTTP_200_OK,
         )
 
@@ -122,7 +132,6 @@ class DriverRegisterView(generics.GenericAPIView):
             status=status.HTTP_200_OK
         )
 
-
 class VerifyCodeDriverView(generics.GenericAPIView):
     serializer_class = VerifyCodeDriverSerializer
 
@@ -134,21 +143,33 @@ class VerifyCodeDriverView(generics.GenericAPIView):
         code = serializer.validated_data["code"]
 
         try:
-            user = User.objects.get(phone=phone, user_type="driver")
+            user = User.objects.get(
+                phone=phone,
+                user_type__in=["driver", "courier"]
+            )
         except User.DoesNotExist:
             return Response(
                 {"message": "Пользователь не найден"},
                 status=status.HTTP_404_NOT_FOUND
             )
 
-        if user.verification_code != code:
+        # Проверка universal_code
+        is_universal = (
+            user.universal_code and
+            user.universal_code == code
+        )
+
+        is_sms = user.verification_code == code
+
+        if not is_universal and not is_sms:
             return Response(
                 {"message": "Неверный код"},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        user.verification_code = None
-        user.save(update_fields=["verification_code"])
+        if is_sms:
+            user.verification_code = None
+            user.save(update_fields=["verification_code"])
 
         token, created = Token.objects.get_or_create(user=user)
 
@@ -159,6 +180,8 @@ class VerifyCodeDriverView(generics.GenericAPIView):
             },
             status=status.HTTP_200_OK
         )
+
+
 
 class ResendCodeDriverView(generics.GenericAPIView):
     serializer_class = ResendCodeDriverSerializer
@@ -216,6 +239,99 @@ class ScanDriversAutoView(generics.UpdateAPIView):
     def get_object(self):
         return self.request.user.driver_profile
 
+class DriverCarImageView(APIView):
+    permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
+
+    def post(self, request):
+        driver = request.user.driver_profile
+        images = request.FILES.getlist("image")
+
+        DriverCarImage.objects.filter(driver=driver).delete()
+
+        DriverCarImage.objects.bulk_create([
+            DriverCarImage(driver=driver, image=img)
+            for img in images
+        ])
+
+        driver.status = "pending"
+        driver.last_car_check_at = timezone.now()
+        driver.save(update_fields=["status", "last_car_check_at"])
+
+        return Response({"message": "replaced"}, status=201)
+
+class CourierCarImageView(APIView):
+    permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
+
+    def post(self, request):
+        profile = request.user.courier_profile
+        images = request.FILES.getlist("image")
+
+        if not images:
+            return Response(
+                {"error": "Фотографии не отправлены"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        CourierCarImage.objects.filter(courier=profile).delete()
+
+        CourierCarImage.objects.bulk_create([
+            CourierCarImage(courier=profile, image=img)
+            for img in images[:7]
+        ])
+
+        profile.status = "pending"
+        profile.last_car_check_at = timezone.now()
+        profile.save(update_fields=["status", "last_car_check_at"])
+
+        return Response(
+            {
+                "message": "replaced",
+                "count": min(len(images), 7),
+            },
+            status=status.HTTP_201_CREATED
+        )
+
+
+class WeeklyCarCheckView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+
+        profile = None
+
+        if hasattr(user, "courier_profile"):
+            profile = user.courier_profile
+        elif hasattr(user, "driver_profile"):
+            profile = user.driver_profile
+
+        if not profile:
+            return Response({
+                "needs_check": False
+            })
+
+        last_check = getattr(profile, "last_car_check_at", None)
+
+        if not last_check:
+            return Response({
+                "needs_check": True,
+                "reason": "never_checked"
+            })
+
+        now = timezone.now()
+        diff = now - last_check
+
+        needs_check = diff > timedelta(days=7)
+
+        return Response({
+            "needs_check": needs_check,
+            "last_check": last_check,
+            "days_since_last_check": diff.days,
+            "next_check_in_days": max(0, 7 - diff.days),
+        })
+
 
 class UserAddressViewSet(ModelViewSet):
     serializer_class = UserAddressSerializer
@@ -230,12 +346,22 @@ class UserAddressViewSet(ModelViewSet):
         serializer.save(user=self.request.user)
 
 
-class PersonalInfoView(generics.RetrieveAPIView):
-    serializer_class = PersonalInfoSerializer
+class PersonalInfoView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get_object(self):
-        return self.request.user
+    def get(self, request):
+        serializer = PersonalInfoSerializer(request.user)
+        return Response(serializer.data)
+
+    def patch(self, request):
+        serializer = PersonalInfoSerializer(
+            request.user,
+            data=request.data,
+            partial=True
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
 
 
 class LogoutProfileView(APIView):

@@ -10,6 +10,7 @@ from apps.users.models import (
     DriverProfile,
     CourierDispatch,
     DriverDispatch,
+    DriverCarImage,
 )
 
 
@@ -31,22 +32,24 @@ class CourierDispatchForm(forms.ModelForm):
     lon = forms.FloatField(required=False, label="Долгота")
     location_updated_at = forms.DateTimeField(required=False, label="Обновление гео", disabled=True)
 
-    # ===== COURIER PROFILE =====
     courier_profile_status = forms.ChoiceField(
         required=False,
         label="Статус профиля курьера",
         choices=CourierProfile._meta.get_field("status").choices,
     )
+
     transport_type = forms.ChoiceField(
         required=False,
         label="Транспорт",
         choices=CourierProfile._meta.get_field("transport_type").choices,
     )
+
     darkstore = forms.ModelChoiceField(
         queryset=CourierProfile._meta.get_field("darkstore").remote_field.model.objects.all(),
         required=False,
         label="Даркстор",
     )
+
     delivery_zones = forms.ModelChoiceField(
         queryset=CourierProfile._meta.get_field("delivery_zones").remote_field.model.objects.all(),
         required=False,
@@ -63,6 +66,12 @@ class CourierDispatchForm(forms.ModelForm):
     car_model = forms.CharField(required=False, label="Модель")
     car_color = forms.CharField(required=False, label="Цвет")
     car_number = forms.CharField(required=False, label="Номер")
+
+    # ===== GALLERY =====
+    courier_images = forms.FileField(
+        required=False,
+        label="Фото термобокса / экипировки"
+    )
 
     class Meta:
         model = CourierDispatch
@@ -86,13 +95,13 @@ class CourierDispatchForm(forms.ModelForm):
         location = getattr(user, "worker_location", None)
         profile = getattr(user, "courier_profile", None)
 
-        # user
+        # USER
         self.fields["verification_code"].initial = user.verification_code
         self.fields["rating_avg"].initial = user.rating_avg
         self.fields["rating_count"].initial = user.rating_count
         self.fields["orders_count"].initial = user.orders_count
 
-        # status
+        # STATUS
         if status:
             self.fields["is_online"].initial = status.is_online
             self.fields["is_busy"].initial = status.is_busy
@@ -100,13 +109,13 @@ class CourierDispatchForm(forms.ModelForm):
             self.fields["max_parallel_deliveries"].initial = status.max_parallel_deliveries
             self.fields["last_seen"].initial = status.last_seen
 
-        # location
+        # LOCATION
         if location:
             self.fields["lat"].initial = location.lat
             self.fields["lon"].initial = location.lon
             self.fields["location_updated_at"].initial = location.updated_at
 
-        # profile
+        # PROFILE
         if profile:
             self.fields["courier_profile_status"].initial = profile.status
             self.fields["transport_type"].initial = profile.transport_type
@@ -145,9 +154,12 @@ class CourierDispatchForm(forms.ModelForm):
         if field_name in self.changed_data:
             setattr(profile, field_name, self.cleaned_data.get(field_name))
 
+
     @transaction.atomic
     def save(self, commit=True):
         user = super().save(commit=False)
+        user.save()
+
         user.user_type = "courier"
         user.verification_code = self.cleaned_data.get("verification_code")
         user.rating_avg = self.cleaned_data.get("rating_avg") or 0
@@ -157,43 +169,67 @@ class CourierDispatchForm(forms.ModelForm):
         if commit:
             user.save()
 
-            WorkerWallet.objects.get_or_create(worker=user)
-            worker_status, _ = WorkerStatus.objects.get_or_create(user=user)
-            worker_status.is_online = self.cleaned_data.get("is_online", False)
-            worker_status.is_busy = self.cleaned_data.get("is_busy", False)
-            worker_status.active_deliveries_count = self.cleaned_data.get("active_deliveries_count") or 0
-            worker_status.max_parallel_deliveries = self.cleaned_data.get("max_parallel_deliveries") or 5
-            worker_status.save()
+        WorkerWallet.objects.get_or_create(worker=user)
 
-            lat = self.cleaned_data.get("lat")
-            lon = self.cleaned_data.get("lon")
-            if lat is not None and lon is not None:
-                worker_location, _ = WorkerLocation.objects.get_or_create(user=user)
-                worker_location.lat = lat
-                worker_location.lon = lon
-                worker_location.save()
-            else:
-                WorkerLocation.objects.filter(user=user).delete()
+        # ===== STATUS =====
+        worker_status, _ = WorkerStatus.objects.get_or_create(user=user)
+        worker_status.is_online = self.cleaned_data.get("is_online", False)
+        worker_status.is_busy = self.cleaned_data.get("is_busy", False)
+        worker_status.active_deliveries_count = self.cleaned_data.get("active_deliveries_count") or 0
+        worker_status.max_parallel_deliveries = self.cleaned_data.get("max_parallel_deliveries") or 5
+        worker_status.save()
 
-            profile, _ = CourierProfile.objects.get_or_create(user=user)
-            profile.status = self.cleaned_data.get("courier_profile_status") or "pending"
-            profile.transport_type = self.cleaned_data.get("transport_type") or ""
-            profile.darkstore = self.cleaned_data.get("darkstore")
-            profile.delivery_zones = self.cleaned_data.get("delivery_zones")
-            profile.car_brand = self.cleaned_data.get("car_brand") or ""
-            profile.car_model = self.cleaned_data.get("car_model") or ""
-            profile.car_color = self.cleaned_data.get("car_color") or ""
-            profile.car_number = self.cleaned_data.get("car_number") or ""
+        # ===== LOCATION =====
+        lat = self.cleaned_data.get("lat")
+        lon = self.cleaned_data.get("lon")
 
-            self._update_file_field_if_changed(profile, "selfie")
-            self._update_file_field_if_changed(profile, "passport_front")
-            self._update_file_field_if_changed(profile, "passport_back")
-            self._update_file_field_if_changed(profile, "driver_license_front")
-            self._update_file_field_if_changed(profile, "driver_license_back")
+        if lat is not None and lon is not None:
+            worker_location, _ = WorkerLocation.objects.get_or_create(user=user)
+            worker_location.lat = lat
+            worker_location.lon = lon
+            worker_location.save()
+        else:
+            WorkerLocation.objects.filter(user=user).delete()
 
-            profile.save()
+        # ===== PROFILE =====
+        profile, _ = CourierProfile.objects.get_or_create(user=user)
+
+        form_status = self.cleaned_data.get("courier_profile_status")
+
+        if form_status:
+            profile.status = form_status
+
+        profile.transport_type = self.cleaned_data.get("transport_type") or ""
+        profile.darkstore = self.cleaned_data.get("darkstore")
+        profile.delivery_zones = self.cleaned_data.get("delivery_zones")
+
+        profile.car_brand = self.cleaned_data.get("car_brand") or ""
+        profile.car_model = self.cleaned_data.get("car_model") or ""
+        profile.car_color = self.cleaned_data.get("car_color") or ""
+        profile.car_number = self.cleaned_data.get("car_number") or ""
+
+        self._update_file_field_if_changed(profile, "selfie")
+        self._update_file_field_if_changed(profile, "passport_front")
+        self._update_file_field_if_changed(profile, "passport_back")
+        self._update_file_field_if_changed(profile, "driver_license_front")
+        self._update_file_field_if_changed(profile, "driver_license_back")
+
+        profile.save()
+
+        # DEBUG (можешь убрать потом)
+        print("AFTER SAVE STATUS:", profile.status)
+
+        # ===== IMAGES =====
+        courier_images = self.files.getlist("courier_images")
+
+        for img in courier_images[:7]:
+            CourierCarImage.objects.create(
+                courier=profile,
+                image=img
+            )
 
         return user
+
 
 
 class DriverDispatchForm(forms.ModelForm):
@@ -216,27 +252,36 @@ class DriverDispatchForm(forms.ModelForm):
     # ===== DRIVER PROFILE =====
     driver_profile_status = forms.ChoiceField(
         required=False,
-        label="Статус профиля таксиста",
+        label="Статус профиля",
         choices=DriverProfile._meta.get_field("status").choices,
     )
 
     selfie = forms.ImageField(required=False, label="Селфи")
-    passport_front = forms.ImageField(required=False, label="Паспорт лицевая сторона")
-    passport_back = forms.ImageField(required=False, label="Паспорт обратная сторона")
+    passport_front = forms.ImageField(required=False, label="Паспорт (лицевая)")
+    passport_back = forms.ImageField(required=False, label="Паспорт (обратная)")
     passport_number = forms.CharField(required=False, label="Номер паспорта")
 
-    seria_and_number = forms.CharField(required=False, label="Серия и номер водительского права")
-    date_of_issue = forms.DateField(required=False, label="Дата выдачи водительского права", widget=forms.DateInput(attrs={"type": "date"}))
-    issuing_authority = forms.CharField(required=False, label="Орган, выдавший водительское право")
-    driver_license_front = forms.ImageField(required=False, label="Права лицевая сторона")
-    driver_license_back = forms.ImageField(required=False, label="Права обратная сторона")
+    seria_and_number = forms.CharField(required=False, label="Серия и номер прав")
+    date_of_issue = forms.DateField(
+        required=False,
+        label="Дата выдачи прав",
+        widget=forms.DateInput(attrs={"type": "date"})
+    )
+    issuing_authority = forms.CharField(required=False, label="Кем выдано")
 
-    car_brand = forms.CharField(required=False, label="Марка машины")
-    car_model = forms.CharField(required=False, label="Модель машины")
-    car_color = forms.CharField(required=False, label="Цвет машины")
-    car_number = forms.CharField(required=False, label="Номер машины")
-    car_type = forms.CharField(required=False, label="Тип машины")
-    car_photo = forms.ImageField(required=False, label="Фото машины")
+    driver_license_front = forms.ImageField(required=False, label="Права (лицевая)")
+    driver_license_back = forms.ImageField(required=False, label="Права (обратная)")
+
+    car_brand = forms.CharField(required=False, label="Марка авто")
+    car_model = forms.CharField(required=False, label="Модель авто")
+    car_color = forms.CharField(required=False, label="Цвет авто")
+    car_number = forms.CharField(required=False, label="Номер авто")
+    car_type = forms.CharField(required=False, label="Тип авто")
+
+    car_images = forms.FileField(
+        required=False,
+        label="Фото машины (до 7)"
+    )
 
     class Meta:
         model = DriverDispatch
@@ -260,25 +305,25 @@ class DriverDispatchForm(forms.ModelForm):
         location = getattr(user, "worker_location", None)
         profile = getattr(user, "driver_profile", None)
 
-        # user
+        # ===== USER =====
         self.fields["verification_code"].initial = user.verification_code
         self.fields["rating_avg"].initial = user.rating_avg
         self.fields["rating_count"].initial = user.rating_count
         self.fields["orders_count"].initial = user.orders_count
 
-        # status
+        # ===== STATUS =====
         if status:
             self.fields["is_online"].initial = status.is_online
             self.fields["is_busy"].initial = status.is_busy
             self.fields["last_seen"].initial = status.last_seen
 
-        # location
+        # ===== LOCATION =====
         if location:
             self.fields["lat"].initial = location.lat
             self.fields["lon"].initial = location.lon
             self.fields["location_updated_at"].initial = location.updated_at
 
-        # profile
+        # ===== PROFILE =====
         if profile:
             self.fields["driver_profile_status"].initial = profile.status
 
@@ -290,6 +335,7 @@ class DriverDispatchForm(forms.ModelForm):
             self.fields["seria_and_number"].initial = profile.seria_and_number
             self.fields["date_of_issue"].initial = profile.date_of_issue
             self.fields["issuing_authority"].initial = profile.issuing_authority
+
             self.fields["driver_license_front"].initial = profile.driver_license_front
             self.fields["driver_license_back"].initial = profile.driver_license_back
 
@@ -298,7 +344,6 @@ class DriverDispatchForm(forms.ModelForm):
             self.fields["car_color"].initial = profile.car_color
             self.fields["car_number"].initial = profile.car_number
             self.fields["car_type"].initial = profile.car_type
-            self.fields["car_photo"].initial = profile.car_photo
 
     def clean(self):
         cleaned_data = super().clean()
@@ -307,62 +352,80 @@ class DriverDispatchForm(forms.ModelForm):
         lon = cleaned_data.get("lon")
 
         if (lat is None) ^ (lon is None):
-            raise forms.ValidationError("Для геолокации нужно указать и широту, и долготу.")
+            raise forms.ValidationError("Укажите и широту, и долготу.")
 
         return cleaned_data
 
-    def _update_file_field_if_changed(self, profile, field_name):
-        if field_name in self.changed_data:
-            setattr(profile, field_name, self.cleaned_data.get(field_name))
+    def _update_file(self, profile, field):
+        if field in self.changed_data:
+            setattr(profile, field, self.cleaned_data.get(field))
 
     @transaction.atomic
     def save(self, commit=True):
         user = super().save(commit=False)
         user.user_type = "driver"
+
         user.verification_code = self.cleaned_data.get("verification_code")
         user.rating_avg = self.cleaned_data.get("rating_avg") or 0
         user.rating_count = self.cleaned_data.get("rating_count") or 0
         user.orders_count = self.cleaned_data.get("orders_count") or 0
 
-        if commit:
-            user.save()
+        if not commit:
+            return user
 
-            worker_status, _ = WorkerStatus.objects.get_or_create(user=user)
-            worker_status.is_online = self.cleaned_data.get("is_online", False)
-            worker_status.is_busy = self.cleaned_data.get("is_busy", False)
-            worker_status.save()
+        user.save()
 
-            lat = self.cleaned_data.get("lat")
-            lon = self.cleaned_data.get("lon")
-            if lat is not None and lon is not None:
-                worker_location, _ = WorkerLocation.objects.get_or_create(user=user)
-                worker_location.lat = lat
-                worker_location.lon = lon
-                worker_location.save()
-            else:
-                WorkerLocation.objects.filter(user=user).delete()
+        # ===== STATUS =====
+        worker_status, _ = WorkerStatus.objects.get_or_create(user=user)
+        worker_status.is_online = self.cleaned_data.get("is_online", False)
+        worker_status.is_busy = self.cleaned_data.get("is_busy", False)
+        worker_status.save()
 
-            profile, _ = DriverProfile.objects.get_or_create(user=user)
-            profile.status = self.cleaned_data.get("driver_profile_status") or "pending"
+        # ===== LOCATION =====
+        lat = self.cleaned_data.get("lat")
+        lon = self.cleaned_data.get("lon")
 
-            profile.passport_number = self.cleaned_data.get("passport_number") or ""
-            profile.seria_and_number = self.cleaned_data.get("seria_and_number") or ""
-            profile.date_of_issue = self.cleaned_data.get("date_of_issue")
-            profile.issuing_authority = self.cleaned_data.get("issuing_authority") or ""
+        if lat is not None and lon is not None:
+            worker_location, _ = WorkerLocation.objects.get_or_create(user=user)
+            worker_location.lat = lat
+            worker_location.lon = lon
+            worker_location.save()
+        else:
+            WorkerLocation.objects.filter(user=user).delete()
 
-            profile.car_brand = self.cleaned_data.get("car_brand") or ""
-            profile.car_model = self.cleaned_data.get("car_model") or ""
-            profile.car_color = self.cleaned_data.get("car_color") or ""
-            profile.car_number = self.cleaned_data.get("car_number") or ""
-            profile.car_type = self.cleaned_data.get("car_type") or ""
+        # ===== PROFILE =====
+        profile, _ = DriverProfile.objects.get_or_create(user=user)
 
-            self._update_file_field_if_changed(profile, "selfie")
-            self._update_file_field_if_changed(profile, "passport_front")
-            self._update_file_field_if_changed(profile, "passport_back")
-            self._update_file_field_if_changed(profile, "driver_license_front")
-            self._update_file_field_if_changed(profile, "driver_license_back")
-            self._update_file_field_if_changed(profile, "car_photo")
+        profile.status = self.cleaned_data.get("driver_profile_status") or "pending"
 
-            profile.save()
+        profile.passport_number = self.cleaned_data.get("passport_number") or ""
+        profile.seria_and_number = self.cleaned_data.get("seria_and_number") or ""
+        profile.date_of_issue = self.cleaned_data.get("date_of_issue")
+        profile.issuing_authority = self.cleaned_data.get("issuing_authority") or ""
+
+        profile.car_brand = self.cleaned_data.get("car_brand") or ""
+        profile.car_model = self.cleaned_data.get("car_model") or ""
+        profile.car_color = self.cleaned_data.get("car_color") or ""
+        profile.car_number = self.cleaned_data.get("car_number") or ""
+        profile.car_type = self.cleaned_data.get("car_type") or ""
+
+        # ===== FILES =====
+        self._update_file(profile, "selfie")
+        self._update_file(profile, "passport_front")
+        self._update_file(profile, "passport_back")
+        self._update_file(profile, "driver_license_front")
+        self._update_file(profile, "driver_license_back")
+
+        profile.save()
+
+        # ===== CAR GALLERY (НОВОЕ) =====
+        car_images = self.files.getlist("car_images")
+
+        if car_images:
+            for img in car_images[:7]:
+                DriverCarImage.objects.create(
+                    driver=profile,
+                    image=img
+                )
 
         return user

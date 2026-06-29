@@ -1,0 +1,73 @@
+/* ===================================================== */
+/* ADMIN FORM FIELDS */
+/* ===================================================== */
+
+form input:not([type="checkbox"]):not([type="radio"]),
+form select,
+form textarea {
+
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 14px;
+
+    background-color: #ffffff !important;
+
+    border: 1px solid #3a3a3a;
+
+    color: #000000 !important;
+
+    transition: all .2s ease;
+}
+
+/* ===================================================== */
+/* DARK MODE */
+/* ===================================================== */
+
+:root[data-theme="dark"] form input:not([type="checkbox"]):not([type="radio"]),
+:root[data-theme="dark"] form select,
+:root[data-theme="dark"] form textarea {
+
+    background-color: #101010 !important;
+
+    color: #ffffff !important;
+
+    border: 1px solid rgba(183,255,0,0.15);
+
+    box-shadow:
+        0 0 0 1px rgba(183,255,0,0.04),
+        0 0 12px rgba(183,255,0,0.05);
+}
+
+/* ===================================================== */
+/* FOCUS */
+/* ===================================================== */
+
+form input:focus,
+form select:focus,
+form textarea:focus {
+
+    border-color: #95ff00 !important;
+
+    box-shadow:
+        0 0 0 3px rgba(149,255,0,.12),
+        0 0 14px rgba(149,255,0,.18) !important;
+
+    outline: none !important;
+}
+
+/* ===================================================== */
+/* SEARCHBAR FIX */
+/* ===================================================== */
+
+#searchbar {
+
+    background-color: transparent !important;
+
+    border: none !important;
+
+    box-shadow: none !important;
+
+    color: inherit !important;
+
+    padding: 0 !important;
+}

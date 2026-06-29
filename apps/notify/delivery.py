@@ -9,7 +9,6 @@ def delivery_offer_created(offer):
         title="Новый заказ",
         message=f"Заказ #{offer.delivery_id}",
         delivery=offer.delivery,
-        offer=offer,
         payload={
             "type": "navigate",
             "screen": "DeliveryOffer",

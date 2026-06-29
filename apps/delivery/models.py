@@ -121,31 +121,16 @@ class Delivery(models.Model):
         verbose_name="Слот",
     )
 
-    delivery_status = models.CharField(
-        "Статус доставки",
-        max_length=50,
-        choices=DELIVERY_STATUSES,
-        default="pending"
-    )
-    type_delivery = models.CharField(
-        "Тип доставки",
-        max_length=50,
-        choices=DELIVERY_TYPES,
-        default="standard"
-    )
-    type_transport = models.CharField(
-        "Тип транспорта",
-        max_length=20,
-        choices=TRANSPORT_TYPES,
-        default="standard",
-    )
-
-
+    delivery_status = models.CharField("Статус доставки",max_length=50,choices=DELIVERY_STATUSES,default="pending")
+    type_delivery = models.CharField("Тип доставки", max_length=50,choices=DELIVERY_TYPES,default="standard")
+    type_transport = models.CharField("Тип транспорта",max_length=20,choices=TRANSPORT_TYPES,default="standard",)
     price = models.DecimalField("Цена", max_digits=10, decimal_places=2, null=True, blank=True)
+    final_price = models.DecimalField("Итоговая цена",max_digits=10,decimal_places=2,default=0)
     arrived_at = models.DateTimeField(null=True, blank=True)
     free_waiting_started_at = models.DateTimeField(null=True, blank=True)
-    free_waiting_minutes = models.PositiveIntegerField(default=10)
     paid_waiting_started_at = models.DateTimeField(null=True, blank=True)
+    waiting_minutes = models.PositiveIntegerField("Платное ожидание (мин)",default=0)
+    waiting_price = models.DecimalField("Стоимость ожидания",max_digits=10,decimal_places=2, default=0)
     pickup_at = models.DateTimeField("Время забора", null=True, blank=True)
     delivered_at = models.DateTimeField("Время доставки", null=True, blank=True)
     time_left = models.IntegerField("Осталось времени", default=0)
@@ -172,23 +157,13 @@ class Delivery(models.Model):
 
     client_comment = models.TextField("Комментарий клиента", blank=True, default="")
     created_at = models.DateTimeField(auto_now_add=True)
-    tariff = models.ForeignKey(
-        "main.DeliveryTariff",
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        related_name="deliveries"
-    )
-
+    tariff = models.ForeignKey("main.DeliveryTariff",on_delete=models.SET_NULL,null=True,blank=True,related_name="deliveries")
     planned_distance_km = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
     planned_duration_min = models.PositiveIntegerField(null=True, blank=True)
-
     fact_distance_km = models.DecimalField(max_digits=8, decimal_places=2, null=True, blank=True)
     fact_duration_min = models.PositiveIntegerField(null=True, blank=True)
-
     extra_km = models.DecimalField(max_digits=8, decimal_places=2, default=0)
     extra_min = models.PositiveIntegerField(default=0)
-
     commission_amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     courier_earnings = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     zone = models.ForeignKey(

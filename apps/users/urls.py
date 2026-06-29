@@ -17,6 +17,9 @@ urlpatterns = [
     path("scan_driver_documents/", ScanPersonalDriverView.as_view(), name="scan_personal_driver"),
     path("scan_drivers_license/", ScanDriversLicenseView.as_view(), name="scan_drivers_license"),
     path("scan_drivers_auto/", ScanDriversAutoView.as_view(), name="scan_drivers_auto"),
+    path("scan_image_auto/", DriverCarImageView.as_view()),
+    path("scan_image_courier/",CourierCarImageView.as_view(),name="courier-car-images",),
+    path("workers/weekly-check/", WeeklyCarCheckView.as_view(), name="weekly-check"),
 
     path("personal/info/", PersonalInfoView.as_view(), name="personal-info"),
     path("profile-update/", UpdateProfileView.as_view(), name="profile-update"),

@@ -1,0 +1,247 @@
+
+================================================================================
+2026-06-29 10:44:13.708208 | NAMBA REQUEST
+================================================================================
+{
+    "method": "POST",
+    "url": "https://api.nambaone.app//public/merchant/payment/v2/3e7303b9-fb23-4071-a657-366536db475a/one-time",
+    "path": "/public/merchant/payment/v2/3e7303b9-fb23-4071-a657-366536db475a/one-time",
+    "external_id": "012da9d0-bc10-4c2d-aa5d-24752dd002fd",
+    "amount_som": "10",
+    "amount_tyiyn": 1000,
+    "payload": {
+        "externalId": "012da9d0-bc10-4c2d-aa5d-24752dd002fd",
+        "webhookUrl": "https://ego.kg/api/payment/webhook/namba/",
+        "amount": "1000",
+        "amountCanBeChanged": false
+    },
+    "body": "{\"externalId\":\"012da9d0-bc10-4c2d-aa5d-24752dd002fd\",\"webhookUrl\":\"https://ego.kg/api/payment/webhook/namba/\",\"amount\":\"1000\",\"amountCanBeChanged\":false}",
+    "headers": {
+        "Content-Type": "application/json",
+        "x-merchant-api-salt": "4d08956c-59f8-4404-af27-a5b34461a55e",
+        "x-merchant-api-signature": "558N7HMLyMBV8jh7Gn0OW2pswbNyEuePb3TF6T4Xb+a5sjuQn6m/IJ/oLcM5lGLAZpk8GLJI+WcOIL3SP/myUw=="
+    }
+}
+
+================================================================================
+2026-06-29 10:44:13.967487 | NAMBA RAW RESPONSE
+================================================================================
+{
+    "status_code": 201,
+    "headers": {
+        "Server": "nginx",
+        "Date": "Mon, 29 Jun 2026 10:44:13 GMT",
+        "Content-Type": "application/json; charset=utf-8",
+        "Content-Length": "1329",
+        "Connection": "keep-alive",
+        "X-Powered-By": "Express",
+        "ETag": "W/\"531-S1B/L21ioOQOfXJOjIGUCAm7Vbc\""
+    },
+    "text": "{\"status\":\"OK\",\"data\":{\"guid\":\"e5c87356-4a43-4110-a5a6-02f3d2104308\",\"comment\":\"PAYMENT\",\"token\":\"https://pay.namba.kg/#00020101021232700012nambaone.app0102001032e5c873564a434110a5a602f3d2104308120212130212333600323e7303b9fb234071a657366536db475a520460125303417540410005909OSOO_ATSH6304460C\",\"type\":\"MERCHANT\",\"amount\":\"1000\",\"details\":{\"merchant\":{\"merchantTin\":\"01510202110145\",\"merchantName\":\"Ego.kg\",\"merchantImage\":\"https://pdwh.rps.kg/rps-prod-public/13300ddd-8103-46bb-9e5e-49b3a522a445.jpeg\",\"paymentLinkGuid\":\"e5c87356-4a43-4110-a5a6-02f3d2104308\",\"merchantPublicId\":\"366536db475a\",\"merchantLegalName\":\"ОсОО \\\"АТШ\\\"\",\"merchantTradeName\":\"Ego.kg\",\"paymentLinkOneTime\":true,\"merchantAccountGuid\":\"3e7303b9-fb23-4071-a657-366536db475a\"},\"accountNumber\":\"77020780021015\",\"correlationDetails\":{\"type\":\"QR\",\"initiationType\":\"QR\"}},\"disabled\":false,\"status\":\"ACTIVE\",\"expiresAt\":null,\"createdAt\":\"2026-06-29T10:44:13.909Z\",\"walletGuid\":null,\"merchantAccountGuid\":\"3e7303b9-fb23-4071-a657-366536db475a\",\"merchantEmployeeGuid\":\"6b7763b7-35f8-4f68-a338-58eb808ac4eb\",\"oneTime\":true,\"amountCanBeChanged\":false,\"displayDetails\":{\"elements\":[],\"commentable\":false,\"payeeDetails\":{\"icon\":\"https://pdwh.rps.kg/rps-prod-public/13300ddd-8103-46bb-9e5e-49b3a522a445.jpeg\",\"title\":\"Ego.kg\"}},\"currencyCode\":\"KGS\",\"referralData\":{}}}"
+}
+
+================================================================================
+2026-06-29 10:44:13.967699 | NAMBA JSON RESPONSE
+================================================================================
+{
+    "status": "OK",
+    "data": {
+        "guid": "e5c87356-4a43-4110-a5a6-02f3d2104308",
+        "comment": "PAYMENT",
+        "token": "https://pay.namba.kg/#00020101021232700012nambaone.app0102001032e5c873564a434110a5a602f3d2104308120212130212333600323e7303b9fb234071a657366536db475a520460125303417540410005909OSOO_ATSH6304460C",
+        "type": "MERCHANT",
+        "amount": "1000",
+        "details": {
+            "merchant": {
+                "merchantTin": "01510202110145",
+                "merchantName": "Ego.kg",
+                "merchantImage": "https://pdwh.rps.kg/rps-prod-public/13300ddd-8103-46bb-9e5e-49b3a522a445.jpeg",
+                "paymentLinkGuid": "e5c87356-4a43-4110-a5a6-02f3d2104308",
+                "merchantPublicId": "366536db475a",
+                "merchantLegalName": "ОсОО \"АТШ\"",
+                "merchantTradeName": "Ego.kg",
+                "paymentLinkOneTime": true,
+                "merchantAccountGuid": "3e7303b9-fb23-4071-a657-366536db475a"
+            },
+            "accountNumber": "77020780021015",
+            "correlationDetails": {
+                "type": "QR",
+                "initiationType": "QR"
+            }
+        },
+        "disabled": false,
+        "status": "ACTIVE",
+        "expiresAt": null,
+        "createdAt": "2026-06-29T10:44:13.909Z",
+        "walletGuid": null,
+        "merchantAccountGuid": "3e7303b9-fb23-4071-a657-366536db475a",
+        "merchantEmployeeGuid": "6b7763b7-35f8-4f68-a338-58eb808ac4eb",
+        "oneTime": true,
+        "amountCanBeChanged": false,
+        "displayDetails": {
+            "elements": [],
+            "commentable": false,
+            "payeeDetails": {
+                "icon": "https://pdwh.rps.kg/rps-prod-public/13300ddd-8103-46bb-9e5e-49b3a522a445.jpeg",
+                "title": "Ego.kg"
+            }
+        },
+        "currencyCode": "KGS",
+        "referralData": {}
+    }
+}
+
+================================================================================
+2026-06-29 10:44:23.779560 | NAMBA REQUEST
+================================================================================
+{
+    "method": "POST",
+    "url": "https://api.nambaone.app//public/merchant/payment/v2/3e7303b9-fb23-4071-a657-366536db475a/one-time",
+    "path": "/public/merchant/payment/v2/3e7303b9-fb23-4071-a657-366536db475a/one-time",
+    "external_id": "3f908612-e261-4dfe-b4d3-94a19597ca57",
+    "amount_som": "10",
+    "amount_tyiyn": 1000,
+    "payload": {
+        "externalId": "3f908612-e261-4dfe-b4d3-94a19597ca57",
+        "webhookUrl": "https://ego.kg/api/payment/webhook/namba/",
+        "amount": "1000",
+        "amountCanBeChanged": false
+    },
+    "body": "{\"externalId\":\"3f908612-e261-4dfe-b4d3-94a19597ca57\",\"webhookUrl\":\"https://ego.kg/api/payment/webhook/namba/\",\"amount\":\"1000\",\"amountCanBeChanged\":false}",
+    "headers": {
+        "Content-Type": "application/json",
+        "x-merchant-api-salt": "3168f6b5-786b-418f-b187-4663d76dfdc0",
+        "x-merchant-api-signature": "ksI59wfHt9hEu4ijKdBJ1hVSRvBIUwGFJTfpNrUfOsLhMK8PxjrCP6MYhq0zIgPUS7vRTJgvRnRaqvhflzxPMQ=="
+    }
+}
+
+================================================================================
+2026-06-29 10:44:24.007245 | NAMBA RAW RESPONSE
+================================================================================
+{
+    "status_code": 403,
+    "headers": {
+        "Server": "nginx",
+        "Date": "Mon, 29 Jun 2026 10:44:23 GMT",
+        "Content-Type": "application/json; charset=utf-8",
+        "Transfer-Encoding": "chunked",
+        "Connection": "keep-alive",
+        "X-Powered-By": "Express",
+        "ETag": "W/\"cd-NHxcP5grpXnlYFbahAmbPbzMkf0\"",
+        "Content-Encoding": "gzip"
+    },
+    "text": "{\"status\":\"ERROR\",\"data\":null,\"error\":{\"errorCode\":\"MERCHANT_API_WRONG_SIGNATURE\",\"timestamp\":\"2026-06-29T10:44:23.964Z\",\"path\":\"/public/merchant/payment/v2/3e7303b9-fb23-4071-a657-366536db475a/one-time\"}}"
+}
+
+================================================================================
+2026-06-29 10:44:24.007361 | NAMBA JSON RESPONSE
+================================================================================
+{
+    "status": "ERROR",
+    "data": null,
+    "error": {
+        "errorCode": "MERCHANT_API_WRONG_SIGNATURE",
+        "timestamp": "2026-06-29T10:44:23.964Z",
+        "path": "/public/merchant/payment/v2/3e7303b9-fb23-4071-a657-366536db475a/one-time"
+    }
+}
+
+================================================================================
+2026-06-29 10:44:24.008023 | NAMBA ERROR
+================================================================================
+{
+    "error": "403 Client Error: Forbidden for url: https://api.nambaone.app//public/merchant/payment/v2/3e7303b9-fb23-4071-a657-366536db475a/one-time",
+    "traceback": "Traceback (most recent call last):\n  File \"/home/devuser/Ego/test.py\", line 122, in create_namba_payment\n    response.raise_for_status()\n  File \"/home/devuser/Ego/env/lib/python3.12/site-packages/requests/models.py\", line 1026, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 403 Client Error: Forbidden for url: https://api.nambaone.app//public/merchant/payment/v2/3e7303b9-fb23-4071-a657-366536db475a/one-time\n"
+}
+
+================================================================================
+2026-06-29 10:44:50.296280 | NAMBA REQUEST
+================================================================================
+{
+    "method": "POST",
+    "url": "https://api.nambaone.app//public/merchant/payment/v2/a8ca74d3-29a7-44ff-9040-afa6437cfc12/one-time",
+    "path": "/public/merchant/payment/v2/a8ca74d3-29a7-44ff-9040-afa6437cfc12/one-time",
+    "external_id": "1fac96cc-3859-450a-9a33-9a447b3e4152",
+    "amount_som": "10",
+    "amount_tyiyn": 1000,
+    "payload": {
+        "externalId": "1fac96cc-3859-450a-9a33-9a447b3e4152",
+        "webhookUrl": "https://ego.kg/api/payment/webhook/namba/",
+        "amount": "1000",
+        "amountCanBeChanged": false
+    },
+    "body": "{\"externalId\":\"1fac96cc-3859-450a-9a33-9a447b3e4152\",\"webhookUrl\":\"https://ego.kg/api/payment/webhook/namba/\",\"amount\":\"1000\",\"amountCanBeChanged\":false}",
+    "headers": {
+        "Content-Type": "application/json",
+        "x-merchant-api-salt": "710fb3df-05d3-4600-97a8-b165043cda07",
+        "x-merchant-api-signature": "fYi1JkT2IQsiZQhX5h8xrmEScRzylyWKj3xbjtXfAqTB1oSv0NxbvPenFKaXcTH3omk1REtHpg9y5iWTKJofLQ=="
+    }
+}
+
+================================================================================
+2026-06-29 10:44:50.545189 | NAMBA RAW RESPONSE
+================================================================================
+{
+    "status_code": 201,
+    "headers": {
+        "Server": "nginx",
+        "Date": "Mon, 29 Jun 2026 10:44:50 GMT",
+        "Content-Type": "application/json; charset=utf-8",
+        "Content-Length": "1348",
+        "Connection": "keep-alive",
+        "X-Powered-By": "Express",
+        "ETag": "W/\"544-a5J+kA+SBzCJgNxIoYuP+eFyhXE\""
+    },
+    "text": "{\"status\":\"OK\",\"data\":{\"guid\":\"4bf1dac4-fef6-4d95-886b-8d8f09279e5d\",\"comment\":\"PAYMENT\",\"token\":\"https://pay.namba.kg/#00020101021232700012nambaone.app01020010324bf1dac4fef64d95886b8d8f09279e5d12021213021233360032a8ca74d329a744ff9040afa6437cfc12520460125303417540410005904ATSH6304841C\",\"type\":\"MERCHANT\",\"amount\":\"1000\",\"details\":{\"merchant\":{\"merchantTin\":\"01510202110145\",\"merchantName\":\"Ego.kg - users\",\"merchantImage\":\"https://pdwh.rps.kg/rps-prod-public/faed208f-5d61-4038-8d95-86e2c7c4a06d.jpeg\",\"paymentLinkGuid\":\"4bf1dac4-fef6-4d95-886b-8d8f09279e5d\",\"merchantPublicId\":\"afa6437cfc12\",\"merchantLegalName\":\"ОсОО \\\"АТШ\\\"\",\"merchantTradeName\":\"Ego.kg - users\",\"paymentLinkOneTime\":true,\"merchantAccountGuid\":\"a8ca74d3-29a7-44ff-9040-afa6437cfc12\"},\"accountNumber\":\"77021110021363\",\"correlationDetails\":{\"type\":\"QR\",\"initiationType\":\"QR\"}},\"disabled\":false,\"status\":\"ACTIVE\",\"expiresAt\":null,\"createdAt\":\"2026-06-29T10:44:50.491Z\",\"walletGuid\":null,\"merchantAccountGuid\":\"a8ca74d3-29a7-44ff-9040-afa6437cfc12\",\"merchantEmployeeGuid\":\"b7c8d9e0-f1a2-4b3c-8d4e-a5b6c7d8e9f0\",\"oneTime\":true,\"amountCanBeChanged\":false,\"displayDetails\":{\"elements\":[],\"commentable\":false,\"payeeDetails\":{\"icon\":\"https://pdwh.rps.kg/rps-prod-public/faed208f-5d61-4038-8d95-86e2c7c4a06d.jpeg\",\"title\":\"Ego.kg - users\"}},\"currencyCode\":\"KGS\",\"referralData\":{}}}"
+}
+
+================================================================================
+2026-06-29 10:44:50.545363 | NAMBA JSON RESPONSE
+================================================================================
+{
+    "status": "OK",
+    "data": {
+        "guid": "4bf1dac4-fef6-4d95-886b-8d8f09279e5d",
+        "comment": "PAYMENT",
+        "token": "https://pay.namba.kg/#00020101021232700012nambaone.app01020010324bf1dac4fef64d95886b8d8f09279e5d12021213021233360032a8ca74d329a744ff9040afa6437cfc12520460125303417540410005904ATSH6304841C",
+        "type": "MERCHANT",
+        "amount": "1000",
+        "details": {
+            "merchant": {
+                "merchantTin": "01510202110145",
+                "merchantName": "Ego.kg - users",
+                "merchantImage": "https://pdwh.rps.kg/rps-prod-public/faed208f-5d61-4038-8d95-86e2c7c4a06d.jpeg",
+                "paymentLinkGuid": "4bf1dac4-fef6-4d95-886b-8d8f09279e5d",
+                "merchantPublicId": "afa6437cfc12",
+                "merchantLegalName": "ОсОО \"АТШ\"",
+                "merchantTradeName": "Ego.kg - users",
+                "paymentLinkOneTime": true,
+                "merchantAccountGuid": "a8ca74d3-29a7-44ff-9040-afa6437cfc12"
+            },
+            "accountNumber": "77021110021363",
+            "correlationDetails": {
+                "type": "QR",
+                "initiationType": "QR"
+            }
+        },
+        "disabled": false,
+        "status": "ACTIVE",
+        "expiresAt": null,
+        "createdAt": "2026-06-29T10:44:50.491Z",
+        "walletGuid": null,
+        "merchantAccountGuid": "a8ca74d3-29a7-44ff-9040-afa6437cfc12",
+        "merchantEmployeeGuid": "b7c8d9e0-f1a2-4b3c-8d4e-a5b6c7d8e9f0",
+        "oneTime": true,
+        "amountCanBeChanged": false,
+        "displayDetails": {
+            "elements": [],
+            "commentable": false,
+            "payeeDetails": {
+                "icon": "https://pdwh.rps.kg/rps-prod-public/faed208f-5d61-4038-8d95-86e2c7c4a06d.jpeg",
+                "title": "Ego.kg - users"
+            }
+        },
+        "currencyCode": "KGS",
+        "referralData": {}
+    }
+}

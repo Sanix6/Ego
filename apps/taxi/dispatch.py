@@ -10,7 +10,8 @@ from apps.taxi.services import find_nearest_drivers
 from apps.users.models import WorkerStatus
 from assets.helpers.loggers import write_log
 from .serializers import TaxiRideDetailSerializer
-
+from apps.payments.bonuses import process_worker_bonuses
+from django.utils import timezone
 
 OFFER_TIMEOUT_SECONDS = 15
 TAXI_DISPATCH_WAVES = [
@@ -74,6 +75,8 @@ def dispatch_wave(ride, limit):
         lat=float(ride.pickup_lat),
         lon=float(ride.pickup_lon),
         limit=limit * 3,
+        payment_method=ride.payment_method,
+        car_class=ride.car_class,
     )
 
     sent_offers = []
